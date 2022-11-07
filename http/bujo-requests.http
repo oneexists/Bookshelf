@@ -1,0 +1,26 @@
+@url = http://localhost:8080
+@jwt = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJidWpvLWJvb2tzaGVsZiIsImFwcF91c2VyX2lkIjoxLCJhdXRob3JpdGllcyI6IlJPTEVfVVNFUiIsImV4cCI6MTY2Nzg1MjI2OH0.KFvzjO3bZtPNQzou4IBwhRUoWpH-fnv-Sdd1ejyOY_c
+
+### CREATE ACCOUNT
+
+POST {{url}}/create_account HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "skylar",
+    "password": "P@ssw0rd!"
+}
+
+### AUTHENTICATE USER
+
+POST {{url}}/authenticate HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "skylar",
+    "password": "P@ssw0rd!"
+}
+
+### GET ALL USERS
+
+GET {{url}}/api/appUsers HTTP/1.1
