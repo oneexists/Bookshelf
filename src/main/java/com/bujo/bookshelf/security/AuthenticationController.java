@@ -11,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,7 +50,7 @@ public class AuthenticationController {
 				return new ResponseEntity<>(responseBody, HttpStatus.OK);
 			}
 		} catch (AuthenticationException exception) {
-			System.err.println(exception);
+			SecurityContextHolder.clearContext();
 		}
 		return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 	}

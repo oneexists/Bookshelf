@@ -33,9 +33,15 @@ public class SecurityConfig {
 			.antMatchers(DELETE, "/api/appUsers").denyAll()
 			.anyRequest().authenticated();
 		http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
+		http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint());
 		http.addFilter(new JwtRequestFilter(authenticationManager(authConfig), converter));
 		
 		return http.build();
+	}
+	
+	@Bean
+	JwtAuthenticationEntryPoint authenticationEntryPoint() {
+		return new JwtAuthenticationEntryPoint();
 	}
 	
 	@Bean

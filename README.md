@@ -34,4 +34,9 @@ To run tests, a schema can be found in the directory: bookshelf/sql/schema.sql
 
 ## Resources
 
-- [Exception Handling in Spring Security](https://www.devglan.com/spring-security/exception-handling-in-spring-security): Add JwtAccessDeniedHandler to configuration and HttpResponse to security package
+- Handle Authentication and Authorization Exceptions:
+  - [Exception Handling in Spring Security](https://www.devglan.com/spring-security/exception-handling-in-spring-security):
+    Add JwtAccessDeniedHandler to configuration and HttpResponse to security package
+  - [Authentication Entry Point](https://stackoverflow.com/questions/37080590/spring-controlleradvice-and-authentication-authorization-exception-handling)
+    and [Authentication Exception](https://stackoverflow.com/questions/19767267/handle-spring-security-authentication-exceptions-with-exceptionhandler):
+    Clear context holder and set status to forbidden in AuthenticationController, add JwtAuthenticationEntryPoint and register with security configuration
