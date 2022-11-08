@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
@@ -61,9 +62,8 @@ public class JwtConverter {
 			
 			return new AppUserDetails(appUserId, username, appUserRole);
 		} catch (JwtException exception) {
-			System.err.println(exception);
+			throw new JWTVerificationException("Token cannot be verified");
 		}
-		return null;
 	}
 	
 	private AppUserRole getAuthorities(String authString) {

@@ -36,11 +36,9 @@ public class JwtRequestFilter extends BasicAuthenticationFilter {
 						new UsernamePasswordAuthenticationToken(appUser, null, appUser.getAuthorities());
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(authentication);
-			} else {
-				response.setStatus(401);
 			}
 		} catch (JwtException exception) {
-			logger.error("Cannot set user authentication: {}", exception);
+			SecurityContextHolder.clearContext();
 		}
 		filterChain.doFilter(request, response);
 	}

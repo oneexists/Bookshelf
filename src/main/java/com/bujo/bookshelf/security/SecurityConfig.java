@@ -32,9 +32,15 @@ public class SecurityConfig {
 			.antMatchers(POST, "/api/appUsers").denyAll()
 			.antMatchers(DELETE, "/api/appUsers").denyAll()
 			.anyRequest().authenticated();
+		http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
 		http.addFilter(new JwtRequestFilter(authenticationManager(authConfig), converter));
 		
 		return http.build();
+	}
+	
+	@Bean
+	JwtAccessDeniedHandler accessDeniedHandler() {
+		return new JwtAccessDeniedHandler();
 	}
 	
 	@Bean

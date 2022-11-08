@@ -31,3 +31,7 @@ To run tests, a schema can be found in the directory: bookshelf/sql/schema.sql
     - DB_USERNAME
     - DB_PASSWORD
 3. [Create a JAR](https://docs.oracle.com/javase/tutorial/deployment/jar/build.htm)
+
+## Resources
+
+- [Exception Handling in Spring Security](https://www.devglan.com/spring-security/exception-handling-in-spring-security): Add JwtAccessDeniedHandler to configuration and HttpResponse to security package
