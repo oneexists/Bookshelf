@@ -1,29 +1,14 @@
-import { useEffect, useState } from "react";
-import { findAll } from "../../services/bookService";
+import { useReducer } from "react";
 
 export default function Register() {
-    const [ books, setBooks ] = useState([]);
+    const [ number, setNumber ] =useReducer(
+        (number, newNumber) => number + newNumber,
+        0
+    );
 
-    useEffect(() => {
-        setBooks(findAll());
-    }, []);
-
-    if (books) {
-        return (
-            <main className="container mt-3">
-                <ul>
-                    {books.map(book => (
-                        <li key={book.id}>{book.title} by {book.author}</li>
-                    ))}
-                </ul>
-
-                <button className="btn btn-secondary" onClick={() => setBooks([])}>Empty List</button>
-            </main>
-        );
-    }
     return (
         <main className="container mt-3">
-            <p>No Books</p>
+            <h2 onClick={() => setNumber(1)}>{number}</h2>
         </main>
     );
 }
