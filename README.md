@@ -11,10 +11,20 @@ Spring web application for tracking personal reading habits
 - [MySQL](https://www.mysql.com/)
 - [JUnit Jupiter](https://junit.org/junit5/docs/current/user-guide/),
   [Mockito](https://site.mockito.org/)
+- [React](https://reactjs.org/)
+- [Bootstrap 5](https://getbootstrap.com/)
 
 ### Functional Requirements
 
 - RESTful API with JWT web token authentication
+
+### Non-Functional Requirements
+
+- UI/UX
+  - React front-end interface
+  - Bootstrap styling
+  - integrate [WAI-ARIA specification](https://developer.mozilla.org/en-US/docs/Learn/Accessibility/WAI-ARIA_basics)
+    to increase accessibility
 
 ## Project Setup
 
@@ -32,11 +42,23 @@ To run tests, a schema can be found in the directory: bookshelf/sql/schema.sql
     - DB_PASSWORD
 3. [Create a JAR](https://docs.oracle.com/javase/tutorial/deployment/jar/build.htm)
 
-## Resources
+## Process Analysis
 
 - Handle Authentication and Authorization Exceptions:
   - [Exception Handling in Spring Security](https://www.devglan.com/spring-security/exception-handling-in-spring-security):
-    Add JwtAccessDeniedHandler to configuration and HttpResponse to security package
+  Add JwtAccessDeniedHandler to configuration and HttpResponse to security package
   - [Authentication Entry Point](https://stackoverflow.com/questions/37080590/spring-controlleradvice-and-authentication-authorization-exception-handling)
-    and [Authentication Exception](https://stackoverflow.com/questions/19767267/handle-spring-security-authentication-exceptions-with-exceptionhandler):
-    Clear context holder and set status to forbidden in AuthenticationController, add JwtAuthenticationEntryPoint and register with security configuration
+  and [Authentication Exception](https://stackoverflow.com/questions/19767267/handle-spring-security-authentication-exceptions-with-exceptionhandler):
+  Clear context holder and set status to forbidden in AuthenticationController, add JwtAuthenticationEntryPoint and register with security configuration
+
+## Resources
+
+- Spring Data REST:
+  - [Tutorial](https://spring.io/guides/tutorials/rest/)
+  - [Validators](https://www.baeldung.com/spring-data-rest-validators)
+  - [Validator Testing](https://stackoverflow.com/questions/9744988/writing-junit-tests-for-spring-validator-implementation)
+  - [CORS Configuration](https://www.amitph.com/spring-data-rest-cors/)
+- React:
+  - [Building Modern UIs with React Router v6](https://www.linkedin.com/learning/building-modern-uis-with-react-router-v6/building-modern-uis)
+  - [React Router](https://reactrouter.com/en/main)
+  - [React styled-components](https://styled-components.com/docs)
