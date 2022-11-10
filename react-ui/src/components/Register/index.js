@@ -1,43 +1,29 @@
 import { useEffect, useState } from "react";
+import { findAll } from "../../services/bookService";
 
 export default function Register() {
-    const [ name, setName ] = useState("");
-    const [ submittedName, setSubmittedName ] = useState("");
-    const [ isAdmin, setIsAdmin ] = useState(false);
-    const [ msg, setMsg ] = useState("");
+    const [ books, setBooks ] = useState([]);
 
     useEffect(() => {
-        document.title = `Hello ${submittedName}`;
-    }, [submittedName]);
+        setBooks(findAll());
+    }, []);
 
-    useEffect(() => {
-        isAdmin ? setMsg("User is an Admin") : setMsg("");
-    }, [isAdmin]);
+    if (books) {
+        return (
+            <main className="container mt-3">
+                <ul>
+                    {books.map(book => (
+                        <li key={book.id}>{book.title} by {book.author}</li>
+                    ))}
+                </ul>
 
+                <button className="btn btn-secondary" onClick={() => setBooks([])}>Empty List</button>
+            </main>
+        );
+    }
     return (
         <main className="container mt-3">
-            <h2 className="d-flex justify-content-center">Bookshelf Registration</h2>
-            <p className={(isAdmin && submittedName.length > 0) ? "alert alert-danger" : "offscreen"}>
-                    {msg}
-            </p>
-            <div className="form-group mb-3">
-                <label htmlFor="name" className="form-label">Name:</label>
-                <input 
-                    type="text"
-                    aria-label="name"
-                    aria-required="true"
-                    className="form-control"
-                    id="name"
-                    value={name}
-                    onChange={(evt) => setName(evt.target.value)}
-                    required
-                />
-            </div>
-            <div className="form-group mb-3">
-                <button className="btn btn-secondary" onClick={() => setIsAdmin((isAdmin) => !isAdmin)}>Admin</button>
-            </div>
-
-            <button type="submit" className="btn btn-success" onClick={() => setSubmittedName(name)}>Submit</button>
+            <p>No Books</p>
         </main>
     );
 }
