@@ -1,22 +1,31 @@
 import { useRef, useState } from "react";
 
 export default function Register() {
-    const name = useRef();
-    const color = useRef();
+    const [ name, setName ] = useState("");
+    const [ color, setColor ] = useState("#000000");
     const [ message, setMessage ] = useState("");
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
-        const nameVal = name.current.value;
-        const colorVal = color.current.value;
-        setMessage(`Color: ${colorVal} has the name ${nameVal}`);
+        setMessage(`Color: ${color} has the name ${name}`);
+        
+        setName("");
+        setColor("#000000");
     };
 
     return (
         <main className="container mt-3">
             <form onSubmit={handleSubmit}>
-                <input type="text" ref={name} />
-                <input type="color" ref={color} />
+                <input 
+                    type="text" 
+                    value={name} 
+                    onChange={(e) => setName(e.target.value)}
+                />
+                <input 
+                    type="color" 
+                    value={color} 
+                    onChange={(e) => setColor(e.target.value)}
+                />
                 <button type="submit" className="btn btn-primary">Add Color</button>
             </form>
             {message.length > 0 && (
