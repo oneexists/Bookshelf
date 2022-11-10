@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function Login() {
     return (
-        <main className="container">
+        <main className="container mt-3">
             <h2 className="d-flex justify-content-center">Bookshelf Login</h2>
             <p>Error Messages</p>
             <form>
