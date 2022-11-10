@@ -1,47 +1,27 @@
-import { useReducer } from "react";
-
-const initialState = {
-    message: "hi"
-};
-
-function reducer(state, action) {
-    switch(action.type) {
-        case "yell":
-            return {
-                message: `HEY! I JUST SAID ${state.message}`
-            };
-        case "whisper":
-            return {
-                message: "excuse me..."
-            };
-        default:
-            return {
-                message: "hello"
-            };
-    }
-}
+import { useRef, useState } from "react";
 
 export default function Register() {
-    const [ state, dispatch ] = useReducer(
-        reducer,
-        initialState
-    );
+    const name = useRef();
+    const color = useRef();
+    const [ message, setMessage ] = useState("");
+
+    const handleSubmit = (evt) => {
+        evt.preventDefault();
+        const nameVal = name.current.value;
+        const colorVal = color.current.value;
+        setMessage(`Color: ${colorVal} has the name ${nameVal}`);
+    };
 
     return (
         <main className="container mt-3">
-            <p>Message: {state.message}</p>
-            <button 
-                className="btn btn-secondary me-2" 
-                onClick={() => dispatch({ type: "yell" })}
-            >
-                YELL
-            </button>
-            <button 
-                className="btn btn-secondary" 
-                onClick={() => dispatch({ type: "whisper" })}
-            >
-                whisper
-            </button>
+            <form onSubmit={handleSubmit}>
+                <input type="text" ref={name} />
+                <input type="color" ref={color} />
+                <button type="submit" className="btn btn-primary">Add Color</button>
+            </form>
+            {message.length > 0 && (
+                <p>{message}</p>
+            )}
         </main>
     );
 }
