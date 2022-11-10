@@ -1,9 +1,14 @@
-import { Link } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
 export default function Login() {
+    const { state } = useLocation();
+
     return (
         <main className="container mt-3">
             <h2 className="d-flex justify-content-center">Bookshelf Login</h2>
+            {state && (
+                <p>Username: {state.username}</p>
+            )}
             <p>Error Messages</p>
             <form>
                 <div className="form-group mb-3">
