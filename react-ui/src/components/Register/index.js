@@ -1,8 +1,7 @@
-import { useContext } from "react";
-import { TreesContext } from "../../App";
+import { useTrees } from "../../App";
 
 export default function Register() {
-    const { trees } = useContext(TreesContext);
+    const { trees } = useTrees();
 
     return (
         <main className="container mt-3">

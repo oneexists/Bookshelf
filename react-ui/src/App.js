@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Home from "./components/Home";
@@ -8,6 +8,9 @@ import Register from "./components/Register";
 
 export const TreesContext = createContext();
 
+export const useTrees = () => 
+  useContext(TreesContext);
+  
 const trees = [
     { id: 1, type: "Maple" },
     { id: 2, type: "Oak" },
