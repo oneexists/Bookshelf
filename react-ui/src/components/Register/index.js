@@ -1,29 +1,19 @@
-import { useState } from "react";
-import { useInput } from "../../hooks/useInput";
+import { useContext } from "react";
+import { TreesContext } from "../../App";
 
 export default function Register() {
-    const [ nameProps, resetName ] = useInput("");
-    const [ colorProps, resetColor ] = useInput("#000000");
-    const [ message, setMessage ] = useState("");
-
-    const handleSubmit = (evt) => {
-        evt.preventDefault();
-        setMessage(`Color: ${colorProps.value} has the name ${nameProps.value}`);
-        
-        resetName();
-        resetColor();
-    };
+    const { trees } = useContext(TreesContext);
 
     return (
         <main className="container mt-3">
-            <form onSubmit={handleSubmit}>
-                <input type="text" {...nameProps} />
-                <input type="color" {...colorProps} />
-                <button type="submit" className="btn btn-primary">Add Color</button>
-            </form>
-            {message.length > 0 && (
-                <p>{message}</p>
-            )}
+            <div>
+                <h1>Types of Trees</h1>
+                <ul>
+                    {trees.map((t) => (
+                        <li key={t.id}>{t.type}</li>
+                    ))}
+                </ul>
+            </div>
         </main>
     );
 }
