@@ -1,31 +1,24 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
+import { useInput } from "../../hooks/useInput";
 
 export default function Register() {
-    const [ name, setName ] = useState("");
-    const [ color, setColor ] = useState("#000000");
+    const [ nameProps, resetName ] = useInput("");
+    const [ colorProps, resetColor ] = useInput("#000000");
     const [ message, setMessage ] = useState("");
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
-        setMessage(`Color: ${color} has the name ${name}`);
+        setMessage(`Color: ${colorProps.value} has the name ${nameProps.value}`);
         
-        setName("");
-        setColor("#000000");
+        resetName();
+        resetColor();
     };
 
     return (
         <main className="container mt-3">
             <form onSubmit={handleSubmit}>
-                <input 
-                    type="text" 
-                    value={name} 
-                    onChange={(e) => setName(e.target.value)}
-                />
-                <input 
-                    type="color" 
-                    value={color} 
-                    onChange={(e) => setColor(e.target.value)}
-                />
+                <input type="text" {...nameProps} />
+                <input type="color" {...colorProps} />
                 <button type="submit" className="btn btn-primary">Add Color</button>
             </form>
             {message.length > 0 && (
