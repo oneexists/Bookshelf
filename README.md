@@ -51,6 +51,12 @@ To run tests, a schema can be found in the directory: bookshelf/sql/schema.sql
   and [Authentication Exception](https://stackoverflow.com/questions/19767267/handle-spring-security-authentication-exceptions-with-exceptionhandler):
   Clear context holder and set status to forbidden in AuthenticationController, add JwtAuthenticationEntryPoint and register with security configuration
 
+
+- Create authentication hook:
+  - [useHooks hook for useAuth](https://usehooks.com/useAuth/)
+  - [useAuth hook example](https://hhpendleton.medium.com/useauth-265512bbde3c)
+
+  
 ## Resources
 
 - Spring Data REST:

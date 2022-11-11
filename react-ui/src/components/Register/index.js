@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function Register() {
+    const auth = useAuth();
     const usernameRef = useRef();
     const errorRef = useRef();
+    const navigate = useNavigate();
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -18,7 +21,11 @@ export default function Register() {
         evt.preventDefault();
 
         if (password === confirmPassword) {
-            alert(`${username} is registered!`);
+            auth.Register(username, password, confirmPassword);
+
+            if (auth.user) {
+                navigate("/");
+            }
         } else {
             setErrorMsg("Passwords must match.");
         }
@@ -27,6 +34,8 @@ export default function Register() {
     return (
         <main className="container mt-3">
             <h2 className="d-flex justify-content-center">Bookshelf Registration</h2>
+
+            <p>{(auth.isLoading) ? "Creating account..." : ""}</p>
 
             <p
                 ref={errorRef}

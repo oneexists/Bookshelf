@@ -4,20 +4,23 @@ import Header from "./components/Header";
 import Home from "./components/Home";
 import NotFound from "./components/NotFound";
 import Register from "./components/Register";
+import { ProvideAuth } from "./hooks/useAuth";
 
 function App() {
   return (
-    <div className="app">
-      <Header />
+    <ProvideAuth>
+      <div className="app">
+        <Header />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="register" element={<Register />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="register" element={<Register />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </ProvideAuth>
   );
 }
 
