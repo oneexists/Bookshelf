@@ -30,6 +30,16 @@ class AppUserRepositoryTest {
 		jdbcTemplate.update("call set_known_good_state();");
 	}
 
+	@Test
+	void testShouldFindById() {
+		AppUser expected = new AppUser("username", "$2a$10$bJ.Q1/9A/1i4LpO90CVnHO.DK464jvQnrXUo0QHJggWEhgLF3eElm", AppUserRole.USER);
+
+		AppUser actual = repository.findById(1L).orElse(null);
+
+		assertNotNull(actual);
+		assertEquals(expected.getUsername(), actual.getUsername());
+	}
+
 	/**
 	 * Should find app user created in known good state procedure
 	 * username: "username"

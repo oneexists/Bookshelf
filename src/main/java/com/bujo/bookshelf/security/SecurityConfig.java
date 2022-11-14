@@ -10,6 +10,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
 import static org.springframework.http.HttpMethod.*;
+import static com.bujo.bookshelf.appUser.models.AppUserPermission.*;
+
 @Configuration
 @ConditionalOnWebApplication
 public class SecurityConfig {
@@ -29,6 +31,10 @@ public class SecurityConfig {
 			.antMatchers(GET).permitAll()
 			.antMatchers(POST, "/create_account").permitAll()
 			.antMatchers(POST, "/authenticate").permitAll()
+			.antMatchers(POST, "/api/authors").hasAuthority(BOOK_WRITE.getPermission())
+			.antMatchers(POST, "/api/books").hasAuthority(BOOK_WRITE.getPermission())
+			.antMatchers(PUT, "/api/books/*/author").hasAuthority(BOOK_WRITE.getPermission())
+			.antMatchers(PUT, "/api/books/*/user").hasAuthority(BOOK_WRITE.getPermission())
 			.antMatchers(POST, "/api/appUsers").denyAll()
 			.antMatchers(DELETE, "/api/appUsers").denyAll()
 			.anyRequest().authenticated();
