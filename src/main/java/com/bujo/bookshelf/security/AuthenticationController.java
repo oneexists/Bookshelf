@@ -37,7 +37,7 @@ public class AuthenticationController {
 	@PostMapping("/authenticate")
 	public ResponseEntity<Map<String, String>> authenticate(@RequestBody AppUserDTO appUserDto) {
 		UsernamePasswordAuthenticationToken token = 
-				new UsernamePasswordAuthenticationToken(appUserDto.getUsername(), appUserDto.getPassword());
+				new UsernamePasswordAuthenticationToken(appUserDto.username(), appUserDto.password());
 		
 		try {
 			Authentication authentication = authenticationManager.authenticate(token);
