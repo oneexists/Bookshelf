@@ -17,18 +17,21 @@ export async function authenticate({ username, password }) {
 }
 
 export async function refresh() {
-    const response = await fetch(`${API_URL}/refresh`, {
-        method: "POST",
-        headers: {
-            "Authorization": `Bearer ${localStorage.getItem("bujo-bookshelf")}`
+    const token = localStorage.getItem("bujo-bookshelf");
+    if (token) {
+        const response = await fetch(`${API_URL}/refresh`, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("bujo-bookshelf")}`
+            }
+        });
+    
+        if (response.ok) {
+            const { jwt_token } = await response.json();
+            return jwt_token;
         }
-    });
-
-    if (response.ok) {
-        const { jwt_token } = await response.json();
-        return jwt_token;
+        return Promise.reject();
     }
-    return Promise.reject();
 }
 
 export async function register({ username, password }) {
