@@ -1,26 +1,21 @@
 package com.bujo.bookshelf.appUser.models;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import com.bujo.bookshelf.book.models.Book;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "app_user")
 public class AppUser implements Serializable {
-	/**
-	 * YYYYMMVVV - year, month, version
-	 */
-	private static final long serialVersionUID = 202211001L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="app_user_id", nullable = false)
 	private Long appUserId;
 	@Column(unique = true)
 	private String username;
@@ -31,6 +26,8 @@ public class AppUser implements Serializable {
 	private boolean isAccountNonLocked;
 	private boolean isCredentialsNonExpired;
 	private boolean isEnabled;
+	@OneToMany(mappedBy = "user")
+	private Set<Book> books = new HashSet<>();
 
 	public AppUser() {
 	}
@@ -107,6 +104,14 @@ public class AppUser implements Serializable {
 
 	public void setEnabled(boolean isEnabled) {
 		this.isEnabled = isEnabled;
+	}
+
+	public Set<Book> getBooks() {
+		return books;
+	}
+
+	public void setBooks(Set<Book> books) {
+		this.books = books;
 	}
 
 	@Override
