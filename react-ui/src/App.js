@@ -2,26 +2,34 @@ import { Routes, Route } from "react-router-dom";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Home from "./components/Home";
+import Login from "./components/Login";
 import NotFound from "./components/NotFound";
 import Register from "./components/Register";
-import { ProvideAuth } from "./hooks/useAuth";
+import { useAuth } from "./hooks/useAuth";
+import { useEffect } from "react";
+import { refresh } from "./services/authService";
 
 function App() {
-  return (
-    <ProvideAuth>
-      <div className="app">
-        <Header />
+    const auth = useAuth();
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="register" element={<Register />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+    useEffect(() => {
+        refresh().then(auth.login).catch(auth.logout);
+    }, []);
 
-        <Footer />
-      </div>
-    </ProvideAuth>
-  );
+    return (
+        <div className="app">
+            <Header />
+
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="login" element={<Login />} />
+                <Route path="register" element={<Register />} />
+                <Route path="*" element={<NotFound />} />
+            </Routes>
+
+            <Footer />
+        </div>
+    );
 }
 
 export default App;

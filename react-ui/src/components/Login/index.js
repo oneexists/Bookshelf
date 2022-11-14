@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import { register } from "../../services/authService";
+import { authenticate } from "../../services/authService";
 
-export default function Register() {
+export default function Login() {
     const auth = useAuth();
     const usernameRef = useRef();
     const errorRef = useRef();
@@ -11,7 +11,6 @@ export default function Register() {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
 
     useEffect(() => {
@@ -21,26 +20,24 @@ export default function Register() {
     const handleSubmit = async (evt) => {
         evt.preventDefault();
 
-        if (password === confirmPassword) {
-            register({ username, password })
-                .then(() => navigate("/login"))
-                .catch((err) => {
-                    if (err && err.message === "Failed to fetch") {
-                        setErrorMsg("Service is unavailable, please try again later");
-                    } else {
-                        setErrorMsg("An error occurred during registration.");
-                    }
-                });
-        } else {
-            setErrorMsg("Passwords must match.");
-        }
-    };
+        authenticate({ username, password })
+            .then((token) => {
+                auth.login(token);
+                navigate("/");
+            }).catch((err) => {
+                if (err) {
+                    setErrorMsg(err.message);
+                } else {
+                    setErrorMsg("Login Error");
+                }
+            });
+    }
 
     return (
         <main className="container mt-3">
-            <h2 className="d-flex justify-content-center">Bookshelf Registration</h2>
+            <h2 className="d-flex justify-content-center">Bookshelf Login</h2>
 
-            <p>{(auth.isLoading) ? "Creating account..." : ""}</p>
+            <p>{(auth.isLoading) ? "Logging in..." : ""}</p>
 
             <p
                 ref={errorRef}
@@ -78,24 +75,11 @@ export default function Register() {
                     />
                 </section>
 
-                <section className="form-group mb-3">
-                    <label htmlFor="confirmPassword" className="form-label">Confirm Password:</label>
-                    <input
-                        type="password"
-                        aria-label="athlete confirm password"
-                        aria-required="true"
-                        className="form-control"
-                        id="confirmPassword"
-                        onChange={(evt) => setConfirmPassword(evt.target.value)}
-                        required
-                    />
-                </section>
-
                 <div className="row d-flex justify-content-center">
-                    <button type="submit" className="btn btn-primary col-5 me-2">Register</button>
+                    <button type="submit" className="btn btn-primary col-5 me-2">Login</button>
                     <Link to="/" className="btn btn-warning col-5" role="button">Cancel</Link>
                 </div>
             </form>
         </main>
-    );
+    )
 }
