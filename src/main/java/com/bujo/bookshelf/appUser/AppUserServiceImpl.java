@@ -39,13 +39,13 @@ public class AppUserServiceImpl implements AppUserService, UserDetailsService {
 
 	@Override
 	public Result<AppUserDetails> create(AppUserDTO appUserDto) {
-		Result<AppUserDetails> result = validation.validate(appUserDto.getUsername(), appUserDto.getPassword());
+		Result<AppUserDetails> result = validation.validate(appUserDto.username(), appUserDto.password());
 		if (!result.isSuccess()) {
 			return result;
 		}
 		
-		String password = passwordEncoder.encode(appUserDto.getPassword());
-		AppUser appUser = new AppUser(appUserDto.getUsername(), password, AppUserRole.USER);
+		String password = passwordEncoder.encode(appUserDto.password());
+		AppUser appUser = new AppUser(appUserDto.username(), password, AppUserRole.USER);
 		
 		try {
 			appUser = repository.save(appUser);
