@@ -28,13 +28,15 @@ public class AppUserValidator implements Validator {
 		
 		if (validation.isBlankString(user.getUsername())) {
 			errors.rejectValue("username", "username.empty");
+			return;
 		}
 		
 		if (validation.isBlankString(user.getPassword())) {
 			errors.rejectValue("password", "password.empty");
+			return;
 		}
 		
-		if (user.getUsername().length() > 2000) {
+		if (user.getUsername().length() > 2000 || user.getUsername().length() < 3) {
 			errors.rejectValue("username", "username.invalid");
 		}
 		
