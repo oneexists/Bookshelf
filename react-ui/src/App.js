@@ -8,6 +8,7 @@ import Register from "./components/Register";
 import { useAuth } from "./hooks/useAuth";
 import { useEffect } from "react";
 import { refresh } from "./services/authService";
+import Bookshelf from "./components/Bookshelf";
 
 function App() {
     const auth = useAuth();
@@ -24,6 +25,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<Register />} />
+                <Route path="books" element={<Bookshelf />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
 

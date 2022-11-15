@@ -8,7 +8,10 @@ export default function NavBar() {
         <nav className="navbar navbar-expand-md navbar-dark bg-dark">
             <div className="container-fluid">
                 <div className="navbar-header">
-                    <NavLink to="/" className="navbar-brand"><img height="32" src="./book-icon.png" alt="logo" />Bookshelf</NavLink>
+                    <ul className="nav navbar-nav">
+                        <li className="nav-item"><NavLink to="/" className="navbar-brand"><img height="32" src="./book-icon.png" alt="logo" />Bookshelf</NavLink></li>
+                        <li className="nav-item"><NavLink to="/books" className="nav-link">View Books</NavLink></li>
+                    </ul>
                 </div>
                     {(auth.user)
                     ?
