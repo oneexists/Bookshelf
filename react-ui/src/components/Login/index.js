@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import { useInput } from "../../hooks/useInput";
 import { authenticate } from "../../services/authService";
+import ErrorPanel from "../forms/ErrorPanel";
+import SubmitPanel from "../forms/SubmitPanel";
 
 export default function Login() {
     const auth = useAuth();
@@ -9,8 +12,8 @@ export default function Login() {
     const errorRef = useRef();
     const navigate = useNavigate();
 
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const [ usernameProps, resetUsername ] = useInput("");
+    const [ passwordProps, resetPassword ] = useInput("");
     const [errorMsg, setErrorMsg] = useState("");
 
     useEffect(() => {
@@ -20,10 +23,15 @@ export default function Login() {
     const handleSubmit = async (evt) => {
         evt.preventDefault();
 
+        const username = usernameProps.value;
+        const password = passwordProps.value;
+
         authenticate({ username, password })
             .then((token) => {
                 auth.login(token);
                 navigate("/");
+                resetUsername();
+                resetPassword();
             }).catch((err) => {
                 if (err) {
                     setErrorMsg(err.message);
@@ -39,13 +47,7 @@ export default function Login() {
 
             <p>{(auth.isLoading) ? "Logging in..." : ""}</p>
 
-            <p
-                ref={errorRef}
-                className={errorMsg ? "alert alert-danger" : "offscreen"}
-                role="alert"
-                aria-live="assertive">
-                    {errorMsg}
-            </p>
+            <ErrorPanel errorRef={errorRef} errorMsg={errorMsg} />
 
             <form onSubmit={handleSubmit}>
                 <section className="form-group mb-3">
@@ -57,8 +59,8 @@ export default function Login() {
                         ref={usernameRef}
                         className="form-control"
                         id="username"
-                        onChange={(evt) => setUsername(evt.target.value)}
                         required
+                        { ...usernameProps }
                     />
                 </section>
 
@@ -70,15 +72,12 @@ export default function Login() {
                         aria-required="true"
                         className="form-control"
                         id="password"
-                        onChange={(evt) => setPassword(evt.target.value)}
                         required
+                        { ...passwordProps }
                     />
                 </section>
 
-                <div className="row d-flex justify-content-center">
-                    <button type="submit" className="btn btn-primary col-5 me-2">Login</button>
-                    <Link to="/" className="btn btn-warning col-5" role="button">Cancel</Link>
-                </div>
+                <SubmitPanel text="Login" />
             </form>
         </main>
     )
