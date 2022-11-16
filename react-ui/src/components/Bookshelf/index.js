@@ -1,13 +1,20 @@
-import { ControlledForm } from "./ControlledForm";
-import { UncontrolledForm } from "./UncontrolledForm";
+import { useState } from "react";
+import { ControlledModal } from "./ControlledModal";
 
 export default function Bookshelf() {
+    const [ shouldShowModal, setShouldShowModal ] = useState(false);
+
     return (
         <main className="container mt-3">
-            <h2>Uncontrolled Form</h2>
-            <UncontrolledForm />
-            <h2>Controlled Form</h2>
-            <ControlledForm />
+            <button onClick={() => setShouldShowModal(!shouldShowModal)}>
+                {shouldShowModal ? "Hide Modal" : "Show Modal"}
+            </button>
+            <ControlledModal 
+                shouldShow={shouldShowModal} 
+                onRequestClose={() => setShouldShowModal(false)} 
+            >
+                <h1>Controlled Modal</h1>
+            </ControlledModal>
         </main>
     );
 }
