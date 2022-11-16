@@ -1,12 +1,13 @@
 import { BookLoader } from "./Book/BookLoader";
 import { BookInfo } from "./Book/BookInfo";
+import { ResourceLoader } from "./ResourceLoader";
 
 export default function Bookshelf() {
     return (
         <main className="container mt-3">
-            <BookLoader bookId={1}>
+            <ResourceLoader resourceUrl="http://localhost:8080/api/books/1" resourceName="book">
                 <BookInfo />
-            </BookLoader>
+            </ResourceLoader>
             <BookLoader bookId={2}>
                 <BookInfo />
             </BookLoader>

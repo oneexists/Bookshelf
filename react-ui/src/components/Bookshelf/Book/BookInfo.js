@@ -1,10 +1,9 @@
 export const BookInfo = ({ book }) => {
-    const { id, title, author, pages, language } = book || {};
+    const { title, pages, language } = book || {};
 
     return book ? (
         <>
-            <h3>{id}: {title}</h3>
-            <p>By: {author}</p>
+            <h3>{title}</h3>
             <p>Pages: {pages}</p>
             <p>Language: {language}</p>
         </>
