@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import { useInput } from "../../hooks/useInput";
 import { register } from "../../services/authService";
+import ErrorPanel from "../forms/ErrorPanel";
+import SubmitPanel from "../forms/SubmitPanel";
 
 export default function Register() {
     const auth = useAuth();
@@ -9,9 +12,9 @@ export default function Register() {
     const errorRef = useRef();
     const navigate = useNavigate();
 
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
+    const [ usernameProps, resetUsername ] = useInput("");
+    const [ passwordProps, resetPassword ] = useInput("");
+    const [ confirmPasswordProps, resetConfirmPassword ] = useInput("");
     const [errorMsg, setErrorMsg] = useState("");
 
     useEffect(() => {
@@ -21,9 +24,18 @@ export default function Register() {
     const handleSubmit = async (evt) => {
         evt.preventDefault();
 
+        const username = usernameProps.value;
+        const password = passwordProps.value;
+        const confirmPassword = confirmPasswordProps.value;
+
         if (password === confirmPassword) {
             register({ username, password })
-                .then(() => navigate("/login"))
+                .then(() => {
+                    navigate("/login");
+                    resetUsername();
+                    resetPassword();
+                    resetConfirmPassword();
+                })
                 .catch((err) => {
                     if (err && err.message === "Failed to fetch") {
                         setErrorMsg("Service is unavailable, please try again later");
@@ -42,13 +54,7 @@ export default function Register() {
 
             <p>{(auth.isLoading) ? "Creating account..." : ""}</p>
 
-            <p
-                ref={errorRef}
-                className={errorMsg ? "alert alert-danger" : "offscreen"}
-                role="alert"
-                aria-live="assertive">
-                    {errorMsg}
-            </p>
+            <ErrorPanel errorRef={errorRef} errorMsg={errorMsg} />
 
             <form onSubmit={handleSubmit}>
                 <section className="form-group mb-3">
@@ -60,8 +66,8 @@ export default function Register() {
                         ref={usernameRef}
                         className="form-control"
                         id="username"
-                        onChange={(evt) => setUsername(evt.target.value)}
                         required
+                        { ...usernameProps }
                     />
                 </section>
 
@@ -73,8 +79,8 @@ export default function Register() {
                         aria-required="true"
                         className="form-control"
                         id="password"
-                        onChange={(evt) => setPassword(evt.target.value)}
                         required
+                        { ...passwordProps }
                     />
                 </section>
 
@@ -86,15 +92,12 @@ export default function Register() {
                         aria-required="true"
                         className="form-control"
                         id="confirmPassword"
-                        onChange={(evt) => setConfirmPassword(evt.target.value)}
                         required
+                        { ...confirmPasswordProps }
                     />
                 </section>
 
-                <div className="row d-flex justify-content-center">
-                    <button type="submit" className="btn btn-primary col-5 me-2">Register</button>
-                    <Link to="/" className="btn btn-warning col-5" role="button">Cancel</Link>
-                </div>
+                <SubmitPanel text="Register" />
             </form>
         </main>
     );
