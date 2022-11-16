@@ -4,10 +4,8 @@ export const DataSource = ({ getDataFunc = () => {}, resourceName, children }) =
     const [ state, setState ] = useState(null);
 
     useEffect(() => {
-        (async () => {
-            const data = getDataFunc();
-            setState(data);
-        })();
+        const data = getDataFunc();
+        setState(data);
     }, [getDataFunc]);
 
     return (
