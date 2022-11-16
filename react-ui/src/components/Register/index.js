@@ -66,6 +66,7 @@ export default function Register() {
                         ref={usernameRef}
                         className="form-control"
                         id="username"
+                        placeholder="At least 3 characters"
                         required
                         { ...usernameProps }
                     />
@@ -79,6 +80,7 @@ export default function Register() {
                         aria-required="true"
                         className="form-control"
                         id="password"
+                        placeholder="Must contain at least 1: letter, number, and special character"
                         required
                         { ...passwordProps }
                     />
