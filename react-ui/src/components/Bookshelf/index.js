@@ -1,4 +1,5 @@
-import { UncontrolledOnboardingFlow } from "./UncontrolledOnboardingFlow";
+import { useState } from "react";
+import { ControlledOnboardingFlow } from "./ControlledOnboardingFlow";
 
 const StepOne = ({ goToNext }) => (
     <>
@@ -9,24 +10,40 @@ const StepOne = ({ goToNext }) => (
 const StepTwo = ({ goToNext }) => (
     <>
         <h1>Step 2</h1>
-        <button onClick={() => goToNext({ second: "Step 2 Complete" })}>Next</button>
+        <button onClick={() => goToNext({ second: 7 })}>Next</button>
     </>
 );
 const StepThree = ({ goToNext }) => (
     <>
         <h1>Step 3</h1>
-        <button onClick={() => goToNext({ third: "Step 3 Complete" })}>Next</button>
+        <p>Congratulations!</p>
+        <button onClick={() => goToNext({})}>Next</button>
+    </>
+);
+const StepFour = ({ goToNext }) => (
+    <>
+        <h1>Step 4</h1>
+        <button onClick={() => goToNext({ four: "Step 4 Complete" })}>Next</button>
     </>
 );
 
 export default function Bookshelf() {
+    const [ onboardingData, setOnboardingData ] = useState({});
+    const [ currentIndex, setCurrentIndex ] = useState(0);
+    
+    const onNext = (stepData) => {
+        setOnboardingData({ ...onboardingData, ...stepData });
+        setCurrentIndex(currentIndex + 1);
+    }
+
     return (
         <main className="container mt-3">
-            <UncontrolledOnboardingFlow onFinish={data => console.log(data)}>
+            <ControlledOnboardingFlow currentIndex={currentIndex} onNext={onNext}>
                 <StepOne />
                 <StepTwo />
-                <StepThree />
-            </UncontrolledOnboardingFlow>
+                {onboardingData.second === 2 && <StepThree />}
+                <StepFour />
+            </ControlledOnboardingFlow>
         </main>
     );
 }
