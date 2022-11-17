@@ -31,7 +31,7 @@ public class SecurityConfig {
 			.antMatchers(GET).permitAll()
 			.antMatchers(POST, "/create_account").permitAll()
 			.antMatchers(POST, "/authenticate").permitAll()
-			.antMatchers(POST, "/api/authors").hasAuthority(BOOK_WRITE.getPermission())
+			.antMatchers(POST, "/api/authors").hasAuthority(AUTHOR_WRITE.getPermission())
 			.antMatchers(POST, "/api/books").hasAuthority(BOOK_WRITE.getPermission())
 			.antMatchers(PUT, "/api/books/*/author").hasAuthority(BOOK_WRITE.getPermission())
 			.antMatchers(PUT, "/api/books/*/user").hasAuthority(BOOK_WRITE.getPermission())

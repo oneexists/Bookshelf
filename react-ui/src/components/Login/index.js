@@ -33,13 +33,13 @@ export default function Login() {
                 resetUsername();
                 resetPassword();
             }).catch((err) => {
-                if (err) {
-                    setErrorMsg(err.message);
+                if (err && err.message === "Failed to fetch") {
+                    setErrorMsg("Service is unavailable, please try again later");
                 } else {
                     setErrorMsg("Login Error");
                 }
             });
-    }
+    };
 
     return (
         <main className="container mt-3">
