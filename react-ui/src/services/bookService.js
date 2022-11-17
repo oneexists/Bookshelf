@@ -10,3 +10,8 @@ export function findAll() {
 export function findById(id) {
     return books.find((book) => book.id === id);
 }
+
+export function save(book) {
+    console.log(book);
+    return book;
+}
