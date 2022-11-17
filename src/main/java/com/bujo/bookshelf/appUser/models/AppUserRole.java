@@ -8,7 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import static com.bujo.bookshelf.appUser.models.AppUserPermission.*;
 
 public enum AppUserRole {
-	USER(Set.of(BOOK_READ, BOOK_WRITE)),
+	USER(Set.of(AUTHOR_READ, AUTHOR_WRITE, BOOK_READ, BOOK_WRITE)),
 	ADMIN(Set.of(USER_READ, USER_WRITE));
 	
 	private final Set<AppUserPermission> permissions;
