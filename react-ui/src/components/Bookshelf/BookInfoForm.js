@@ -1,7 +1,7 @@
-import { withEditableBook } from "./withEditableBook";
+import { withEditableResource } from "./withEditableResource";
 
 export const BookInfoForm = 
-            withEditableBook(({ book, onChangeBook, onSaveBook, onResetBook }) => {
+            withEditableResource(({ book, onChangeBook, onSaveBook, onResetBook }) => {
     const { title, pages, language } = book || {};
 
     return book ? (
@@ -22,4 +22,4 @@ export const BookInfoForm =
             <button type="submit" onClick={onSaveBook}>Save Changes</button>
         </>
     ) : <p>Loading...</p>;
-}, 2);
+}, 'http://localhost:8080/api/books/2', 'book');

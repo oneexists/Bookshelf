@@ -1,8 +1,4 @@
-import { BookInfo } from "./BookInfo";
-import { withBook } from "./withBook";
 import { BookInfoForm } from "./BookInfoForm";
-
-const BookInfoWithLoader = withBook(BookInfo, 2);
 
 export default function Bookshelf() {
 
