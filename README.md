@@ -34,6 +34,7 @@ To run tests, a schema can be found in the directory: bookshelf/sql/schema.sql
 
 ## Resources
 
+- [React Router v6](https://github.com/LinkedInLearning/building-modern-uis-with-react-router-v6-2495079)
 - Handle Authentication and Authorization Exceptions:
   - [Exception Handling in Spring Security](https://www.devglan.com/spring-security/exception-handling-in-spring-security):
     Add JwtAccessDeniedHandler to configuration and HttpResponse to security package
