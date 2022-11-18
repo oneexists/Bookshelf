@@ -1,9 +1,9 @@
 export default function BookDetail({ authorName, language, pages }) {
     return (
-        <section>
-            <p>By: {authorName}</p>
-            <p>Language: {language}</p>
-            <p>Pages: {pages}</p>
-        </section>
+        <>
+            <div className="flex-fill">By: {authorName}</div>
+            <div className="flex-fill">Language: {language}</div>
+            <div className="flex-fill">Pages: {pages}</div>
+        </>
     );
 }
