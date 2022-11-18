@@ -56,9 +56,10 @@ To run tests, a schema can be found in the directory: bookshelf/sql/schema.sql
   - [useHooks hook for useAuth](https://usehooks.com/useAuth/)
   - [useAuth hook example](https://hhpendleton.medium.com/useauth-265512bbde3c)
 
-  
+
 ## Resources
 
+- [React Design Patterns](https://github.com/LinkedInLearning/react-design-patterns-2895130)
 - Spring Data REST:
   - [Tutorial](https://spring.io/guides/tutorials/rest/)
   - [Validators](https://www.baeldung.com/spring-data-rest-validators)
