@@ -24,7 +24,7 @@ export default function Bookshelf() {
             <h2 className="d-flex justify-content-center">Bookshelf</h2>
             <SplitScreen leftWeight={1} rightWeight={3}>
                 <ul className="nav navbar-nav">
-                    <li className="nav-item"><NavLink to="add_book" className="btn btn-secondary" role="button">Add Book</NavLink></li>
+                    <li className="nav-item"><NavLink to="books/add" className="btn btn-secondary" role="button">Add Book</NavLink></li>
                 </ul>
                 <section>
                     {books.length > 0 

@@ -8,7 +8,7 @@ export default function NavBar() {
         <nav className="navbar navbar-expand-md navbar-dark bg-dark">
             <div className="container-fluid">
                 <div className="navbar-header">
-                    <NavLink to="/" className="navbar-brand"><img height="32" src="./book-icon.png" alt="logo" />Bookshelf</NavLink>
+                    <NavLink to="/" className="navbar-brand"><img height="32" src={process.env.PUBLIC_URL + "/book-icon.png"} alt="logo" />Bookshelf</NavLink>
                 </div>
                     {(auth.user)
                     ?
