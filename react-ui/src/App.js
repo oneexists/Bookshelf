@@ -9,6 +9,7 @@ import { useAuth } from "./hooks/useAuth";
 import { useEffect } from "react";
 import { refresh } from "./services/authService";
 import Bookshelf from "./components/Bookshelf";
+import BookView from "./components/Bookshelf/BookView";
 
 function App() {
     const auth = useAuth();
@@ -28,6 +29,7 @@ function App() {
                   </Route>
                 : <Route path="/" element={<Home />} />
                 }
+                <Route path="books/:id" element={<BookView />} />
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<Register />} />
                 <Route path="*" element={<NotFound />} />

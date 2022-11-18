@@ -9,5 +9,5 @@ export default function AuthorName({ url }) {
     const author = useDataSource(serverResource(url));
     const { name } = author || {};
 
-    return <>{name}</>;
+    return name ? <>{name}</> : <></>;
 }
