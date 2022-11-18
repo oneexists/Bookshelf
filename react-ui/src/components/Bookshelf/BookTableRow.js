@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
-import AuthorTableRow from "./AuthorTableRow";
+import AuthorName from "./AuthorName";
 
 export default function BookTableRow({ book }) {
-    const { id, title, author, language, pages } = book;
+    const { bookId, title, author, language, pages } = book;
 
     return (
         <tr>
-            <td><Link to={`/books/${id}`}>{title}</Link></td>
-            <td><AuthorTableRow url={author} /></td>
+            <td><Link to={`/books/${bookId}`}>{title}</Link></td>
+            <td><AuthorName url={author} /></td>
             <td>{pages}</td>
             <td>{language}</td>
         </tr>
