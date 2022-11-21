@@ -15,7 +15,7 @@ export default function Register() {
     const [ usernameProps, resetUsername ] = useInput("");
     const [ passwordProps, resetPassword ] = useInput("");
     const [ confirmPasswordProps, resetConfirmPassword ] = useInput("");
-    const [errorMsg, setErrorMsg] = useState("");
+    const [errorMsg, setErrorMsg] = useState([]);
 
     useEffect(() => {
         usernameRef.current.focus();
@@ -38,13 +38,15 @@ export default function Register() {
                 })
                 .catch((err) => {
                     if (err && err.message === "Failed to fetch") {
-                        setErrorMsg("Service is unavailable, please try again later");
+                        setErrorMsg(["Service is unavailable, please try again later"]);
+                    } else if (err) {
+                        setErrorMsg(err);
                     } else {
-                        setErrorMsg("An error occurred during registration.");
+                        setErrorMsg(["An error occurred during registration."]);
                     }
                 });
         } else {
-            setErrorMsg("Passwords must match.");
+            setErrorMsg(["Passwords must match."]);
         }
     };
 
@@ -66,7 +68,7 @@ export default function Register() {
                         ref={usernameRef}
                         className="form-control"
                         id="username"
-                        placeholder="At least 3 characters"
+                        placeholder="Must be least 3 characters"
                         required
                         { ...usernameProps }
                     />
@@ -80,7 +82,7 @@ export default function Register() {
                         aria-required="true"
                         className="form-control"
                         id="password"
-                        placeholder="Must contain at least one letter, one number, and one special character"
+                        placeholder="Must be at least 8 characters with a letter, a number, and a special character"
                         required
                         { ...passwordProps }
                     />

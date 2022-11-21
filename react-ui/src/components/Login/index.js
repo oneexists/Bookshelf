@@ -14,7 +14,7 @@ export default function Login() {
 
     const [ usernameProps, resetUsername ] = useInput("");
     const [ passwordProps, resetPassword ] = useInput("");
-    const [errorMsg, setErrorMsg] = useState("");
+    const [errorMsg, setErrorMsg] = useState([]);
 
     useEffect(() => {
         usernameRef.current.focus();
@@ -34,9 +34,9 @@ export default function Login() {
                 resetPassword();
             }).catch((err) => {
                 if (err && err.message === "Failed to fetch") {
-                    setErrorMsg("Service is unavailable, please try again later");
+                    setErrorMsg(["Service is unavailable, please try again later"]);
                 } else {
-                    setErrorMsg("Login Error");
+                    setErrorMsg(["Login Error"]);
                 }
             });
     };
