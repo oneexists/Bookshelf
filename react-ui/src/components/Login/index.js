@@ -14,7 +14,7 @@ export default function Login() {
 
     const [ usernameProps, resetUsername ] = useInput("");
     const [ passwordProps, resetPassword ] = useInput("");
-    const [errorMsg, setErrorMsg] = useState("");
+    const [errorMsg, setErrorMsg] = useState([]);
 
     useEffect(() => {
         usernameRef.current.focus();
@@ -34,9 +34,9 @@ export default function Login() {
                 resetPassword();
             }).catch((err) => {
                 if (err && err.message === "Failed to fetch") {
-                    setErrorMsg("Service is unavailable, please try again later");
+                    setErrorMsg(["Service is unavailable, please try again later"]);
                 } else {
-                    setErrorMsg("Login Error");
+                    setErrorMsg(["Login Error"]);
                 }
             });
     };
@@ -54,7 +54,7 @@ export default function Login() {
                     <label htmlFor="username" className="form-label">Username:</label>
                     <input 
                         type="text"
-                        aria-label="username"
+                        aria-label="login username"
                         aria-required="true"
                         ref={usernameRef}
                         className="form-control"
@@ -68,7 +68,7 @@ export default function Login() {
                     <label htmlFor="password" className="form-label">Password:</label>
                     <input
                         type="password"
-                        aria-label="password"
+                        aria-label="login password"
                         aria-required="true"
                         className="form-control"
                         id="password"
