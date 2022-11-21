@@ -61,7 +61,7 @@ export default function Register() {
                     <label htmlFor="username" className="form-label">Username:</label>
                     <input 
                         type="text"
-                        aria-label="username"
+                        aria-label="register username"
                         aria-required="true"
                         ref={usernameRef}
                         className="form-control"
@@ -76,11 +76,11 @@ export default function Register() {
                     <label htmlFor="password" className="form-label">Password:</label>
                     <input
                         type="password"
-                        aria-label="password"
+                        aria-label="register password"
                         aria-required="true"
                         className="form-control"
                         id="password"
-                        placeholder="Must contain at least 1: letter, number, and special character"
+                        placeholder="Must contain at least one letter, one number, and one special character"
                         required
                         { ...passwordProps }
                     />
@@ -90,7 +90,7 @@ export default function Register() {
                     <label htmlFor="confirmPassword" className="form-label">Confirm Password:</label>
                     <input
                         type="password"
-                        aria-label="athlete confirm password"
+                        aria-label="register confirm password"
                         aria-required="true"
                         className="form-control"
                         id="confirmPassword"

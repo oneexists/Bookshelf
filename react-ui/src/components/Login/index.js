@@ -54,7 +54,7 @@ export default function Login() {
                     <label htmlFor="username" className="form-label">Username:</label>
                     <input 
                         type="text"
-                        aria-label="username"
+                        aria-label="login username"
                         aria-required="true"
                         ref={usernameRef}
                         className="form-control"
@@ -68,7 +68,7 @@ export default function Login() {
                     <label htmlFor="password" className="form-label">Password:</label>
                     <input
                         type="password"
-                        aria-label="password"
+                        aria-label="login password"
                         aria-required="true"
                         className="form-control"
                         id="password"
