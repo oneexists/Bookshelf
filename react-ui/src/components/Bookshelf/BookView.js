@@ -1,5 +1,6 @@
 import { NavLink, useParams } from "react-router-dom";
 import { useDataSource } from "../../hooks/useDataSource";
+import Background from "../Background";
 import { SplitScreen } from "../layouts/SplitScreen";
 import Title from "../Title";
 import AuthorName from "./AuthorName";
@@ -19,7 +20,7 @@ export default function BookView() {
     const authorName = <AuthorName url={href} />;
 
     return book ? (
-        <main className="container mt-3">
+        <Background>
             <Title text={title} />
 
             <SplitScreen leftWeight={1} rightWeight={3}>
@@ -31,7 +32,7 @@ export default function BookView() {
                     <li className="nav-item mb-2"><button className="btn btn-danger w-100">Delete</button></li>
                 </ul>
                 <>
-                    <div className="bg-light d-flex p-2 mt-3">
+                    <div className="d-flex p-2 mt-3">
                         <BookDetail { ...{authorName, language, pages} } />
                     </div>
                     <h4 className="mt-3">Reading Activity</h4>
@@ -41,6 +42,6 @@ export default function BookView() {
                     <h4 className="mt-3">Notes</h4>
                 </>
             </SplitScreen>
-        </main>
+        </Background>
     ) : <p>Loading...</p>;
 }

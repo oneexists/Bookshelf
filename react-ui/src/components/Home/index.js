@@ -1,8 +1,9 @@
+import Background from "../Background";
 import Title from "../Title";
 
 export default function Home() {
     return (
-        <main className="container mt-3">
+        <Background>
             <Title text="Bullet Journal Bookshelf" />
             
             <section>
@@ -19,6 +20,6 @@ export default function Home() {
                     engage in the process.
                 </p>
             </section>
-        </main>
+        </Background>
     );
 }

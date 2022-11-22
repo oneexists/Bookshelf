@@ -6,6 +6,7 @@ import { register } from "../../services/authService";
 import Title from "../Title";
 import ErrorPanel from "../forms/ErrorPanel";
 import SubmitPanel from "../forms/SubmitPanel";
+import Background from "../Background";
 
 export default function Register() {
     const auth = useAuth();
@@ -52,7 +53,7 @@ export default function Register() {
     };
 
     return (
-        <main className="container mt-3">
+        <Background>
             <Title text="Bookshelf Registration" />
 
             <p>{(auth.isLoading) ? "Creating account..." : ""}</p>
@@ -104,6 +105,6 @@ export default function Register() {
 
                 <SubmitPanel text="Register" />
             </form>
-        </main>
+        </Background>
     );
 }

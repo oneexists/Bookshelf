@@ -1,9 +1,10 @@
+import styles from "./BookTable.module.css";
 import { ComponentList } from "../layouts/ComponentList";
 import BookTableRow from "./BookTableRow";
 
 export default function BookTable({ books }) {
     return (
-        <table className="table">
+        <table className={styles.table} aria-label="Table of books on bookshelf">
             <thead>
                 <tr>
                     <th>Title</th>

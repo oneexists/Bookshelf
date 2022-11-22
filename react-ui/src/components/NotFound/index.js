@@ -1,6 +1,8 @@
+import Background from "../Background";
+
 export default function NotFound() {
     return (
-        <main className="container mt-3">
+        <Background>
             <div className="row d-flex justify-content-center">
                 <div className="mr-auto ml-auto text-center">
                     <img  
@@ -11,7 +13,7 @@ export default function NotFound() {
                     <p>The page you were looking for could not be found.</p>
                 </div>
             </div>
-        </main>
+        </Background>
 
     );
 }
