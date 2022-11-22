@@ -1,12 +1,19 @@
 import { useEffect, useRef, useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
 import Background from "../Background";
 import ErrorPanel from "../forms/ErrorPanel";
 import Title from "../Title";
 import SectionLabel from "../forms/SectionLabel";
 import SubmitPanel from "../forms/SubmitPanel";
 import { useInput } from "../../hooks/useInput";
+import { createBook } from "../../services/bookService";
+import { createAuthor } from "../../services/authorService";
+import { useNavigate } from "react-router-dom";
 
 export default function BookAdd() {
+    const auth = useAuth();
+    const navigate = useNavigate();
+
     const errorRef = useRef();
     const titleRef = useRef();
 
@@ -23,6 +30,26 @@ export default function BookAdd() {
     const handleSubmit = async (evt) => {
         evt.preventDefault();
 
+        createAuthor(authorProps.value)
+            .then((r) => {
+                createBook({
+                    title: titleProps.value, 
+                    pages: pagesProps.value, 
+                    language: languageProps.value,
+                    authorId: r.authorId,
+                    id: auth.user.id
+                }).then(() => {
+                    navigate("/");
+                    resetTitle();
+                    resetAuthor();
+                    resetPages();
+                    resetLanguage();
+                }).catch((r) => {
+                    setErrorMsg(r);
+                });
+            }).catch((r) => {
+                setErrorMsg(r);
+            });
     }
 
     return (

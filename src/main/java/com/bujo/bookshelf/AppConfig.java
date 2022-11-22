@@ -1,5 +1,6 @@
 package com.bujo.bookshelf;
 
+import com.bujo.bookshelf.book.models.Author;
 import com.bujo.bookshelf.book.models.Book;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,6 +41,7 @@ public class AppConfig {
 				.allowCredentials(false)
 				.maxAge(3600);
 			config.exposeIdsFor(Book.class);
+			config.exposeIdsFor(Author.class);
 		}
 	}
 }
