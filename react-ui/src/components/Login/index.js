@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useInput } from "../../hooks/useInput";
 import { authenticate } from "../../services/authService";
+import Title from "../Title";
 import ErrorPanel from "../forms/ErrorPanel";
 import SubmitPanel from "../forms/SubmitPanel";
 
@@ -43,7 +44,7 @@ export default function Login() {
 
     return (
         <main className="container mt-3">
-            <h2 className="d-flex justify-content-center">Bookshelf Login</h2>
+            <Title text="Bookshelf Login" />
 
             <p>{(auth.isLoading) ? "Logging in..." : ""}</p>
 

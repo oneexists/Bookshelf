@@ -1,7 +1,9 @@
+import Title from "../Title";
+
 export default function Home() {
     return (
         <main className="container mt-3">
-            <h2 className="d-flex justify-content-center">Bullet Journal Bookshelf</h2>
+            <Title text="Bullet Journal Bookshelf" />
             
             <section>
                 <p>

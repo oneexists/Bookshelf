@@ -1,6 +1,7 @@
 import { NavLink, useParams } from "react-router-dom";
 import { useDataSource } from "../../hooks/useDataSource";
 import { SplitScreen } from "../layouts/SplitScreen";
+import Title from "../Title";
 import AuthorName from "./AuthorName";
 import BookDetail from "./BookDetail";
 
@@ -19,7 +20,8 @@ export default function BookView() {
 
     return book ? (
         <main className="container mt-3">
-            <h2 className="d-flex justify-content-center">{title}</h2>
+            <Title text={title} />
+
             <SplitScreen leftWeight={1} rightWeight={3}>
                 <ul className="nav navbar-nav nav-justified mt-3 me-4">
                     <li className="nav-item mb-2"><NavLink to="logs/add" className="btn btn-secondary w-100" role="button">Add Activity</NavLink></li>

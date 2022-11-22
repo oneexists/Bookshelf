@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { findUserBooks } from "../../services/bookService";
 import { SplitScreen } from "../layouts/SplitScreen";
+import Title from "../Title";
 import BookTable from "./BookTable";
 
 export default function Bookshelf() {
@@ -21,7 +22,8 @@ export default function Bookshelf() {
 
     return (
         <main className="container mt-3">
-            <h2 className="d-flex justify-content-center">Bookshelf</h2>
+            <Title text="Bookshelf" />
+            
             <SplitScreen leftWeight={1} rightWeight={3}>
                 <ul className="nav navbar-nav">
                     <li className="nav-item"><NavLink to="books/add" className="btn btn-secondary" role="button">Add Book</NavLink></li>
