@@ -16,6 +16,7 @@ function App() {
 
     useEffect(() => {
         refresh().then(auth.login).catch(auth.logout);
+        // eslint-disable-next-line
     }, []);
 
     return (
