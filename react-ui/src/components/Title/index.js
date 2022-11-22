@@ -1,3 +1,5 @@
+import styles from "./index.module.css";
+
 export default function Title({ text }) {
-    return <h2 className="d-flex justify-content-center">{text}</h2>;
+    return <h2 className={styles.title}>{text}</h2>;
 }
