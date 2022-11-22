@@ -56,7 +56,7 @@ To run tests, a schema can be found in the directory: bookshelf/sql/schema.sql
   - [useHooks hook for useAuth](https://usehooks.com/useAuth/)
   - [useAuth hook example](https://hhpendleton.medium.com/useauth-265512bbde3c)
 
-  
+
 ## Resources
 
 - Spring Data REST:
@@ -65,6 +65,12 @@ To run tests, a schema can be found in the directory: bookshelf/sql/schema.sql
   - [Validator Testing](https://stackoverflow.com/questions/9744988/writing-junit-tests-for-spring-validator-implementation)
   - [CORS Configuration](https://www.amitph.com/spring-data-rest-cors/)
 - React:
-  - [Building Modern UIs with React Router v6](https://www.linkedin.com/learning/building-modern-uis-with-react-router-v6/building-modern-uis)
   - [React Router](https://reactrouter.com/en/main)
   - [React styled-components](https://styled-components.com/docs)
+  - LinkedIn Learning Courses:
+    - [React: Building Styles with CSS Modules](https://www.linkedin.com/learning/react-building-styles-with-css-modules-9222678/building-a-react-site-with-css-modules)
+    - [React.js Essential Training](https://www.linkedin.com/learning/react-js-essential-training-14836121/building-modern-user-interfaces-with-react)
+    - [React: Accessibility](https://www.linkedin.com/learning/react-accessibility/accessibility-in-react)
+    - [React: Design Patterns](https://www.linkedin.com/learning/react-design-patterns/take-your-react-skills-to-the-next-level)
+    - [React Hooks](https://www.linkedin.com/learning/react-hooks/understanding-modern-react)
+    - [Building Modern UIs with React Router v6](https://www.linkedin.com/learning/building-modern-uis-with-react-router-v6/building-modern-uis)
