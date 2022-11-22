@@ -7,6 +7,7 @@ import Title from "../Title";
 import ErrorPanel from "../forms/ErrorPanel";
 import SubmitPanel from "../forms/SubmitPanel";
 import Background from "../Background";
+import SectionLabel from "../forms/SectionLabel";
 
 export default function Login() {
     const auth = useAuth();
@@ -52,8 +53,7 @@ export default function Login() {
             <ErrorPanel errorRef={errorRef} errorMsg={errorMsg} />
 
             <form onSubmit={handleSubmit}>
-                <section className="form-group mb-3">
-                    <label htmlFor="username" className="form-label">Username:</label>
+                <SectionLabel id="username" text="Username:">
                     <input 
                         type="text"
                         aria-label="login username"
@@ -64,10 +64,9 @@ export default function Login() {
                         required
                         { ...usernameProps }
                     />
-                </section>
+                </SectionLabel>
 
-                <section className="form-group mb-3">
-                    <label htmlFor="password" className="form-label">Password:</label>
+                <SectionLabel id="password" text="Password:">
                     <input
                         type="password"
                         aria-label="login password"
@@ -77,7 +76,7 @@ export default function Login() {
                         required
                         { ...passwordProps }
                     />
-                </section>
+                </SectionLabel>
 
                 <SubmitPanel text="Login" />
             </form>
