@@ -1,5 +1,6 @@
 package com.bujo.bookshelf;
 
+import com.bujo.bookshelf.book.models.Book;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
@@ -34,10 +35,11 @@ public class AppConfig {
 		@Override
 		public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
 			cors.addMapping("/api/**")
-			.allowedOrigins("http://localhost:3000")
-			.allowedMethods("*")
-			.allowCredentials(false)
-			.maxAge(3600);
+				.allowedOrigins("http://localhost:3000")
+				.allowedMethods("*")
+				.allowCredentials(false)
+				.maxAge(3600);
+			config.exposeIdsFor(Book.class);
 		}
 	}
 }
