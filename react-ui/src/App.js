@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { refresh } from "./services/authService";
 import Bookshelf from "./components/Bookshelf";
 import BookView from "./components/Bookshelf/BookView";
+import BookAdd from "./components/Bookshelf/BookAdd";
 
 function App() {
     const auth = useAuth();
@@ -25,12 +26,15 @@ function App() {
 
             <Routes>
                 {(auth.user)
-                ? <Route path="/">
+                ? <>
+                  <Route path="/">
                     <Route index element={<Bookshelf />} />
                   </Route>
+                  <Route path="books/add" element={<BookAdd />} />
+                  <Route path="books/:id" element={<BookView />} />
+                  </>
                 : <Route path="/" element={<Home />} />
                 }
-                <Route path="books/:id" element={<BookView />} />
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<Register />} />
                 <Route path="*" element={<NotFound />} />
