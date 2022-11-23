@@ -1,6 +1,6 @@
 # Bookshelf Application
 
-Spring web application for tracking personal reading habits
+Spring RESTful web application with React UI for tracking personal reading habits.
 
 ### Technologies
 
@@ -17,14 +17,25 @@ Spring web application for tracking personal reading habits
 ### Functional Requirements
 
 - RESTful API with JWT web token authentication
+  - Login/Logout and account registration
+  - Username length between 3 and 100 characters
+  - Password validation: 8 character length with at least one letter, one digit and one special character
 
 ### Non-Functional Requirements
 
-- UI/UX
-  - React front-end interface
-  - Bootstrap styling
-  - integrate [WAI-ARIA specification](https://developer.mozilla.org/en-US/docs/Learn/Accessibility/WAI-ARIA_basics)
-    to increase accessibility
+#### User Interface
+
+- React front-end interface
+- Bootstrap/CSS module styling
+
+#### User Experience
+
+- Integrate [WAI-ARIA specification](https://developer.mozilla.org/en-US/docs/Learn/Accessibility/WAI-ARIA_basics)
+  to increase accessibility
+  - Allows for screen reader and keyboard navigation
+  - Semantic HTML elements
+  - Assertive error display on forms to notify screen readers
+  - Descriptions of form field requirements
 
 ## Project Setup
 
@@ -56,10 +67,10 @@ To run tests, a schema can be found in the directory: bookshelf/sql/schema.sql
   - [useHooks hook for useAuth](https://usehooks.com/useAuth/)
   - [useAuth hook example](https://hhpendleton.medium.com/useauth-265512bbde3c)
 
-
 ## Resources
 
 - Spring Data REST:
+  - [Reference Guide](https://docs.spring.io/spring-data/rest/docs/current/reference/html/)
   - [Tutorial](https://spring.io/guides/tutorials/rest/)
   - [Validators](https://www.baeldung.com/spring-data-rest-validators)
   - [Validator Testing](https://stackoverflow.com/questions/9744988/writing-junit-tests-for-spring-validator-implementation)
