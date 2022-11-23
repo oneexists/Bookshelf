@@ -44,21 +44,7 @@ Authorization: Bearer {{jwt}}
 {
     "title": "War and Peace",
     "language": "English",
-    "pages": 1296
+    "pages": 1296,
+    "author": "/authors/8",
+    "user": "/users/1"
 }
-
-### UPDATE BOOK: ADD USER
-
-PUT {{url}}/api/books/1/user HTTP/1.1
-Content-Type: text/uri-list
-Authorization: Bearer {{jwt}}
-
-{{url}}/api/appUsers/1
-
-### UPDATE BOOK: ADD AUTHOR
-
-PUT {{url}}/api/books/1/author HTTP/1.1
-Content-Type: text/uri-list
-Authorization: Bearer {{jwt}}
-
-{{url}}/api/authors/1

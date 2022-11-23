@@ -15,9 +15,7 @@ export default function Bookshelf() {
 
     useEffect(() => {
         findUserBooks({ id, token }).then(b => {
-            let newBooks = b._embedded.books;
-            newBooks.map(nb => nb.author = nb._links.author.href);
-            setBooks(newBooks);
+            setBooks(b._embedded.books);
         });
     }, [id, token]);
 

@@ -14,9 +14,8 @@ const serverResource = resourceUrl => async() => {
 export default function BookView() {
     const { id } = useParams("id");
     const book = useDataSource(serverResource(`http://localhost:8080/api/books/${id}`));
-    const { title, pages, language, _links } = book || {};
-    const { author } = _links || {};
-    const { href } = author || {};
+    const { title, pages, language } = book || {};
+    const href = book ? book._links.author.href : {};
     const authorName = <AuthorName url={href} />;
 
     return book ? (

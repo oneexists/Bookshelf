@@ -7,6 +7,7 @@ import Title from "../Title";
 import ErrorPanel from "../forms/ErrorPanel";
 import SubmitPanel from "../forms/SubmitPanel";
 import Background from "../Background";
+import SectionLabel from "../forms/SectionLabel";
 
 export default function Register() {
     const auth = useAuth();
@@ -61,8 +62,7 @@ export default function Register() {
             <ErrorPanel errorRef={errorRef} errorMsg={errorMsg} />
 
             <form onSubmit={handleSubmit}>
-                <section className="form-group mb-3">
-                    <label htmlFor="username" className="form-label">Username:</label>
+                <SectionLabel id="username" text="Username:">
                     <input 
                         type="text"
                         aria-label="register username"
@@ -74,10 +74,9 @@ export default function Register() {
                         required
                         { ...usernameProps }
                     />
-                </section>
+                </SectionLabel>
 
-                <section className="form-group mb-3">
-                    <label htmlFor="password" className="form-label">Password:</label>
+                <SectionLabel id="password" text="Password:">
                     <input
                         type="password"
                         aria-label="register password"
@@ -88,10 +87,9 @@ export default function Register() {
                         required
                         { ...passwordProps }
                     />
-                </section>
+                </SectionLabel>
 
-                <section className="form-group mb-3">
-                    <label htmlFor="confirmPassword" className="form-label">Confirm Password:</label>
+                <SectionLabel id="confirmPassword" text="Confirm Password:">
                     <input
                         type="password"
                         aria-label="register confirm password"
@@ -101,7 +99,7 @@ export default function Register() {
                         required
                         { ...confirmPasswordProps }
                     />
-                </section>
+                </SectionLabel>
 
                 <SubmitPanel text="Register" />
             </form>
