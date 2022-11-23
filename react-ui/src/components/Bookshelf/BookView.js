@@ -1,15 +1,11 @@
 import { NavLink, useParams } from "react-router-dom";
 import { useDataSource } from "../../hooks/useDataSource";
+import { serverResource } from "../../services/serverResource";
 import Background from "../Background";
 import { SplitScreen } from "../layouts/SplitScreen";
 import Title from "../Title";
 import AuthorName from "./AuthorName";
 import BookDetail from "./BookDetail";
-
-const serverResource = resourceUrl => async() => {
-    const response = await fetch(resourceUrl);
-    return response.json();
-}
 
 export default function BookView() {
     const { id } = useParams("id");
