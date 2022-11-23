@@ -36,7 +36,7 @@ public class AppUserValidator implements Validator {
 			return;
 		}
 		
-		if (user.getUsername().length() > 2000 || user.getUsername().length() < 3) {
+		if (user.getUsername().length() > 100 || user.getUsername().length() < 3) {
 			errors.rejectValue("username", "username.invalid");
 		}
 		

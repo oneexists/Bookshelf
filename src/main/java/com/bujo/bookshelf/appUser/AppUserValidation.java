@@ -23,7 +23,7 @@ public class AppUserValidation {
 			return result;
 		}
 		
-		if (username.length() > 2000 || username.length() < 3) {
+		if (username.length() > 100 || username.length() < 3) {
 			result.addMessage(ActionStatus.INVALID, "invalid username length");
 		}
 		
