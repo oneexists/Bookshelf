@@ -13,6 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class AppUserValidatorTest {
+    String USERNAME_FIELD = "username";
+    String PASSWORD_FIELD = "password";
     @Autowired
     AppUserValidator validator;
     Errors errors;
@@ -38,7 +40,7 @@ class AppUserValidatorTest {
         validator.validate(input, errors);
 
         assertTrue(errors.hasErrors());
-        assertNotNull(errors.getFieldError("username"));
+        assertNotNull(errors.getFieldError(USERNAME_FIELD));
     }
 
     @Test
@@ -48,7 +50,7 @@ class AppUserValidatorTest {
         validator.validate(input, errors);
 
         assertTrue(errors.hasErrors());
-        assertNotNull(errors.getFieldError("username"));
+        assertNotNull(errors.getFieldError(USERNAME_FIELD));
     }
 
     @Test
@@ -58,7 +60,7 @@ class AppUserValidatorTest {
         validator.validate(input, errors);
 
         assertTrue(errors.hasErrors());
-        assertNotNull(errors.getFieldError("username"));
+        assertNotNull(errors.getFieldError(USERNAME_FIELD));
     }
 
     @Test
@@ -68,7 +70,7 @@ class AppUserValidatorTest {
         validator.validate(input, errors);
 
         assertTrue(errors.hasErrors());
-        assertNotNull(errors.getFieldError("password"));
+        assertNotNull(errors.getFieldError(PASSWORD_FIELD));
     }
 
     @Test
@@ -78,7 +80,7 @@ class AppUserValidatorTest {
         validator.validate(input, errors);
 
         assertTrue(errors.hasErrors());
-        assertNotNull(errors.getFieldError("password"));
+        assertNotNull(errors.getFieldError(PASSWORD_FIELD));
     }
 
     @Test
@@ -88,6 +90,6 @@ class AppUserValidatorTest {
         validator.validate(input, errors);
 
         assertTrue(errors.hasErrors());
-        assertNotNull(errors.getFieldError("password"));
+        assertNotNull(errors.getFieldError(PASSWORD_FIELD));
     }
 }
