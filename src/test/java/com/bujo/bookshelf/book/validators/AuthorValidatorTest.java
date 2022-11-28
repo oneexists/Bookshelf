@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class AuthorValidatorTest {
+    String NAME_FIELD = "name";
     @Autowired
     AuthorValidator validator;
     Errors errors;
@@ -39,7 +40,7 @@ class AuthorValidatorTest {
         validator.validate(input, errors);
 
         assertTrue(errors.hasErrors());
-        assertNotNull(errors.getFieldError("name"));
+        assertNotNull(errors.getFieldError(NAME_FIELD));
     }
 
     @Test
@@ -47,6 +48,6 @@ class AuthorValidatorTest {
         validator.validate(input, errors);
 
         assertTrue(errors.hasErrors());
-        assertNotNull(errors.getFieldError("name"));
+        assertNotNull(errors.getFieldError(NAME_FIELD));
     }
 }

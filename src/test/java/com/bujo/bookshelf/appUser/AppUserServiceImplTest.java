@@ -34,12 +34,9 @@ class AppUserServiceImplTest {
 	PasswordEncoder passwordEncoder;
 	@Autowired
 	AppUserValidation validation;
-	
-	/**
-	 * @throws java.lang.Exception
-	 */
+
 	@BeforeEach
-	void setUp() throws Exception {
+	void setUp() {
 		service = new AppUserServiceImpl(repository, passwordEncoder, validation);
 	}
 

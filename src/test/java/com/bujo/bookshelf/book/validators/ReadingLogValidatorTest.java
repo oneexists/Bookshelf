@@ -15,6 +15,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class ReadingLogValidatorTest {
+    String START_FIELD = "start";
+    String FINISH_FIELD = "finish";
     @Autowired
     ReadingLogValidator validator;
     Errors errors;
@@ -44,7 +46,7 @@ class ReadingLogValidatorTest {
         validator.validate(input, errors);
 
         assertTrue(errors.hasErrors());
-        assertNotNull(errors.getFieldError("start"));
+        assertNotNull(errors.getFieldError(START_FIELD));
     }
 
     @Test
@@ -55,7 +57,7 @@ class ReadingLogValidatorTest {
         validator.validate(input, errors);
 
         assertTrue(errors.hasErrors());
-        assertNotNull(errors.getFieldError("start"));
+        assertNotNull(errors.getFieldError(START_FIELD));
     }
 
     @Test
@@ -67,6 +69,6 @@ class ReadingLogValidatorTest {
         validator.validate(input, errors);
 
         assertTrue(errors.hasErrors());
-        assertNotNull(errors.getFieldError("finish"));
+        assertNotNull(errors.getFieldError(FINISH_FIELD));
     }
 }

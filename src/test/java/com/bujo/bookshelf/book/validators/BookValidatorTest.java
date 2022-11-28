@@ -13,6 +13,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class BookValidatorTest {
+    String TITLE_FIELD = "title";
+    String PAGES_FIELD = "pages";
+    String AUTHOR_FIELD = "author";
     @Autowired
     BookValidator validator;
     Errors errors;
@@ -44,7 +47,7 @@ class BookValidatorTest {
         validator.validate(input, errors);
 
         assertTrue(errors.hasErrors());
-        assertNotNull(errors.getFieldError("title"));
+        assertNotNull(errors.getFieldError(TITLE_FIELD));
     }
 
     @Test
@@ -55,7 +58,7 @@ class BookValidatorTest {
         validator.validate(input, errors);
 
         assertTrue(errors.hasErrors());
-        assertNotNull(errors.getFieldError("title"));
+        assertNotNull(errors.getFieldError(TITLE_FIELD));
     }
 
     @Test
@@ -67,7 +70,7 @@ class BookValidatorTest {
         validator.validate(input, errors);
 
         assertTrue(errors.hasErrors());
-        assertNotNull(errors.getFieldError("pages"));
+        assertNotNull(errors.getFieldError(PAGES_FIELD));
     }
 
     @Test
@@ -79,7 +82,7 @@ class BookValidatorTest {
         validator.validate(input, errors);
 
         assertTrue(errors.hasErrors());
-        assertNotNull(errors.getFieldError("pages"));
+        assertNotNull(errors.getFieldError(PAGES_FIELD));
     }
 
     @Test
@@ -90,6 +93,6 @@ class BookValidatorTest {
         validator.validate(input, errors);
 
         assertTrue(errors.hasErrors());
-        assertNotNull(errors.getFieldError("author"));
+        assertNotNull(errors.getFieldError(AUTHOR_FIELD));
     }
 }

@@ -22,11 +22,8 @@ class AppUserRepositoryTest {
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@BeforeEach
-	void setUp() throws Exception {
+	void setUp() {
 		jdbcTemplate.update("call set_known_good_state();");
 	}
 
@@ -40,12 +37,6 @@ class AppUserRepositoryTest {
 		assertEquals(expected.getUsername(), actual.getUsername());
 	}
 
-	/**
-	 * Should find app user created in known good state procedure
-	 * username: "username"
-	 * password: "$2a$10$bJ.Q1/9A/1i4LpO90CVnHO.DK464jvQnrXUo0QHJggWEhgLF3eElm"
-	 * userRole: USER
-	 */
 	@Test
 	void testShouldFindByUsername() {
 		AppUser expected = new AppUser("username", "$2a$10$bJ.Q1/9A/1i4LpO90CVnHO.DK464jvQnrXUo0QHJggWEhgLF3eElm", AppUserRole.USER);
@@ -61,21 +52,14 @@ class AppUserRepositoryTest {
 		assertEquals(expected.isCredentialsNonExpired(), actual.isCredentialsNonExpired());
 		assertEquals(expected.isEnabled(), actual.isEnabled());
 	}
-	
-	/**
-	 * Should not find by username if username does not exist
-	 */
+
 	@Test
 	void testShouldNotFindByUsername() {
 		AppUser actual = repository.findByUsername("not a username").orElse(null);
 		
 		assertNull(actual);
 	}
-	
-	/**
-	 * Should not create duplicate username, created user in known good state procedure
-	 * username: "username"
-	 */
+
 	@Test
 	void testShouldNotCreateDuplicateUsername() {
 		AppUser duplicate = new AppUser("username", "$2a$10$bJ.Q1/9A/1i4LpO90CVnHO.DK464jvQnrXUo0QHJggWEhgLF3eElm", AppUserRole.USER);
