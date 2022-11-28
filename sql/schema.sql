@@ -63,7 +63,8 @@ begin
         
 	insert into author(`name`) values 
 		('Leo Tolstoy'), 
-        ('Albert Camus');
+        ('Albert Camus'),
+        ('Henry David Thoreau');
         
 	insert into book(title, `language`, pages, author_id, app_user_id) values
 		('War and Peace', 'English', 1296, 1, 1),
