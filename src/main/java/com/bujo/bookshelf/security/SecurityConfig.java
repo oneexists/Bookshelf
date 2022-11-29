@@ -29,13 +29,12 @@ public class SecurityConfig {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 			.authorizeRequests()
 			.antMatchers(GET).permitAll()
-			.antMatchers(POST, "/create_account").permitAll()
+			.antMatchers(POST, "/api/appUsers").permitAll()
 			.antMatchers(POST, "/authenticate").permitAll()
 			.antMatchers(POST, "/api/authors").hasAuthority(AUTHOR_WRITE.getPermission())
 			.antMatchers(POST, "/api/books").hasAuthority(BOOK_WRITE.getPermission())
 			.antMatchers(PUT, "/api/books/*/author").hasAuthority(BOOK_WRITE.getPermission())
 			.antMatchers(PUT, "/api/books/*/user").hasAuthority(BOOK_WRITE.getPermission())
-			.antMatchers(POST, "/api/appUsers").denyAll()
 			.antMatchers(DELETE, "/api/appUsers").denyAll()
 			.anyRequest().authenticated();
 		http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
