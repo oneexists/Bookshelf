@@ -2,6 +2,12 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Create Environment
+
+1. Create a file to store API URL environment variable. For local builds, name the file `.env` and for production 
+    builds, the file can be named `.env.production`
+2. Add API URL to the file with the name REACT_APP_API_URL (i.e. `REACT_APP_API_URL=http://localhost:8080`)
+
 ## Available Scripts
 
 In the project directory, you can run:
