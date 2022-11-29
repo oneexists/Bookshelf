@@ -5,7 +5,8 @@ export const useDataSource = (getResourceFunc) => {
 
     useEffect(() => {
         getResourceFunc().then(setResource);
-    }, [getResourceFunc]);
+        // eslint-disable-next-line
+    }, []);
 
     return resource;
 }
