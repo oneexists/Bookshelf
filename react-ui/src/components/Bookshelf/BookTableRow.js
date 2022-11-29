@@ -14,12 +14,11 @@ const TitleLink = styled(NavLink)`
 
 export default function BookTableRow({ book }) {
     const { bookId, title, author, language, pages } = book;
-    const { name } = author;
 
     return (
         <tr key={bookId}>
             <td><TitleLink to={`/books/${bookId}`}>{title}</TitleLink></td>
-            <td>{name}</td>
+            <td>{author.name}</td>
             <td>{pages}</td>
             <td>{language}</td>
         </tr>
