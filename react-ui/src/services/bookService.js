@@ -1,11 +1,12 @@
 const API_URL = "http://localhost:8080/api";
+const TOKEN_KEY = "bujo-bookshelf";
 
 export async function findUserBooks({ id }) {
-    const response = await fetch(`${API_URL}/appUsers/${id}/books`, {
+    const response = await fetch(`${API_URL}/appUsers/${id}/books?projection=inlineAuthor`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("bujo-bookshelf")}`
+            "Authorization": `Bearer ${localStorage.getItem(TOKEN_KEY)}`
         }
     });
 
@@ -23,7 +24,7 @@ export async function createBook({ title, pages, language, authorId, id }) {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("bujo-bookshelf")}`
+            "Authorization": `Bearer ${localStorage.getItem(TOKEN_KEY)}`
         },
         body: JSON.stringify({title, pages, language, author, user})
     });
