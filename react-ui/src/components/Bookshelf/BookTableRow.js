@@ -1,6 +1,5 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
-import AuthorName from "./AuthorName";
 
 const TitleLink = styled(NavLink)`
     text-decoration: none;
@@ -14,13 +13,13 @@ const TitleLink = styled(NavLink)`
 `;
 
 export default function BookTableRow({ book }) {
-    const { bookId, title, language, pages } = book;
-    const authorUrl = book._links.author.href;
+    const { bookId, title, author, language, pages } = book;
+    const { name } = author;
 
     return (
         <tr key={bookId}>
             <td><TitleLink to={`/books/${bookId}`}>{title}</TitleLink></td>
-            <td><AuthorName url={authorUrl} /></td>
+            <td>{name}</td>
             <td>{pages}</td>
             <td>{language}</td>
         </tr>

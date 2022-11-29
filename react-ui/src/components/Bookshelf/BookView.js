@@ -4,15 +4,12 @@ import { serverResource } from "../../services/serverResource";
 import Background from "../Background";
 import { SplitScreen } from "../layouts/SplitScreen";
 import Title from "../Title";
-import AuthorName from "./AuthorName";
 import BookDetail from "./BookDetail";
 
 export default function BookView() {
     const { id } = useParams("id");
-    const book = useDataSource(serverResource(`http://localhost:8080/api/books/${id}`));
-    const { title, pages, language } = book || {};
-    const href = book ? book._links.author.href : {};
-    const authorName = <AuthorName url={href} />;
+    const book = useDataSource(serverResource(`http://localhost:8080/api/books/${id}?projection=inlineAuthor`));
+    const { title, author, pages, language } = book || {};
 
     return book ? (
         <Background>
@@ -28,7 +25,7 @@ export default function BookView() {
                 </ul>
                 <>
                     <div className="d-flex p-2 mt-3">
-                        <BookDetail { ...{authorName, language, pages} } />
+                        <BookDetail { ...{author, language, pages} } />
                     </div>
                     <h4 className="mt-3">Reading Activity</h4>
 
