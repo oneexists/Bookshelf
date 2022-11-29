@@ -1,4 +1,5 @@
 const AUTHORS_URL = "http://localhost:8080/api/authors";
+const TOKEN_KEY = "bujo-bookshelf";
 
 export async function createAuthor(name) {
     const searchResponse = await fetch(`${AUTHORS_URL}/search/name?name=${name}`);
@@ -11,7 +12,7 @@ export async function createAuthor(name) {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("bujo-bookshelf")}`
+            "Authorization": `Bearer ${localStorage.getItem(TOKEN_KEY)}`
         },
         body: JSON.stringify({ name })
     });

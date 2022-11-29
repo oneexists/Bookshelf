@@ -1,4 +1,5 @@
 const API_URL = "http://localhost:8080";
+const TOKEN_KEY = "bujo-bookshelf";
 
 export async function authenticate({ username, password }) {
     const response = await fetch(`${API_URL}/authenticate`, {
@@ -17,12 +18,12 @@ export async function authenticate({ username, password }) {
 }
 
 export async function refresh() {
-    const token = localStorage.getItem("bujo-bookshelf");
+    const token = localStorage.getItem(TOKEN_KEY);
     if (token) {
         const response = await fetch(`${API_URL}/refresh`, {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${localStorage.getItem("bujo-bookshelf")}`
+                "Authorization": `Bearer ${token}`
             }
         });
     
