@@ -36,7 +36,7 @@ export async function refresh() {
 }
 
 export async function register({ username, password }) {
-    const response = await fetch(`${API_URL}/create_account`, {
+    const response = await fetch(`${API_URL}/api/appUsers`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

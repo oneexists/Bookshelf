@@ -55,20 +55,6 @@ public class AuthenticationController {
 		return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 	}
 	
-	@PostMapping("/create_account")
-	public ResponseEntity<?> createAccount(@RequestBody AppUserDTO appUserDto) {
-		Result<AppUserDetails> result = service.create(appUserDto);
-		
-		if (!result.isSuccess()) {
-			return new ResponseEntity<>(result.getMessages(), HttpStatus.BAD_REQUEST);
-		}
-		
-		Map<String, Long> responseBody = new HashMap<>();
-		responseBody.put("app_user_id", result.getPayload().getAppUserId());
-		
-		return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
-	}
-	
 	@PostMapping("/refresh")
 	public ResponseEntity<?> refresh(@AuthenticationPrincipal AppUserDetails appUser) {
 		String jwt = converter.getTokenFromUser(appUser);
