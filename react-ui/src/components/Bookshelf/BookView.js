@@ -6,11 +6,11 @@ import { SplitScreen } from "../layouts/SplitScreen";
 import Title from "../Title";
 import BookDetail from "./BookDetail";
 
-const API_URL = "http://localhost:8080/api";
+const API_URL = process.env.REACT_APP_API_URL;
 
 export default function BookView() {
     const { id } = useParams("id");
-    const book = useDataSource(serverResource(`${API_URL}/books/${id}?projection=inlineAuthor`));
+    const book = useDataSource(serverResource(`${API_URL}/api/books/${id}?projection=inlineAuthor`));
     const { title, author, pages, language } = book || {};
 
     return book ? (

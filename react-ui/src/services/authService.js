@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8080";
+const API_URL = process.env.REACT_APP_API_URL;
 const TOKEN_KEY = "bujo-bookshelf";
 
 export async function authenticate({ username, password }) {

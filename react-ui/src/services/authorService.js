@@ -1,4 +1,6 @@
-const AUTHORS_URL = "http://localhost:8080/api/authors";
+const API_URL = process.env.REACT_APP_API_URL;
+
+const AUTHORS_URL = `${API_URL}/api/authors`;
 const TOKEN_KEY = "bujo-bookshelf";
 
 export async function createAuthor(name) {
