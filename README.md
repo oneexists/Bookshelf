@@ -52,6 +52,7 @@ To run tests, a schema can be found in the directory: bookshelf/sql/schema.sql
     - DB_USERNAME
     - DB_PASSWORD
 3. [Create a JAR](https://docs.oracle.com/javase/tutorial/deployment/jar/build.htm)
+4. To use front end, follow [React instructions](/react-ui/README.md) to install and set environment
 
 ## Process Analysis
 
