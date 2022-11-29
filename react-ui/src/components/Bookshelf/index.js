@@ -10,14 +10,13 @@ import BookTable from "./BookTable";
 export default function Bookshelf() {
     const auth = useAuth();
     const id = auth.user.id;
-    const token = auth.user.token;
     const [ books, setBooks ] = useState([]);
 
     useEffect(() => {
-        findUserBooks({ id, token }).then(b => {
+        findUserBooks({ id }).then(b => {
             setBooks(b._embedded.books);
         });
-    }, [id, token]);
+    }, [id]);
 
     return (
         <Background>
