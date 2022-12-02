@@ -29,7 +29,7 @@ public class BookValidator implements Validator {
         }
     }
 
-    public boolean isBlankString(String string ) {
+    private boolean isBlankString(String string ) {
         return string == null || string.isBlank();
     }
 
