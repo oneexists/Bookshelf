@@ -135,6 +135,4 @@ public class AppUser implements Serializable {
 				&& Objects.equals(password, other.password) && userRole == other.userRole
 				&& Objects.equals(username, other.username);
 	}
-	
-	
 }
