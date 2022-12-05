@@ -45,14 +45,15 @@ To run tests, a schema can be found in the directory: bookshelf/sql/schema.sql
 
 ### Running Application:
 
-1. [Install MySQL](https://dev.mysql.com/downloads/workbench/) and
-    [Java 17](https://www.oracle.com/java/technologies/downloads/#java17)
-2. [Configure Environment Variables](https://www.codejava.net/java-core/how-to-set-environment-variables-for-java-using-command-line)
+1. The back end (Spring Boot and MySQL) can be set up following the general
+   instructions given in my
+   [Docker Containerization guide](https://oneexists.github.io/containerize-api/)
+2. The environment variables needed to configure the Spring Boot application's
+   connection to the database are:
     - DB_URL
     - DB_USERNAME
     - DB_PASSWORD
-3. [Create a JAR](https://docs.oracle.com/javase/tutorial/deployment/jar/build.htm)
-4. To use front end, follow [React instructions](/react-ui/README.md) to install and set environment
+3. To use front end, follow [React instructions](/react-ui/README.md) to install and set environment
 
 ## Process Analysis
 
