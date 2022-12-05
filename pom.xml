@@ -92,6 +92,21 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<image>
+						<name>bookshelf:spring-boot</name>
+					</image>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<to>
+						<image>docker.io/oneexists/containers:jib</image>
+					</to>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
