@@ -32,7 +32,7 @@ class AuthorRepositoryTest {
         List<Author> actual = repository.findAll();
 
         assertNotNull(actual);
-        assertEquals(3, actual.size());
+        assertEquals(5, actual.size());
     }
 
     @Test
@@ -71,7 +71,7 @@ class AuthorRepositoryTest {
         Author actual = repository.save(getNewAuthor());
 
         assertNotNull(actual);
-        assertEquals(4, actual.getAuthorId());
+        assertEquals(6, actual.getAuthorId());
         assertEquals(NEW_AUTHOR_NAME, actual.getName());
         assertTrue(actual.getBooks().isEmpty());
     }
