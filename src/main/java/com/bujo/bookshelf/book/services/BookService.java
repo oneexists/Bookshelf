@@ -4,5 +4,7 @@ import com.bujo.bookshelf.book.models.BookDTO;
 import com.bujo.bookshelf.response.Result;
 
 public interface BookService {
-    public Result<BookDTO> update(BookDTO book);
+    Result<BookDTO> create(BookDTO bookDto);
+
+    Result<BookDTO> update(BookDTO book);
 }

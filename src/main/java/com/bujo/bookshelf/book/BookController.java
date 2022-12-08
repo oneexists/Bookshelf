@@ -1,5 +1,6 @@
 package com.bujo.bookshelf.book;
 
+import com.bujo.bookshelf.appUser.AppUserService;
 import com.bujo.bookshelf.book.models.BookDTO;
 import com.bujo.bookshelf.book.services.BookService;
 import com.bujo.bookshelf.response.Result;
@@ -16,9 +17,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @ConditionalOnWebApplication
 public class BookController {
     private final BookService service;
+    private final AppUserService appUserService;
 
-    public BookController(BookService service) {
+    public BookController(BookService service, AppUserService appUserService) {
         this.service = service;
+        this.appUserService = appUserService;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/books")
+    public @ResponseBody ResponseEntity<?> createBook(@RequestBody BookDTO book) {
+        Result<BookDTO> result = service.create(book);
+
+        if (!result.isSuccess()) {
+            return new ResponseEntity<>(result.getMessages(), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/books/{id}")
