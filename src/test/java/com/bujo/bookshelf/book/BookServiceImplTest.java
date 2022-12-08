@@ -1,5 +1,6 @@
 package com.bujo.bookshelf.book;
 
+import com.bujo.bookshelf.appUser.AppUserRepository;
 import com.bujo.bookshelf.appUser.models.AppUser;
 import com.bujo.bookshelf.book.models.Author;
 import com.bujo.bookshelf.book.models.Book;
@@ -33,6 +34,8 @@ class BookServiceImplTest {
     BookRepository bookRepository;
     @MockBean
     AuthorRepository authorRepository;
+    @MockBean
+    AppUserRepository appUserRepository;
     @Autowired
     BookValidation validation;
 
@@ -46,7 +49,7 @@ class BookServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        service = new BookServiceImpl(bookRepository, authorRepository, validation);
+        service = new BookServiceImpl(bookRepository, authorRepository, appUserRepository, validation);
 
         appUser.setAppUserId(1L);
 
@@ -78,6 +81,66 @@ class BookServiceImplTest {
         newBook.setLanguage("English");
         newBook.setPages(pages);
         return newBook;
+    }
+
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.services.BookServiceImpl#create(BookDTO)}.
+     */
+    @Test
+    void testCreateBookExistingAuthor() {
+        stephenKing.setBooks(Set.of(heartsInAtlantis));
+        given(authorRepository.findByName(stephenKing.getName())).willReturn(stephenKing);
+        given(bookRepository.save(any(Book.class))).willReturn(theRegulators);
+        given(appUserRepository.findById(appUser.getAppUserId())).willReturn(Optional.of(appUser));
+        ArgumentCaptor<Book> newBookArgCaptor = ArgumentCaptor.forClass(Book.class);
+
+        BookDTO bookDto = new BookDTO(
+                theRegulators.getBookId(),
+                appUser.getAppUserId(),
+                theRegulators.getTitle(),
+                theRegulators.getAuthor().getName(),
+                theRegulators.getLanguage(),
+                theRegulators.getPages());
+
+        service.create(bookDto);
+        verify(bookRepository).save(newBookArgCaptor.capture());
+
+        assertNull(newBookArgCaptor.getValue().getBookId());
+        assertThat(newBookArgCaptor.getValue().getUser().getAppUserId()).isEqualTo(bookDto.appUserId());
+        assertThat(newBookArgCaptor.getValue().getTitle()).isEqualTo(bookDto.title());
+        assertThat(newBookArgCaptor.getValue().getAuthor().getName()).isEqualTo(bookDto.author());
+        assertThat(newBookArgCaptor.getValue().getLanguage()).isEqualTo(bookDto.language());
+        assertThat(newBookArgCaptor.getValue().getPages()).isEqualTo(bookDto.pages());
+    }
+
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.services.BookServiceImpl#create(BookDTO)}.
+     */
+    @Test
+    void testCreateBookNewAuthor() {
+        theRegulators.setAuthor(richardBachman);
+        given(authorRepository.findByName(richardBachman.getName())).willReturn(richardBachman);
+        given(bookRepository.save(any(Book.class))).willReturn(theRegulators);
+        given(appUserRepository.findById(appUser.getAppUserId())).willReturn(Optional.of(appUser));
+        ArgumentCaptor<Book> newBookArgCaptor = ArgumentCaptor.forClass(Book.class);
+
+        BookDTO bookDto = new BookDTO(
+                theRegulators.getBookId(),
+                appUser.getAppUserId(),
+                theRegulators.getTitle(),
+                theRegulators.getAuthor().getName(),
+                theRegulators.getLanguage(),
+                theRegulators.getPages());
+
+        service.create(bookDto);
+        verify(bookRepository).save(newBookArgCaptor.capture());
+
+        assertNull(newBookArgCaptor.getValue().getBookId());
+        assertThat(newBookArgCaptor.getValue().getUser().getAppUserId()).isEqualTo(bookDto.appUserId());
+        assertThat(newBookArgCaptor.getValue().getTitle()).isEqualTo(bookDto.title());
+        assertThat(newBookArgCaptor.getValue().getAuthor().getName()).isEqualTo(bookDto.author());
+        assertThat(newBookArgCaptor.getValue().getLanguage()).isEqualTo(bookDto.language());
+        assertThat(newBookArgCaptor.getValue().getPages()).isEqualTo(bookDto.pages());
     }
 
     /**

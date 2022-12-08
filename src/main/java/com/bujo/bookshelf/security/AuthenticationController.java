@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bujo.bookshelf.appUser.AppUserService;
 import com.bujo.bookshelf.appUser.models.AppUserDTO;
 import com.bujo.bookshelf.appUser.models.AppUserDetails;
-import com.bujo.bookshelf.response.Result;
 
 @RestController
 @ConditionalOnWebApplication

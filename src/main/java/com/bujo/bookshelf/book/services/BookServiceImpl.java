@@ -1,5 +1,7 @@
 package com.bujo.bookshelf.book.services;
 
+import com.bujo.bookshelf.appUser.AppUserRepository;
+import com.bujo.bookshelf.appUser.models.AppUser;
 import com.bujo.bookshelf.book.models.Author;
 import com.bujo.bookshelf.book.models.Book;
 import com.bujo.bookshelf.book.models.BookDTO;
@@ -15,12 +17,52 @@ import org.springframework.transaction.annotation.Transactional;
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
+    private final AppUserRepository appUserRepository;
     private final BookValidation validation;
 
-    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository, BookValidation validation) {
+    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository, AppUserRepository appUserRepository, BookValidation validation) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
+        this.appUserRepository = appUserRepository;
         this.validation = validation;
+    }
+
+    @Override
+    public Result<BookDTO> create(BookDTO bookDto) {
+        Result<BookDTO> result = validation.validate(bookDto);
+
+        if (!result.isSuccess()) {
+            return result;
+        }
+        Book newBook = new Book();
+        Author author = authorRepository.findByName(bookDto.author());
+
+        if (author == null) {
+            author = createAuthor(bookDto.author());
+        }
+        AppUser appUser = appUserRepository.findById(bookDto.appUserId()).orElse(null);
+
+        if (appUser == null) {
+            result.addMessage(ActionStatus.INVALID, "invalid app user");
+            return result;
+        }
+
+        newBook.setAuthor(author);
+        newBook.setUser(appUser);
+        newBook.setTitle(bookDto.title());
+        newBook.setLanguage(bookDto.language());
+        newBook.setPages(bookDto.pages());
+
+        newBook = bookRepository.save(newBook);
+        result.setPayload(new BookDTO(
+                newBook.getBookId(),
+                newBook.getUser().getAppUserId(),
+                newBook.getTitle(),
+                newBook.getAuthor().getName(),
+                newBook.getLanguage(),
+                newBook.getPages()));
+
+        return result;
     }
 
     @Override
