@@ -30,7 +30,7 @@ class BookRepositoryTest {
         List<Book> actual = repository.findAll();
 
         assertNotNull(actual);
-        assertEquals(2, actual.size());
+        assertEquals(5, actual.size());
     }
 
     @Test

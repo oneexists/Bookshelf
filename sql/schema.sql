@@ -64,11 +64,16 @@ begin
 	insert into author(`name`) values 
 		('Leo Tolstoy'), 
         ('Albert Camus'),
-        ('Henry David Thoreau');
+        ('Henry David Thoreau'),
+        ('Stephen King'),
+        ('Kurt Vonnegut');
         
 	insert into book(title, `language`, pages, author_id, app_user_id) values
 		('War and Peace', 'English', 1296, 1, 1),
-        ('L''étranger', 'French', 185, 2, 1);
+        ('L''étranger', 'French', 185, 2, 1),
+        ('The Regulators', 'English', 512, 3, 1),
+        ('Hearts in Atlantis', 'English', 640, 3, 1),
+        ('Hocus Pocus', 'English', 322, 4, 1);
         
 	insert into reading_log(`start`, finish, book_id) values 
 		('2020-04-01', '2020-04-18', 2);
