@@ -37,12 +37,12 @@ public class BookServiceImpl implements BookService {
         Book newBook = new Book();
         Author author = authorRepository.findByName(bookDto.author());
 
-        if (author == null) {
-            author = createAuthor(bookDto.author());
+        if (!isPresent(author)) {
+            author = authorRepository.save(createAuthor(bookDto.author()));
         }
         AppUser appUser = appUserRepository.findById(bookDto.appUserId()).orElse(null);
 
-        if (appUser == null) {
+        if (!isPresent(appUser)) {
             result.addMessage(ActionStatus.INVALID, "invalid app user");
             return result;
         }
@@ -65,6 +65,16 @@ public class BookServiceImpl implements BookService {
         return result;
     }
 
+    private boolean isPresent(Object object) {
+        return object != null;
+    }
+
+    private Author createAuthor(String name) {
+        Author newAuthor = new Author();
+        newAuthor.setName(name);
+        return newAuthor;
+    }
+
     @Override
     public Result<BookDTO> update(BookDTO book) {
         Result<BookDTO> result = new Result<>();
@@ -84,16 +94,8 @@ public class BookServiceImpl implements BookService {
             return result;
         }
 
-        if (authorRepository.findByName(book.author()) != null) {
-            updateExistingAuthor(currentBook, book.author());
-            deleteAuthorIfOnlyOneBook(currentAuthor);
-        } else {
-            if (isPresent(currentAuthor) && currentAuthor.getBooks().size() == 1) {
-                updateAuthorName(currentAuthor, book.author());
-            } else {
-                updateNewAuthor(currentBook, book.author());
-                deleteAuthorIfOnlyOneBook(currentAuthor);
-            }
+        if (isPresent(currentAuthor) && !currentAuthor.getName().equals(book.author())) {
+            updateBookAuthor(currentBook, currentAuthor, book.author());
         }
 
         currentBook.setTitle(book.title());
@@ -104,8 +106,23 @@ public class BookServiceImpl implements BookService {
         return result;
     }
 
-    private boolean isPresent(Author author) {
-        return author != null;
+    private void updateBookAuthor(Book book, Author author, String name) {
+        if (isPresent( findAuthorByName(name) )) {
+            book.setAuthor(findAuthorByName(name));
+            deleteAuthorIfOnlyOneBook(author);
+        } else {
+            if (author.getBooks().size() == 1) {
+                author.setName(name);
+                saveAuthor(author);
+            } else {
+                book.setAuthor(updateNewAuthor(name));
+                deleteAuthorIfOnlyOneBook(author);
+            }
+        }
+    }
+
+    private Author findAuthorByName(String name) {
+        return authorRepository.findByName(name);
     }
 
     private void deleteAuthorIfOnlyOneBook(Author author) {
@@ -114,23 +131,11 @@ public class BookServiceImpl implements BookService {
         }
     }
 
-    private void updateNewAuthor(Book book, String name) {
-        Author newAuthor = authorRepository.save(createAuthor(name));
-        book.setAuthor(newAuthor);
+    private Author updateNewAuthor(String name) {
+        return saveAuthor(createAuthor(name));
     }
 
-    private Author createAuthor(String name) {
-        Author newAuthor = new Author();
-        newAuthor.setName(name);
-        return newAuthor;
-    }
-
-    private void updateExistingAuthor(Book book, String name) {
-        book.setAuthor(authorRepository.findByName(name));
-    }
-
-    private void updateAuthorName(Author author, String name) {
-        author.setName(name);
-        authorRepository.save(author);
+    private Author saveAuthor(Author author) {
+        return authorRepository.save(author);
     }
 }
