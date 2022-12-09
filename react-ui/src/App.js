@@ -11,6 +11,7 @@ import { refresh } from "./services/authService";
 import Bookshelf from "./components/Bookshelf";
 import BookView from "./components/Bookshelf/BookView";
 import BookAdd from "./components/Bookshelf/BookAdd";
+import BookEdit from "./components/Bookshelf/BookEdit";
 
 function App() {
     const auth = useAuth();
@@ -31,6 +32,7 @@ function App() {
                     <Route index element={<Bookshelf />} />
                   </Route>
                   <Route path="books/add" element={<BookAdd />} />
+                  <Route path="books/:id/edit" element={<BookEdit />} />
                   <Route path="books/:id" element={<BookView />} />
                   </>
                 : <Route path="/" element={<Home />} />
