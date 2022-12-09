@@ -1,25 +1,24 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import Background from "../Background";
+import { useInput } from "../../hooks/useInput";
+import { updateBook } from "../../services/bookService";
 import ErrorPanel from "../forms/ErrorPanel";
-import Title from "../Title";
 import SectionLabel from "../forms/SectionLabel";
 import SubmitPanel from "../forms/SubmitPanel";
-import { useInput } from "../../hooks/useInput";
-import { createBook } from "../../services/bookService";
-import { useNavigate } from "react-router-dom";
 
-export default function BookAdd() {
+export default function BookEditForm({ title, authorId, name, language, pages }) {
     const auth = useAuth();
+    const { id } = useParams();
     const navigate = useNavigate();
 
     const errorRef = useRef();
     const titleRef = useRef();
 
-    const [ titleProps, resetTitle ] = useInput("");
-    const [ authorProps, resetAuthor ] = useInput("");
-    const [ pagesProps, resetPages ] = useInput("");
-    const [ languageProps, resetLanguage ] = useInput("");
+    const [ titleProps, resetTitle ] = useInput(title);
+    const [ authorProps, resetAuthor ] = useInput(name);
+    const [ pagesProps, resetPages ] = useInput(pages);
+    const [ languageProps, resetLanguage ] = useInput(language);
     const [ errorMsg, setErrorMsg ] = useState([]);
 
     useEffect(() => {
@@ -29,34 +28,32 @@ export default function BookAdd() {
     const handleSubmit = async (evt) => {
         evt.preventDefault();
 
-        createBook({
+        updateBook({ 
+            appUserId: auth.user.id,
+            bookId: id, 
             title: titleProps.value, 
-            pages: pagesProps.value, 
-            language: languageProps.value,
             author: authorProps.value,
-            appUserId: auth.user.id
+            pages: pagesProps.value, 
+            language: languageProps.value 
         }).then(() => {
             navigate("/");
             resetTitle();
             resetAuthor();
             resetPages();
             resetLanguage();
-        }).catch((r) => {
-            setErrorMsg((r) => setErrorMsg(["Error saving book"]));
-        });
+        }).catch((r) => setErrorMsg(["Error updating book details"]));
+        
     }
 
     return (
-        <Background>
-            <Title text="Add Book" />
-
+        <>
             <ErrorPanel errorRef={errorRef} errorMsg={errorMsg} />
 
             <form onSubmit={handleSubmit}>
                 <SectionLabel id="title" text="Title:">
-                    <input 
+                    <input
                         type="text"
-                        aria-label="book title"
+                        aria-label="edit book title"
                         ref={titleRef}
                         className="form-control"
                         id="title"
@@ -75,7 +72,7 @@ export default function BookAdd() {
                         { ...authorProps }
                     />
                 </SectionLabel>
-
+                
                 <SectionLabel id="pages" text="Pages:">
                     <input 
                         type="number"
@@ -97,8 +94,8 @@ export default function BookAdd() {
                     />
                 </SectionLabel>
 
-                <SubmitPanel text="Add" />
+                <SubmitPanel text="Save" />
             </form>
-        </Background>
+        </>
     );
 }
