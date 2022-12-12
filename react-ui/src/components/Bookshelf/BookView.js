@@ -1,17 +1,23 @@
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useDataSource } from "../../hooks/useDataSource";
 import { serverResource } from "../../services/serverResource";
 import Background from "../Background";
 import { SplitScreen } from "../layouts/SplitScreen";
 import Title from "../Title";
+import { deleteBookById } from "../../services/bookService";
 import BookDetail from "./BookDetail";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 export default function BookView() {
     const { id } = useParams("id");
+    const navigate = useNavigate();
     const book = useDataSource(serverResource(`${API_URL}/api/books/${id}?projection=inlineAuthor`));
     const { title, author, pages, language } = book || {};
+
+    const handleDelete = () => {
+        deleteBookById(id).then(navigate("/"));
+    }
 
     return book ? (
         <Background>
@@ -23,7 +29,7 @@ export default function BookView() {
                     <li className="nav-item mb-2"><NavLink to="quotes/add" className="btn btn-secondary w-100" role="button">Add Quote</NavLink></li>
                     <li className="nav-item mb-2"><NavLink to="notes/add" className="btn btn-secondary w-100" role="button">Add Note</NavLink></li>
                     <li className="nav-item mb-2"><NavLink to="edit" className="btn btn-warning w-100" role="button">Edit</NavLink></li>
-                    <li className="nav-item mb-2"><button className="btn btn-danger w-100">Delete</button></li>
+                    <li className="nav-item mb-2"><button className="btn btn-danger w-100" onClick={handleDelete}>Delete</button></li>
                 </ul>
                 <>
                     <div className="d-flex p-2 mt-3">
