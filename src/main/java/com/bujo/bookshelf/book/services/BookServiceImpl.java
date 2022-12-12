@@ -79,7 +79,7 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public boolean deleteById(Long id, Long appUserId) {
         Book book = bookRepository.findById(id).orElse(null);
-        if (book == null || book.getUser().getAppUserId() != appUserId) {
+        if (book == null || !book.getUser().getAppUserId().equals(appUserId)) {
             return false;
         }
 
