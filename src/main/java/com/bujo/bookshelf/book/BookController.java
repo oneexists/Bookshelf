@@ -1,27 +1,33 @@
 package com.bujo.bookshelf.book;
 
-import com.bujo.bookshelf.appUser.AppUserService;
 import com.bujo.bookshelf.book.models.BookDTO;
 import com.bujo.bookshelf.book.services.BookService;
 import com.bujo.bookshelf.response.Result;
+import com.bujo.bookshelf.security.JwtConverter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @RepositoryRestController
 @ConditionalOnWebApplication
 public class BookController {
     private final BookService service;
-    private final AppUserService appUserService;
+    private final JwtConverter jwtConverter;
 
-    public BookController(BookService service, AppUserService appUserService) {
+    public BookController(BookService service, JwtConverter jwtConverter) {
         this.service = service;
-        this.appUserService = appUserService;
+        this.jwtConverter = jwtConverter;
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/books/{id}")
+    public @ResponseBody ResponseEntity<Void> deleteBook(@PathVariable Long id, @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        if (service.deleteById(id, jwtConverter.getUserFromToken(token).getAppUserId())) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/books")
