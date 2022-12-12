@@ -144,6 +144,108 @@ class BookServiceImplTest {
         assertThat(newBookArgCaptor.getValue().getPages()).isEqualTo(bookDto.pages());
     }
 
+    @Test
+    void testShouldNotCreateEmptyTitle() {
+        BookDTO bookDto = new BookDTO(
+                theRegulators.getBookId(),
+                appUser.getAppUserId(),
+                "\t",
+                theRegulators.getAuthor().getName(),
+                theRegulators.getLanguage(),
+                theRegulators.getPages());
+
+        Result<BookDTO> result = service.create(bookDto);
+
+        assertFalse(result.isSuccess());
+        assertEquals(1, result.getMessages().size());
+        assertEquals("title is required", result.getMessages().get(0));
+    }
+
+    @Test
+    void testShouldNotCreateNullTitle() {
+        BookDTO bookDto = new BookDTO(
+                theRegulators.getBookId(),
+                appUser.getAppUserId(),
+                null,
+                theRegulators.getAuthor().getName(),
+                theRegulators.getLanguage(),
+                theRegulators.getPages());
+
+        Result<BookDTO> result = service.create(bookDto);
+
+        assertFalse(result.isSuccess());
+        assertEquals(1, result.getMessages().size());
+        assertEquals("title is required", result.getMessages().get(0));
+    }
+
+    @Test
+    void testShouldNotCreateZeroPages() {
+        BookDTO bookDto = new BookDTO(
+                theRegulators.getBookId(),
+                appUser.getAppUserId(),
+                theRegulators.getTitle(),
+                theRegulators.getAuthor().getName(),
+                theRegulators.getLanguage(),
+                0);
+
+        Result<BookDTO> result = service.create(bookDto);
+
+        assertFalse(result.isSuccess());
+        assertEquals(1, result.getMessages().size());
+        assertEquals("book must have at least one page", result.getMessages().get(0));
+    }
+
+    @Test
+    void testShouldNotCreateNegativePages() {
+        BookDTO bookDto = new BookDTO(
+                theRegulators.getBookId(),
+                appUser.getAppUserId(),
+                theRegulators.getTitle(),
+                theRegulators.getAuthor().getName(),
+                theRegulators.getLanguage(),
+                -22);
+
+        Result<BookDTO> result = service.create(bookDto);
+
+        assertFalse(result.isSuccess());
+        assertEquals(1, result.getMessages().size());
+        assertEquals("book must have at least one page", result.getMessages().get(0));
+    }
+
+    @Test
+    void testShouldNotCreateEmptyAuthor() {
+        BookDTO bookDto = new BookDTO(
+                theRegulators.getBookId(),
+                appUser.getAppUserId(),
+                theRegulators.getTitle(),
+                " ",
+                theRegulators.getLanguage(),
+                theRegulators.getPages());
+
+        Result<BookDTO> result = service.create(bookDto);
+
+        assertFalse(result.isSuccess());
+        assertEquals(1, result.getMessages().size());
+        assertEquals("author is required", result.getMessages().get(0));
+    }
+
+    @Test
+    void testShouldNotCreateNullAuthor() {
+        BookDTO bookDto = new BookDTO(
+                theRegulators.getBookId(),
+                appUser.getAppUserId(),
+                theRegulators.getTitle(),
+                null,
+                theRegulators.getLanguage(),
+                theRegulators.getPages());
+
+        Result<BookDTO> result = service.create(bookDto);
+
+        assertFalse(result.isSuccess());
+        assertEquals(1, result.getMessages().size());
+        assertEquals("author is required", result.getMessages().get(0));
+    }
+
     /**
      * Test method for {@link com.bujo.bookshelf.book.services.BookServiceImpl#deleteById(Long, Long)}.
      */
