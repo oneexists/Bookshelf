@@ -76,6 +76,23 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
+    public boolean deleteById(Long id, Long appUserId) {
+        Book book = bookRepository.findById(id).orElse(null);
+        if (book == null || book.getUser().getAppUserId() != appUserId) {
+            return false;
+        }
+
+        Author author = book.getAuthor();
+        bookRepository.deleteById(id);
+        if (author.getBooks().size() == 1) {
+            authorRepository.deleteById(author.getAuthorId());
+        }
+
+        return true;
+    }
+
+    @Override
     public Result<BookDTO> update(BookDTO book) {
         Result<BookDTO> result = new Result<>();
         Book currentBook = bookRepository.findById(book.bookId()).orElse(null);

@@ -35,6 +35,7 @@ public class SecurityConfig {
 			.antMatchers(POST, "/api/books").hasAuthority(BOOK_WRITE.getPermission())
 			.antMatchers(PUT, "/api/books/*/author").hasAuthority(BOOK_WRITE.getPermission())
 			.antMatchers(PUT, "/api/books/*/user").hasAuthority(BOOK_WRITE.getPermission())
+			.antMatchers(DELETE, "/api/books/*").hasAuthority(BOOK_WRITE.getPermission())
 			.antMatchers(DELETE, "/api/appUsers").denyAll()
 			.anyRequest().authenticated();
 		http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());

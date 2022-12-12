@@ -25,6 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
@@ -141,6 +142,58 @@ class BookServiceImplTest {
         assertThat(newBookArgCaptor.getValue().getAuthor().getName()).isEqualTo(bookDto.author());
         assertThat(newBookArgCaptor.getValue().getLanguage()).isEqualTo(bookDto.language());
         assertThat(newBookArgCaptor.getValue().getPages()).isEqualTo(bookDto.pages());
+    }
+
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.services.BookServiceImpl#deleteById(Long, Long)}.
+     */
+    @Test
+    void testDeleteBookById() {
+        given(bookRepository.findById(theRegulators.getBookId())).willReturn(Optional.of(theRegulators));
+        given(authorRepository.findById(stephenKing.getAuthorId())).willReturn(Optional.of(stephenKing));
+        ArgumentCaptor<Long> deleteBookByIdArgCaptor = ArgumentCaptor.forClass(Long.class);
+
+        service.deleteById(theRegulators.getBookId(), appUser.getAppUserId());
+        verify(bookRepository).deleteById(deleteBookByIdArgCaptor.capture());
+
+        assertThat(deleteBookByIdArgCaptor.getValue()).isEqualTo(theRegulators.getBookId());
+        verify(authorRepository, never()).deleteById(any(Long.class));
+    }
+
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.services.BookServiceImpl#deleteById(Long, Long)}.
+     */
+    @Test
+    void testDeleteBookByIdAndDeleteAuthor() {
+        given(bookRepository.findById(hocusPocus.getBookId())).willReturn(Optional.of(hocusPocus));
+        given(authorRepository.findById(kurtVonnegut.getAuthorId())).willReturn(Optional.of(kurtVonnegut));
+        ArgumentCaptor<Long> deleteBookArgCaptor = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<Long> deleteAuthorArgCaptor = ArgumentCaptor.forClass(Long.class);
+
+        service.deleteById(hocusPocus.getBookId(), appUser.getAppUserId());
+        verify(bookRepository).deleteById(deleteBookArgCaptor.capture());
+        verify(authorRepository).deleteById(deleteAuthorArgCaptor.capture());
+
+        assertThat(deleteBookArgCaptor.getValue()).isEqualTo(hocusPocus.getBookId());
+        assertThat(deleteAuthorArgCaptor.getValue()).isEqualTo(kurtVonnegut.getAuthorId());
+    }
+
+    @Test
+    void testDeleteBookByIdMissingId() {
+        given(bookRepository.findById(any(Long.class))).willReturn(Optional.empty());
+
+        boolean result = service.deleteById(1_000L, appUser.getAppUserId());
+
+        assertFalse(result);
+    }
+
+    @Test
+    void testShouldNotDeleteMismatchUserId() {
+        given(bookRepository.findById(theRegulators.getBookId())).willReturn(Optional.of(theRegulators));
+
+        boolean result = service.deleteById(theRegulators.getBookId(), 1_000L);
+
+        assertFalse(result);
     }
 
     /**
