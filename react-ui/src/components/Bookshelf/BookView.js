@@ -6,6 +6,7 @@ import { SplitScreen } from "../layouts/SplitScreen";
 import Title from "../Title";
 import { deleteBookById } from "../../services/bookService";
 import BookDetail from "./BookDetail";
+import BookLogs from "../ReadingLog/BookLogs";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -36,6 +37,7 @@ export default function BookView() {
                         <BookDetail { ...{author, language, pages} } />
                     </div>
                     <h4 className="mt-3">Reading Activity</h4>
+                    <BookLogs url={book._links.readingLogs.href} />
 
                     <h4 className="mt-3">Quotes</h4>
 
