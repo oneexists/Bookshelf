@@ -1,6 +1,15 @@
 # Bookshelf Application
 
-Spring RESTful web application with React UI for tracking personal reading habits.
+Spring RESTful web application with React UI for tracking personal reading
+habits.
+
+### Setup
+
+Project setup can be found [here](./docs/setup.md).
+
+### Requirements Documentation
+
+Functional and non-functional requirements can be found [here](./docs/requirements.md).
 
 ### Technologies
 
@@ -13,47 +22,6 @@ Spring RESTful web application with React UI for tracking personal reading habit
   [Mockito](https://site.mockito.org/)
 - [React](https://reactjs.org/)
 - [Bootstrap 5](https://getbootstrap.com/)
-
-### Functional Requirements
-
-- RESTful API with JWT web token authentication
-  - Login/Logout and account registration
-  - Username length between 3 and 100 characters
-  - Password validation: 8 character length with at least one letter, one digit and one special character
-
-### Non-Functional Requirements
-
-#### User Interface
-
-- React front-end interface
-- Bootstrap/CSS module styling
-
-#### User Experience
-
-- Integrate [WAI-ARIA specification](https://developer.mozilla.org/en-US/docs/Learn/Accessibility/WAI-ARIA_basics)
-  to increase accessibility
-  - Allows for screen reader and keyboard navigation
-  - Semantic HTML elements
-  - Assertive error display on forms to notify screen readers
-  - Descriptions of form field requirements
-
-## Project Setup
-
-### MySQL:
-
-To run tests, a schema can be found in the directory: bookshelf/sql/schema.sql
-
-### Running Application:
-
-1. The back end (Spring Boot and MySQL) can be set up following the general
-   instructions given in my
-   [Docker Containerization guide](https://oneexists.github.io/containerize-api/)
-2. The environment variables needed to configure the Spring Boot application's
-   connection to the database are:
-    - DB_URL
-    - DB_USERNAME
-    - DB_PASSWORD
-3. To use front end, follow [React instructions](/react-ui/README.md) to install and set environment
 
 ## Process Analysis
 
@@ -68,6 +36,35 @@ To run tests, a schema can be found in the directory: bookshelf/sql/schema.sql
 - Create authentication hook:
   - [useHooks hook for useAuth](https://usehooks.com/useAuth/)
   - [useAuth hook example](https://hhpendleton.medium.com/useauth-265512bbde3c)
+
+
+- Add a [Spring Data REST Projection](https://docs.spring.io/spring-data/rest/docs/current/reference/html/#projections-excerpts.projections)
+  to display author information within book query to simplify and reduce API
+  queries
+  ```
+  "language": "English",
+  "bookId": 1,
+  "title": "War and Peace",
+  "author": {
+    "authorId": 1,
+    "name": "Leo Tolstoy"
+  },
+  "pages": 1296
+  ```
+
+
+- Utilize React design patterns
+  - Layout components
+    - [ComponentList](./react-ui/src/components/layouts/ComponentList.js)
+    - [SplitScreen](./react-ui/src/components/layouts/SplitScreen.js)
+  - Custom hooks
+    - [useDataSource](./react-ui/src/hooks/useDataSource.js)
+    - [useInput](./react-ui/src/hooks/useInput.js)
+  - Higher Order Components
+    - [Background](./react-ui/src/components/Background/index.js)
+
+
+- Add styling using React `styled-components` and CSS Modules
 
 ## Resources
 

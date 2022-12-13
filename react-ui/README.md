@@ -4,9 +4,13 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Create Environment
 
-1. Create a file to store API URL environment variable. For local builds, name the file `.env` and for production 
+1. Create a file to store API URL environment variable. For local builds, name
+  the file `.env` and for production
     builds, the file can be named `.env.production`
-2. Add API URL to the file with the name REACT_APP_API_URL (i.e. `REACT_APP_API_URL=http://localhost:8080`)
+2. Add API URL to the file with the name REACT_APP_API_URL (i.e.
+  `REACT_APP_API_URL=http://localhost:8080`)
+
+On first run, use `npm install` to install dependencies.
 
 ## Available Scripts
 
