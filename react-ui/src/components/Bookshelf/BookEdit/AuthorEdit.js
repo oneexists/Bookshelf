@@ -1,5 +1,5 @@
-import { useDataSource } from "../../hooks/useDataSource";
-import { serverResource } from "../../services/serverResource";
+import { useDataSource } from "../../../hooks/useDataSource";
+import { serverResource } from "../../../services/serverResource";
 import BookEditForm from "./BookEditForm";
 
 export default function AuthorEdit({ title, url, language, pages }) {

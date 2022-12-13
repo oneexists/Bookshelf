@@ -1,5 +1,5 @@
 import styles from "./BookTable.module.css";
-import { ComponentList } from "../layouts/ComponentList";
+import { ComponentList } from "../../layouts/ComponentList";
 import BookTableRow from "./BookTableRow";
 
 export default function BookTable({ books }) {

@@ -1,4 +1,4 @@
-export default function BookDetail({ author, language, pages }) {
+export default function BookDetails({ author, language, pages }) {
     return (
         <>
             <div className="flex-fill">By: {author.name}</div>

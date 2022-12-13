@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
-import { useInput } from "../../hooks/useInput";
-import { updateBook } from "../../services/bookService";
-import ErrorPanel from "../forms/ErrorPanel";
-import SectionLabel from "../forms/SectionLabel";
-import SubmitPanel from "../forms/SubmitPanel";
+import { useAuth } from "../../../hooks/useAuth";
+import { useInput } from "../../../hooks/useInput";
+import { updateBook } from "../../../services/bookService";
+import ErrorPanel from "../../forms/ErrorPanel";
+import SectionLabel from "../../forms/SectionLabel";
+import SubmitPanel from "../../forms/SubmitPanel";
 
 export default function BookEditForm({ title, authorId, name, language, pages }) {
     const auth = useAuth();

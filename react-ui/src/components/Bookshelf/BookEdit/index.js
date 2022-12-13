@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
-import { useDataSource } from "../../hooks/useDataSource";
-import { serverResource } from "../../services/serverResource";
-import Background from "../Background";
-import Title from "../Title";
+import { useDataSource } from "../../../hooks/useDataSource";
+import { serverResource } from "../../../services/serverResource";
+import Background from "../../Background";
+import Title from "../../Title";
 import AuthorEdit from "./AuthorEdit";
 
 export default function BookEdit() {
