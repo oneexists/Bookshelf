@@ -1,8 +1,8 @@
-import DangerButton from "../DangerButton";
-import NavListItem from "../NavListItem";
-import WarningNavLinkButton from "../WarningNavLinkButton";
-import SecondaryNavLinkButton from "../SecondaryNavLinkButton";
-import { ComponentList } from "../layouts/ComponentList";
+import DangerButton from "../../buttons/DangerButton";
+import NavListItem from "../../lists/NavListItem";
+import WarningNavLinkButton from "../../buttons/WarningNavLinkButton";
+import SecondaryNavLinkButton from "../../buttons/SecondaryNavLinkButton";
+import { ComponentList } from "../../layouts/ComponentList";
 
 export default function BookViewNavBar({handleDelete}) {
     const navItems = [

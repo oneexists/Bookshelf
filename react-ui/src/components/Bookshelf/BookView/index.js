@@ -1,13 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./BookView.module.css";
-import { useDataSource } from "../../hooks/useDataSource";
-import { serverResource } from "../../services/serverResource";
-import Background from "../Background";
-import { SplitScreen } from "../layouts/SplitScreen";
-import Title from "../Title";
-import { deleteBookById } from "../../services/bookService";
-import BookDetail from "./BookDetail";
-import BookLogs from "../ReadingLog/BookLogs";
+import { useDataSource } from "../../../hooks/useDataSource";
+import { serverResource } from "../../../services/serverResource";
+import Background from "../../Background";
+import { SplitScreen } from "../../layouts/SplitScreen";
+import Title from "../../Title";
+import { deleteBookById } from "../../../services/bookService";
+import BookDetails from "./BookDetails";
+import BookLogs from "../../ReadingLog/BookLogs";
 import BookViewNavBar from "./BookViewNavBar";
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -29,7 +29,7 @@ export default function BookView() {
 
             <SplitScreen leftWeight={1} rightWeight={3}>
                 <div id={styles.bookDetails} className="m-4 p-2">
-                    <BookDetail { ...{author, language, pages} } />
+                    <BookDetails { ...{author, language, pages} } />
                 </div>
 
                 <div className="mt-3">
