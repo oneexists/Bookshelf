@@ -7,7 +7,7 @@ import ErrorPanel from "../../forms/ErrorPanel";
 import SectionLabel from "../../forms/SectionLabel";
 import SubmitPanel from "../../forms/SubmitPanel";
 
-export default function BookEditForm({ title, authorId, name, language, pages }) {
+export default function BookEditForm({ title, name, language, pages }) {
     const auth = useAuth();
     const { id } = useParams();
     const navigate = useNavigate();
