@@ -2,13 +2,13 @@ import { NavLink } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { SplitScreen } from "../layouts/SplitScreen";
 import Title from "../Title";
-import BookTable from "./BookTable";
 import Background from "../Background";
 import { withBooks } from "./withBooks";
+import BookCards from "./BookCards";
 
 export default function Bookshelf() {
     const auth = useAuth();
-    const BookTableWithLoader = withBooks(BookTable, auth.user.id);
+    const BookCardsWithLoader = withBooks(BookCards, auth.user.id);
 
     return (
         <Background>
@@ -18,8 +18,7 @@ export default function Bookshelf() {
                 <ul className="nav navbar-nav me-4">
                     <li className="nav-item mb-2"><NavLink to="books/add" className="btn btn-secondary w-100" role="button">Add Book</NavLink></li>
                 </ul>
-                
-                <BookTableWithLoader />
+                <BookCardsWithLoader />
             </SplitScreen>
         </Background>
     );
