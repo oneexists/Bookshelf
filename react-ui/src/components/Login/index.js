@@ -6,7 +6,7 @@ import { authenticate } from "../../services/authService";
 import Title from "../Title";
 import ErrorPanel from "../forms/ErrorPanel";
 import SubmitPanel from "../forms/SubmitPanel";
-import Background from "../Background";
+import Background from "../layouts/Background";
 import SectionLabel from "../forms/SectionLabel";
 
 export default function Login() {

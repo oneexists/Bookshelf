@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useDataSource } from "../../../hooks/useDataSource";
 import { serverResource } from "../../../services/serverResource";
-import Background from "../../Background";
+import Background from "../../layouts/Background";
 import Title from "../../Title";
 import BookEditForm from "./BookEditForm";
 import { withAuthor } from "../book/withAuthor";

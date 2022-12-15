@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { SplitScreen } from "../layouts/SplitScreen";
 import Title from "../Title";
-import Background from "../Background";
+import Background from "../layouts/Background";
 import { withBooks } from "./book/withBooks";
 import BookCards from "./BookCards";
 
