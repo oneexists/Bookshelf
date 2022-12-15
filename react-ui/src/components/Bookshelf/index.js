@@ -3,7 +3,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { SplitScreen } from "../layouts/SplitScreen";
 import Title from "../Title";
 import Background from "../Background";
-import { withBooks } from "./withBooks";
+import { withBooks } from "./book/withBooks";
 import BookCards from "./BookCards";
 
 export default function Bookshelf() {

@@ -1,4 +1,4 @@
-import BookDetails from "../BookView/BookDetails";
+import BookDetails from "../book/BookDetails";
 import SecondaryNavLinkButton from "../../buttons/SecondaryNavLinkButton";
 import WarningNavLinkButton from "../../buttons/WarningNavLinkButton";
 

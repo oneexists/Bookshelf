@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { findUserBooks } from "../../services/bookService";
+import { findUserBooks } from "../../../services/bookService";
 
 export const withBooks = (Component, id) => {
     return props => {

@@ -6,7 +6,7 @@ import Background from "../../Background";
 import { SplitScreen } from "../../layouts/SplitScreen";
 import Title from "../../Title";
 import { deleteBookById } from "../../../services/bookService";
-import BookDetails from "./BookDetails";
+import BookDetails from "../book/BookDetails";
 import BookLogs from "../../ReadingLog/BookLogs";
 import BookViewNavBar from "./BookViewNavBar";
 
