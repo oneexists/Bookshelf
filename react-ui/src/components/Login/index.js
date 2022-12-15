@@ -46,40 +46,42 @@ export default function Login() {
 
     return (
         <Background>
-            <Title text="Bookshelf Login" />
+            <section>
+                <Title text="Bookshelf Login" />
 
-            <p>{(auth.isLoading) ? "Logging in..." : ""}</p>
+                <p>{(auth.isLoading) ? "Logging in..." : ""}</p>
 
-            <ErrorPanel errorRef={errorRef} errorMsg={errorMsg} />
+                <ErrorPanel errorRef={errorRef} errorMsg={errorMsg} />
 
-            <form onSubmit={handleSubmit}>
-                <SectionLabel id="username" text="Username:">
-                    <input 
-                        type="text"
-                        aria-label="login username"
-                        aria-required="true"
-                        ref={usernameRef}
-                        className="form-control"
-                        id="username"
-                        required
-                        { ...usernameProps }
-                    />
-                </SectionLabel>
+                <form onSubmit={handleSubmit}>
+                    <SectionLabel id="username" text="Username:">
+                        <input 
+                            type="text"
+                            aria-label="login username"
+                            aria-required="true"
+                            ref={usernameRef}
+                            className="form-control"
+                            id="username"
+                            required
+                            { ...usernameProps }
+                        />
+                    </SectionLabel>
 
-                <SectionLabel id="password" text="Password:">
-                    <input
-                        type="password"
-                        aria-label="login password"
-                        aria-required="true"
-                        className="form-control"
-                        id="password"
-                        required
-                        { ...passwordProps }
-                    />
-                </SectionLabel>
+                    <SectionLabel id="password" text="Password:">
+                        <input
+                            type="password"
+                            aria-label="login password"
+                            aria-required="true"
+                            className="form-control"
+                            id="password"
+                            required
+                            { ...passwordProps }
+                        />
+                    </SectionLabel>
 
-                <SubmitPanel text="Login" />
-            </form>
+                    <SubmitPanel text="Login" />
+                </form>
+            </section>
         </Background>
-    )
+    );
 }

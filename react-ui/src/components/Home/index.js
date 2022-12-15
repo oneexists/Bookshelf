@@ -4,9 +4,9 @@ import Title from "../Title";
 export default function Home() {
     return (
         <Background>
-            <Title text="Bullet Journal Bookshelf" />
-            
             <section>
+                <Title text="Bullet Journal Bookshelf" />
+            
                 <p>
                     Keep all of your reading notes together in a single place.
                     Add books to your bookshelf, track your reading habits, 
@@ -32,7 +32,7 @@ export default function Home() {
                         </a>
                     </li>
                 </ul>
-            </section>
+            </section> 
         </Background>
     );
 }
