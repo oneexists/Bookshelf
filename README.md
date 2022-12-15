@@ -55,13 +55,14 @@ Functional and non-functional requirements can be found [here](./docs/requiremen
 
 - Utilize React design patterns
   - Layout components
+    - [Background](./react-ui/src/components/Background/index.js)
     - [ComponentList](./react-ui/src/components/layouts/ComponentList.js)
     - [SplitScreen](./react-ui/src/components/layouts/SplitScreen.js)
   - Custom hooks
     - [useDataSource](./react-ui/src/hooks/useDataSource.js)
     - [useInput](./react-ui/src/hooks/useInput.js)
   - Higher Order Components
-    - [Background](./react-ui/src/components/Background/index.js)
+    - [withBooks](./react-ui/src/components/Bookshelf/withBooks.js)
 
 
 - Add styling using React `styled-components` and CSS Modules

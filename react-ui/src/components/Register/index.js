@@ -55,54 +55,56 @@ export default function Register() {
 
     return (
         <Background>
-            <Title text="Bookshelf Registration" />
+            <section>
+                <Title text="Bookshelf Registration" />
 
-            <p>{(auth.isLoading) ? "Creating account..." : ""}</p>
+                <p>{(auth.isLoading) ? "Creating account..." : ""}</p>
 
-            <ErrorPanel errorRef={errorRef} errorMsg={errorMsg} />
+                <ErrorPanel errorRef={errorRef} errorMsg={errorMsg} />
 
-            <form onSubmit={handleSubmit}>
-                <SectionLabel id="username" text="Username:">
-                    <input 
-                        type="text"
-                        aria-label="register username"
-                        aria-required="true"
-                        ref={usernameRef}
-                        className="form-control"
-                        id="username"
-                        placeholder="Must be least 3 characters"
-                        required
-                        { ...usernameProps }
-                    />
-                </SectionLabel>
+                <form onSubmit={handleSubmit}>
+                    <SectionLabel id="username" text="Username:">
+                        <input 
+                            type="text"
+                            aria-label="register username"
+                            aria-required="true"
+                            ref={usernameRef}
+                            className="form-control"
+                            id="username"
+                            placeholder="Must be least 3 characters"
+                            required
+                            { ...usernameProps }
+                        />
+                    </SectionLabel>
 
-                <SectionLabel id="password" text="Password:">
-                    <input
-                        type="password"
-                        aria-label="register password"
-                        aria-required="true"
-                        className="form-control"
-                        id="password"
-                        placeholder="Must be at least 8 characters with a letter, a number, and a special character"
-                        required
-                        { ...passwordProps }
-                    />
-                </SectionLabel>
+                    <SectionLabel id="password" text="Password:">
+                        <input
+                            type="password"
+                            aria-label="register password"
+                            aria-required="true"
+                            className="form-control"
+                            id="password"
+                            placeholder="Must be at least 8 characters with a letter, a number, and a special character"
+                            required
+                            { ...passwordProps }
+                        />
+                    </SectionLabel>
 
-                <SectionLabel id="confirmPassword" text="Confirm Password:">
-                    <input
-                        type="password"
-                        aria-label="register confirm password"
-                        aria-required="true"
-                        className="form-control"
-                        id="confirmPassword"
-                        required
-                        { ...confirmPasswordProps }
-                    />
-                </SectionLabel>
+                    <SectionLabel id="confirmPassword" text="Confirm Password:">
+                        <input
+                            type="password"
+                            aria-label="register confirm password"
+                            aria-required="true"
+                            className="form-control"
+                            id="confirmPassword"
+                            required
+                            { ...confirmPasswordProps }
+                        />
+                    </SectionLabel>
 
-                <SubmitPanel text="Register" />
-            </form>
+                    <SubmitPanel text="Register" />
+                </form>
+            </section>
         </Background>
     );
 }
