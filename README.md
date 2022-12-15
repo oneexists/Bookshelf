@@ -62,6 +62,7 @@ Functional and non-functional requirements can be found [here](./docs/requiremen
     - [useDataSource](./react-ui/src/hooks/useDataSource.js)
     - [useInput](./react-ui/src/hooks/useInput.js)
   - Higher Order Components
+    - [withAuthor](./react-ui/src/components/Bookshelf/BookEdit/withAuthor.js)
     - [withBooks](./react-ui/src/components/Bookshelf/withBooks.js)
 
 

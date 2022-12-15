@@ -3,7 +3,8 @@ import { useDataSource } from "../../../hooks/useDataSource";
 import { serverResource } from "../../../services/serverResource";
 import Background from "../../Background";
 import Title from "../../Title";
-import AuthorEdit from "./AuthorEdit";
+import BookEditForm from "./BookEditForm";
+import { withAuthor } from "./withAuthor";
 
 export default function BookEdit() {
     const { id } = useParams("id");
@@ -11,11 +12,13 @@ export default function BookEdit() {
     const { title, pages, language } = book || {};
     const href = book ? book._links.author.href : {};
 
+    const BookEditFormLoadedAuthor = withAuthor(BookEditForm, href);
+
     return book && (
         <Background>
             <Title text="Edit Book" />
 
-            <AuthorEdit { ...{ title, url: href, language, pages } } />
+            <BookEditFormLoadedAuthor { ...{ title, pages, language } } />
         </Background>
     );
 }
