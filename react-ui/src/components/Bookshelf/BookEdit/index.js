@@ -4,7 +4,7 @@ import { serverResource } from "../../../services/serverResource";
 import Background from "../../Background";
 import Title from "../../Title";
 import BookEditForm from "./BookEditForm";
-import { withAuthor } from "./withAuthor";
+import { withAuthor } from "../book/withAuthor";
 
 export default function BookEdit() {
     const { id } = useParams("id");

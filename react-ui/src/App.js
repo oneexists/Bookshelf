@@ -10,7 +10,7 @@ import { useEffect } from "react";
 import { refresh } from "./services/authService";
 import Bookshelf from "./components/Bookshelf";
 import BookView from "./components/Bookshelf/BookView";
-import BookAdd from "./components/Bookshelf/BookAdd";
+import BookAdd from "./components/Bookshelf/book/BookAdd";
 import BookEdit from "./components/Bookshelf/BookEdit";
 
 function App() {
