@@ -1,4 +1,4 @@
-import Background from "../Background";
+import Background from "../layouts/Background";
 import Title from "../Title";
 
 export default function Home() {

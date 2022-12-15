@@ -1,4 +1,4 @@
-import Background from "../Background";
+import Background from "../layouts/Background";
 
 export default function NotFound() {
     return (

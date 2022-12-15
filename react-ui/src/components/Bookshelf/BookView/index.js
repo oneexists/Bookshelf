@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import styles from "./BookView.module.css";
 import { useDataSource } from "../../../hooks/useDataSource";
 import { serverResource } from "../../../services/serverResource";
-import Background from "../../Background";
+import Background from "../../layouts/Background";
 import { SplitScreen } from "../../layouts/SplitScreen";
 import Title from "../../Title";
 import { deleteBookById } from "../../../services/bookService";

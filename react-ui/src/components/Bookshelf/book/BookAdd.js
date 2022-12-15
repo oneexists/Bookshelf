@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../../hooks/useAuth";
-import Background from "../../Background";
+import Background from "../../layouts/Background";
 import ErrorPanel from "../../forms/ErrorPanel";
 import Title from "../../Title";
 import SectionLabel from "../../forms/SectionLabel";
