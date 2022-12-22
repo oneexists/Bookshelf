@@ -1,5 +1,6 @@
 package com.bujo.bookshelf.appUser.models;
 
+import java.io.Serial;
 import java.util.Collection;
 import java.util.Set;
 
@@ -10,6 +11,7 @@ public class AppUserDetails implements UserDetails {
 	/**
 	 * YYYYMMVVV - year, month, version
 	 */
+	@Serial
 	private static final long serialVersionUID = 202211001L;
 	private final Set<? extends GrantedAuthority> grantedAuthorities;
 	private final Long appUserId;
