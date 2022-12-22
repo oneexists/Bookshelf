@@ -25,16 +25,6 @@ Content-Type: application/json
 
 GET {{url}}/api/appUsers HTTP/1.1
 
-### CREATE AUTHOR
-
-POST {{url}}/api/authors HTTP/1.1
-Content-Type: application/json
-Authorization: Bearer {{jwt}}
-
-{
-    "name": "Leo Tolstoy"
-}
-
 ### CREATE BOOK
 
 POST {{url}}/api/books HTTP/1.1
@@ -45,6 +35,18 @@ Authorization: Bearer {{jwt}}
     "title": "War and Peace",
     "language": "English",
     "pages": 1296,
-    "author": "/authors/8",
-    "user": "/users/1"
+    "author": "Leo Tolstoy",
+    "appUserId": "1"
+}
+
+### CREATE READING LOG
+
+POST {{url}}/api/readingLogs HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+{
+    "bookId": "24",
+    "finish": "2022-12-17",
+    "start": "2022-12-14"
 }
