@@ -12,6 +12,7 @@ import Bookshelf from "./components/Bookshelf";
 import BookView from "./components/Bookshelf/BookView";
 import BookAdd from "./components/Bookshelf/book/BookAdd";
 import BookEdit from "./components/Bookshelf/BookEdit";
+import ReadingLogAdd from "./components/ReadingLog/ReadingLogAdd";
 
 function App() {
     const auth = useAuth();
@@ -31,9 +32,19 @@ function App() {
                   <Route path="/">
                     <Route index element={<Bookshelf />} />
                   </Route>
-                  <Route path="books/add" element={<BookAdd />} />
-                  <Route path="books/:id/edit" element={<BookEdit />} />
-                  <Route path="books/:id" element={<BookView />} />
+                  
+                  <Route path="books">
+                    <Route path="add" element={<BookAdd />} />
+
+                    <Route path=":id">
+                        <Route index element={<BookView />} />
+                        <Route path="edit" element={<BookEdit />} />
+
+                        <Route path="logs">
+                            <Route path="add" element={<ReadingLogAdd />} />
+                        </Route>
+                    </Route>
+                  </Route>
                   </>
                 : <Route path="/" element={<Home />} />
                 }
