@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from "react-router-dom";
-import styles from "./BookView.module.css";
 import { useDataSource } from "../../../hooks/useDataSource";
 import { serverResource } from "../../../services/serverResource";
 import Background from "../../layouts/Background";
@@ -8,7 +7,10 @@ import Title from "../../Title";
 import { deleteBookById } from "../../../services/bookService";
 import BookDetails from "../book/BookDetails";
 import BookLogs from "../../ReadingLog/BookLogs";
-import BookViewNavBar from "./BookViewNavBar";
+import SecondaryNavLinkButton from "../../buttons/SecondaryNavLinkButton";
+import WarningNavLinkButton from "../../buttons/WarningNavLinkButton";
+import DangerButton from "../../buttons/DangerButton";
+import ButtonBar from "../../layouts/ButtonBar";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -25,10 +27,16 @@ export default function BookView() {
     return book ? (
         <Background>
             <Title text={title} />
-            <BookViewNavBar handleDelete={handleDelete} />
+            <ButtonBar>
+                <SecondaryNavLinkButton url="logs/add" text="Add Dates Read" marginEnd={2} />
+                <SecondaryNavLinkButton url="quotes/add" text="Add a Quote" marginEnd={2} />
+                <SecondaryNavLinkButton url="notes/add" text="Add a Note" marginEnd={2} />
+                <WarningNavLinkButton url="edit" text="Edit Book Details" marginEnd={2} />
+                <DangerButton text="Delete Book" handleClick={handleDelete} />
+            </ButtonBar>
 
             <SplitScreen leftWeight={1} rightWeight={3}>
-                <div id={styles.bookDetails} className="m-4 p-2">
+                <div id="book-details" className="m-4 p-2">
                     <BookDetails { ...{author, language, pages} } />
                 </div>
 

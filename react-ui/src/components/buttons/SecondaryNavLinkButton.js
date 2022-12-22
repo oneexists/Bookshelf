@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
 
-export default function SecondaryNavLinkButton({ url, text }) {
-    return <NavLink to={url} className="btn btn-secondary w-100" role="button">{text}</NavLink>;
+export default function SecondaryNavLinkButton({ url, text, marginEnd }) {
+    return <NavLink to={url} className={`btn btn-secondary w-100 me-${marginEnd}`} role="button">{text}</NavLink>;
 }

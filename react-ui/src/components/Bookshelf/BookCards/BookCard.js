@@ -1,6 +1,7 @@
 import BookDetails from "../book/BookDetails";
 import SecondaryNavLinkButton from "../../buttons/SecondaryNavLinkButton";
 import WarningNavLinkButton from "../../buttons/WarningNavLinkButton";
+import ButtonBar from "../../layouts/ButtonBar";
 
 export default function BookCard({ book }) {
     const { bookId, title, author, language, pages } = book;
@@ -12,9 +13,11 @@ export default function BookCard({ book }) {
                     <h5 className="card-title">{title}</h5>
                     <BookDetails author={author} language={language} pages={pages} />
                 </div>
-                <div className="card-footer d-flex justify-content-center">
-                    <SecondaryNavLinkButton url={`/books/${bookId}`} text="View Book" />
-                    <WarningNavLinkButton url={`/books/${bookId}/edit`} text="Edit Book" />
+                <div className="card-footer">
+                    <ButtonBar>
+                        <SecondaryNavLinkButton url={`/books/${bookId}`} text="View Book" marginEnd={2} />
+                        <WarningNavLinkButton url={`/books/${bookId}/edit`} text="Edit Book" />
+                    </ButtonBar>
                 </div>
             </div>
         </div>
