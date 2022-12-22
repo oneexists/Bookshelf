@@ -1,4 +1,4 @@
-package com.bujo.bookshelf.book;
+package com.bujo.bookshelf.book.services;
 
 import com.bujo.bookshelf.appUser.AppUserRepository;
 import com.bujo.bookshelf.appUser.models.AppUser;
@@ -7,9 +7,7 @@ import com.bujo.bookshelf.book.models.Book;
 import com.bujo.bookshelf.book.models.BookDTO;
 import com.bujo.bookshelf.book.repositories.AuthorRepository;
 import com.bujo.bookshelf.book.repositories.BookRepository;
-import com.bujo.bookshelf.book.services.BookService;
-import com.bujo.bookshelf.book.services.BookServiceImpl;
-import com.bujo.bookshelf.book.services.BookValidation;
+import com.bujo.bookshelf.book.validators.BookValidation;
 import com.bujo.bookshelf.response.Result;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -284,18 +282,18 @@ class BookServiceImplTest {
     void testDeleteBookByIdMissingId() {
         given(bookRepository.findById(any(Long.class))).willReturn(Optional.empty());
 
-        boolean result = service.deleteById(1_000L, appUser.getAppUserId());
+        service.deleteById(1_000L, appUser.getAppUserId());
 
-        assertFalse(result);
+        verify(bookRepository, never()).deleteById(any());
     }
 
     @Test
     void testShouldNotDeleteMismatchUserId() {
         given(bookRepository.findById(theRegulators.getBookId())).willReturn(Optional.of(theRegulators));
 
-        boolean result = service.deleteById(theRegulators.getBookId(), 1_000L);
+        service.deleteById(theRegulators.getBookId(), 1_000L);
 
-        assertFalse(result);
+        verify(bookRepository, never()).deleteById(any());
     }
 
     /**

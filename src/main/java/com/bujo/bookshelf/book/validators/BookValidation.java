@@ -1,4 +1,4 @@
-package com.bujo.bookshelf.book.services;
+package com.bujo.bookshelf.book.validators;
 
 import com.bujo.bookshelf.book.models.BookDTO;
 import com.bujo.bookshelf.response.ActionStatus;
@@ -9,6 +9,11 @@ import org.springframework.stereotype.Component;
 public class BookValidation {
     public Result<BookDTO> validate(BookDTO book) {
         Result<BookDTO> result = new Result<>();
+
+        if (book == null) {
+            result.addMessage(ActionStatus.NOT_FOUND, "book is required");
+            return result;
+        }
 
         if (isBlankString(book.title())) {
             result.addMessage(ActionStatus.INVALID, "title is required");
