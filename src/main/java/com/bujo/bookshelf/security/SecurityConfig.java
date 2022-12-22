@@ -33,9 +33,11 @@ public class SecurityConfig {
 			.antMatchers(POST, "/authenticate").permitAll()
 			.antMatchers(POST, "/api/authors").hasAuthority(AUTHOR_WRITE.getPermission())
 			.antMatchers(POST, "/api/books").hasAuthority(BOOK_WRITE.getPermission())
+			.antMatchers(POST, "/api/readingLogs").hasAuthority(BOOK_WRITE.getPermission())
 			.antMatchers(PUT, "/api/books/*/author").hasAuthority(BOOK_WRITE.getPermission())
 			.antMatchers(PUT, "/api/books/*/user").hasAuthority(BOOK_WRITE.getPermission())
 			.antMatchers(DELETE, "/api/books/*").hasAuthority(BOOK_WRITE.getPermission())
+			.antMatchers(DELETE, "/api/readingLogs/*").hasAuthority(BOOK_WRITE.getPermission())
 			.antMatchers(DELETE, "/api/appUsers").denyAll()
 			.anyRequest().authenticated();
 		http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
