@@ -7,10 +7,13 @@ import com.bujo.bookshelf.book.models.Book;
 import com.bujo.bookshelf.book.models.BookDTO;
 import com.bujo.bookshelf.book.repositories.AuthorRepository;
 import com.bujo.bookshelf.book.repositories.BookRepository;
+import com.bujo.bookshelf.book.validators.BookValidation;
 import com.bujo.bookshelf.response.ActionStatus;
 import com.bujo.bookshelf.response.Result;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -65,6 +68,11 @@ public class BookServiceImpl implements BookService {
         return result;
     }
 
+    @Override
+    public Optional<Book> findById(Long bookId) {
+        return bookRepository.findById(bookId);
+    }
+
     private boolean isPresent(Object object) {
         return object != null;
     }
@@ -76,11 +84,10 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Transactional
-    public boolean deleteById(Long id, Long appUserId) {
+    public void deleteById(Long id, Long appUserId) {
         Book book = bookRepository.findById(id).orElse(null);
         if (book == null || !book.getUser().getAppUserId().equals(appUserId)) {
-            return false;
+            return;
         }
 
         Author author = book.getAuthor();
@@ -88,8 +95,6 @@ public class BookServiceImpl implements BookService {
         if (author.getBooks().size() == 1) {
             authorRepository.deleteById(author.getAuthorId());
         }
-
-        return true;
     }
 
     @Override
