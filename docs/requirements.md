@@ -7,6 +7,8 @@
   - Username length between 3 and 100 characters
   - Password validation: 8 character length with at least one letter, one digit
     and one special character
+- Add, edit and delete books
+- Add reading activity to a book
 
 ## Non-Functional
 
@@ -23,3 +25,9 @@
   - Semantic HTML elements
   - Assertive error display on forms to notify screen readers
   - Descriptions of form field requirements
+- Standardize custom components such as form input, submission and button formatting
+- Utilize a card layout for books on bookshelf
+
+## Class Diagram
+
+![Bookshelf Class Diagram](./bookshelf-class-diagram.drawio.png)
