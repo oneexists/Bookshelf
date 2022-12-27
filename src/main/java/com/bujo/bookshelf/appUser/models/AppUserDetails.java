@@ -44,19 +44,6 @@ public class AppUserDetails implements UserDetails {
 		this.isAccountNonExpired = true;
 	}
 
-	public AppUserDetails(Set<? extends GrantedAuthority> grantedAuthorities, Long appUserId, String username,
-			String password, boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired,
-			boolean isEnabled) {
-		this.grantedAuthorities = grantedAuthorities;
-		this.appUserId = appUserId;
-		this.username = username;
-		this.password = password;
-		this.isAccountNonExpired = isAccountNonExpired;
-		this.isAccountNonLocked = isAccountNonLocked;
-		this.isCredentialsNonExpired = isCredentialsNonExpired;
-		this.isEnabled = isEnabled;
-	}
-
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return grantedAuthorities;
