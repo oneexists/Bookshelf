@@ -14,5 +14,8 @@ public class SecurityConstants {
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String TOKEN_CANNOT_BE_VERIFIED = "Token cannot be verified";
 
+    public static final String[] BOOK_WRITE_DELETE_URLS = { "/api/books/*", "/api/readingLogs/*" };
+    public static final String[] BOOK_WRITE_POST_URLS = { "/api/books", "/api/readingLogs" };
+    public static final String[] BOOK_WRITE_PUT_URLS = { "/api/books/*/author", "/api/books/*/user" };
     public static final String[] PUBLIC_URLS = { "/api/appUsers", "/authenticate" };
 }

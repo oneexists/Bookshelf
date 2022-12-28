@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static com.bujo.bookshelf.security.SecurityConstants.PUBLIC_URLS;
+import static com.bujo.bookshelf.security.SecurityConstants.*;
 import static org.springframework.http.HttpMethod.*;
 import static com.bujo.bookshelf.appUser.models.AppUserPermission.*;
 
@@ -32,12 +32,9 @@ public class SecurityConfig {
 			.antMatchers(GET).permitAll()
 			.antMatchers(POST, PUBLIC_URLS).permitAll()
 			.antMatchers(POST, "/api/authors").hasAuthority(AUTHOR_WRITE.getPermission())
-			.antMatchers(POST, "/api/books").hasAuthority(BOOK_WRITE.getPermission())
-			.antMatchers(POST, "/api/readingLogs").hasAuthority(BOOK_WRITE.getPermission())
-			.antMatchers(PUT, "/api/books/*/author").hasAuthority(BOOK_WRITE.getPermission())
-			.antMatchers(PUT, "/api/books/*/user").hasAuthority(BOOK_WRITE.getPermission())
-			.antMatchers(DELETE, "/api/books/*").hasAuthority(BOOK_WRITE.getPermission())
-			.antMatchers(DELETE, "/api/readingLogs/*").hasAuthority(BOOK_WRITE.getPermission())
+			.antMatchers(POST, BOOK_WRITE_POST_URLS).hasAuthority(BOOK_WRITE.getPermission())
+			.antMatchers(PUT, BOOK_WRITE_PUT_URLS).hasAuthority(BOOK_WRITE.getPermission())
+			.antMatchers(DELETE, BOOK_WRITE_DELETE_URLS).hasAuthority(BOOK_WRITE.getPermission())
 			.antMatchers(DELETE, "/api/appUsers").denyAll()
 			.anyRequest().authenticated();
 		http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
