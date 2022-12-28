@@ -3,11 +3,11 @@ export default function ReadingLogDetails({ log }) {
 
     return finish ? (
         <>
-            <div className="flex-fill">{new Date(start).toLocaleDateString()} - {new Date(finish).toLocaleDateString()}</div>
+            <div className="flex-fill">{new Date(start.replace(/-/g, '/')).toLocaleDateString()} - {new Date(finish.replace(/-/g, '/')).toLocaleDateString()}</div>
         </>
     ) : (
         <>
-            <div className="flex-fill">{new Date(start).toLocaleDateString()}</div>
+            <div className="flex-fill">{new Date(start.replace(/-/g, '/')).toLocaleDateString()}</div>
         </>
     );
 }
