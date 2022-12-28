@@ -1,29 +1,31 @@
 package com.bujo.bookshelf.book.controllers;
 
-import com.bujo.bookshelf.appUser.models.AppUserDetails;
 import com.bujo.bookshelf.book.models.BookDTO;
 import com.bujo.bookshelf.book.services.BookService;
 import com.bujo.bookshelf.response.Result;
+import com.bujo.bookshelf.security.JwtConverter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RepositoryRestController
 @ConditionalOnWebApplication
 public class BookController {
     private final BookService service;
+    private final JwtConverter jwtConverter;
 
-    public BookController(BookService service) {
+    public BookController(BookService service, JwtConverter jwtConverter) {
         this.service = service;
+        this.jwtConverter = jwtConverter;
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/books/{id}")
     public @ResponseBody ResponseEntity<Void> deleteBook(@PathVariable Long id,
-                                                         @AuthenticationPrincipal AppUserDetails appUser) {
-        service.deleteById(id, appUser.getAppUserId());
+                                                         @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        service.deleteById(id, jwtConverter.getAppUserIdClaimFromToken(token));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

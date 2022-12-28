@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static com.bujo.bookshelf.security.SecurityConstants.PUBLIC_URLS;
 import static org.springframework.http.HttpMethod.*;
 import static com.bujo.bookshelf.appUser.models.AppUserPermission.*;
 
@@ -29,8 +30,7 @@ public class SecurityConfig {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 			.authorizeRequests()
 			.antMatchers(GET).permitAll()
-			.antMatchers(POST, "/api/appUsers").permitAll()
-			.antMatchers(POST, "/authenticate").permitAll()
+			.antMatchers(POST, PUBLIC_URLS).permitAll()
 			.antMatchers(POST, "/api/authors").hasAuthority(AUTHOR_WRITE.getPermission())
 			.antMatchers(POST, "/api/books").hasAuthority(BOOK_WRITE.getPermission())
 			.antMatchers(POST, "/api/readingLogs").hasAuthority(BOOK_WRITE.getPermission())
