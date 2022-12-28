@@ -12,8 +12,8 @@ export default function ReadingLogAddForm() {
 
     const errorRef = useRef();
 
-    const [ startProps, resetStart ] = useInput();
-    const [ finishProps, resetFinish ] = useInput();
+    const [ startProps, resetStart ] = useInput("");
+    const [ finishProps, resetFinish ] = useInput("");
     const [ errorMsg, setErrorMsg ] = useState([]);
 
     const handleSubmit = async(evt) => {
