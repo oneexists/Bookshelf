@@ -67,6 +67,17 @@ Functional and non-functional requirements can be found [here](./docs/requiremen
 
 
 - Add styling using React `styled-components` and CSS Modules
+- Parse reading log dates from JSON string values in JavaScript for date formatting
+  - date appeared to be one day off due to time zone resolution while creating a new 
+    Date in JavaScript
+  - used a regular expression as suggested 
+    [here](https://stackoverflow.com/questions/7556591/is-the-javascript-date-object-always-one-day-off)
+    to convert dates from `YYYY-MM-DD` to `YYYY/MM/DD` before creating a new Date to 
+    for date formatting
+  - example of parsing and formatting date:
+    ```javascript
+    new Date("2022-12-13".replace(/-/g, '/')).toLocaleDateString()
+    ```
 
 ## Resources
 
