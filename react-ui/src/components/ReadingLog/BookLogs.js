@@ -1,4 +1,4 @@
-import ReadingLog from ".";
+import ReadingLogDetails from "./ReadingLogDetails";
 import { useDataSource } from "../../hooks/useDataSource";
 import { serverResource } from "../../services/serverResource";
 import { ComponentList } from "../layouts/ComponentList";
@@ -13,7 +13,7 @@ export default function BookLogs({ url }) {
             <ComponentList 
                 items={readingLogs}
                 resourceName="log"
-                itemComponent={ReadingLog}
+                itemComponent={ReadingLogDetails}
             />
         </>
     );
