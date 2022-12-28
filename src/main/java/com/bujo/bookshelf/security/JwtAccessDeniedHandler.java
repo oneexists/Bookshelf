@@ -1,5 +1,6 @@
 package com.bujo.bookshelf.security;
 
+import static com.bujo.bookshelf.security.SecurityConstants.ACCESS_DENIED_MESSAGE;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -26,7 +27,7 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 		HttpResponse httpResponse = new HttpResponse(UNAUTHORIZED.value(), 
 				UNAUTHORIZED, 
 				UNAUTHORIZED.getReasonPhrase().toUpperCase(), 
-				"You do not have permission to view this page");
+				ACCESS_DENIED_MESSAGE);
 		response.setContentType(APPLICATION_JSON_VALUE);
 		response.setStatus(UNAUTHORIZED.value());
 		OutputStream outputStream = response.getOutputStream();

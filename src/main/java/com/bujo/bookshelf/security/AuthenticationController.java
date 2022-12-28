@@ -4,33 +4,33 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bujo.bookshelf.appUser.AppUserService;
 import com.bujo.bookshelf.appUser.models.AppUserDTO;
 import com.bujo.bookshelf.appUser.models.AppUserDetails;
+
+import static com.bujo.bookshelf.security.SecurityConstants.JWT_TOKEN_HEADER;
 
 @RestController
 @ConditionalOnWebApplication
 public class AuthenticationController {
 	private final AuthenticationManager authenticationManager;
 	private final JwtConverter converter;
-	private final AppUserService service;
-	
-	public AuthenticationController(AuthenticationManager authenticationManager, JwtConverter converter, AppUserService service) {
+
+	public AuthenticationController(AuthenticationManager authenticationManager, JwtConverter converter) {
 		this.authenticationManager = authenticationManager;
 		this.converter = converter;
-		this.service = service;
 	}
 	
 	@PostMapping("/authenticate")
@@ -44,7 +44,7 @@ public class AuthenticationController {
 			if (authentication.isAuthenticated()) {
 				String jwtToken = converter.getTokenFromUser((AppUserDetails) authentication.getPrincipal());
 				Map<String, String> responseBody = new HashMap<>();
-				responseBody.put("jwt_token", jwtToken);
+				responseBody.put(JWT_TOKEN_HEADER, jwtToken);
 
 				return new ResponseEntity<>(responseBody, HttpStatus.OK);
 			}
@@ -55,10 +55,10 @@ public class AuthenticationController {
 	}
 	
 	@PostMapping("/refresh")
-	public ResponseEntity<?> refresh(@AuthenticationPrincipal AppUserDetails appUser) {
-		String jwt = converter.getTokenFromUser(appUser);
+	public ResponseEntity<?> refresh(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+		String jwt = converter.refreshToken(token);
 		Map<String, String> responseBody = new HashMap<>();
-		responseBody.put("jwt_token", jwt);
+		responseBody.put(JWT_TOKEN_HEADER, jwt);
 		return new ResponseEntity<>(responseBody, HttpStatus.OK);
 	}
 }

@@ -25,7 +25,7 @@ public class ReadingLogController {
     @RequestMapping(method = RequestMethod.POST, value = "/readingLogs")
     public @ResponseBody ResponseEntity<?> createReadingLog(@RequestBody ReadingLogDTO readingLog,
                                                             @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        Result<ReadingLogDTO> result = service.create(readingLog, jwtConverter.getUserFromToken(token).getAppUserId());
+        Result<ReadingLogDTO> result = service.create(readingLog, jwtConverter.getAppUserIdClaimFromToken(token));
 
         if (!result.isSuccess()) {
             return new ResponseEntity<>(result.getMessages(), HttpStatus.BAD_REQUEST);
