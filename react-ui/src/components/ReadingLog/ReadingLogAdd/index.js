@@ -5,11 +5,11 @@ import BookDetails from "../../Bookshelf/book/BookDetails";
 import Background from "../../layouts/Background";
 import { SplitScreen } from "../../layouts/SplitScreen";
 import Title from "../../Title";
-import Form from "./Form";
+import ReadingLogAddForm from "./ReadingLogAddForm";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-export default function ReadingLogAdd() {
+export default function ReadingLogAdd() {    
     const { id } = useParams("id");
     const book = useDataSource(serverResource(`${API_URL}/api/books/${id}?projection=inlineAuthor`));
     const { title, author, pages, language } = book || {};
@@ -23,7 +23,7 @@ export default function ReadingLogAdd() {
                     <BookDetails { ...{author, language, pages} } />
                 </div>
 
-                <Form />
+                <ReadingLogAddForm />
             </SplitScreen>
         </Background>
     ) : <p>Loading...</p>;

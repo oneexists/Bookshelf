@@ -1,4 +1,4 @@
-export default function ReadingLog({ log }) {
+export default function ReadingLogDetails({ log }) {
     const { start, finish } = log;
 
     return finish ? (

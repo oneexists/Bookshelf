@@ -6,7 +6,7 @@ import ErrorPanel from "../../forms/ErrorPanel";
 import SectionLabel from "../../forms/SectionLabel";
 import SubmitPanel from "../../forms/SubmitPanel";
 
-export default function Form() {
+export default function ReadingLogAddForm() {
     const navigate = useNavigate();
     const { id } = useParams("id");
 
