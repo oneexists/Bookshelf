@@ -13,6 +13,7 @@ import BookView from "./components/Bookshelf/BookView";
 import BookAdd from "./components/Bookshelf/book/BookAdd";
 import BookEdit from "./components/Bookshelf/BookEdit";
 import ReadingLogAdd from "./components/ReadingLog/ReadingLogAdd";
+import ReadingLogEdit from "./components/ReadingLog/ReadingLogEdit";
 
 function App() {
     const auth = useAuth();
@@ -42,6 +43,7 @@ function App() {
 
                         <Route path="logs">
                             <Route path="add" element={<ReadingLogAdd />} />
+                            <Route path="edit/:logId" element={<ReadingLogEdit />} />
                         </Route>
                     </Route>
                   </Route>
