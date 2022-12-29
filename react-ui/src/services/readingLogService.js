@@ -21,3 +21,22 @@ export async function createLog({ bookId, start, finish }) {
     }
     return Promise.reject();
 }
+
+export async function editLog({ readingLogId, start, finish }) {
+    const response = await fetch(`${READING_LOG_URL}/${readingLogId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        },
+        body: JSON.stringify({ start, finish })
+    });
+
+    if (response.ok) {
+        return response.json();
+    } else if (response.status === 400) {
+        const errors = await response.json();
+        return Promise.reject(errors);
+    }
+    return Promise.reject();
+}
