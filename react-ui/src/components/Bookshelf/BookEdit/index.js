@@ -6,9 +6,11 @@ import Title from "../../Title";
 import BookEditForm from "./BookEditForm";
 import { withAuthor } from "../book/withAuthor";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 export default function BookEdit() {
     const { id } = useParams("id");
-    const book = useDataSource(serverResource(`http://localhost:8080/api/books/${id}`));
+    const book = useDataSource(serverResource(`${API_URL}/api/books/${id}`));
     const { title, pages, language } = book || {};
     const href = book ? book._links.author.href : {};
 
