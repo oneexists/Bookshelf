@@ -1,14 +1,70 @@
 # Project Setup
 
-1. The backend API (Spring Boot and MySQL) can be set up following the general
-   instructions given in my
-   [Docker Containerization guide](https://oneexists.github.io/containerize-api/)
-   - if interested in running tests, a test database schema can be found
-     [here](../sql/schema.sql).
-2. The environment variables needed to configure the Spring Boot application's
-   connection to the database are:
-    - DB_URL
-    - DB_USERNAME
-    - DB_PASSWORD
-3. To use frontend, follow [React instructions](../react-ui/README.md) to create
-  the local environment and install npm if needed
+## Docker Containerization Configuration
+
+### 1. Initialize MySQL database
+  - create Docker volumes:
+    ```bash
+    docker volume create mysql_data
+    docker volume create mysql_config
+    ```
+  - create Docker network:
+    ```bash
+    docker network create mysqlnet
+    ```
+  - create MySQL container, replacing `password` with database password of
+    choice:
+    ```bash
+    docker run -it -d -v mysql_data:/var/lib/mysql -v mysql_config:/etc/mysql/conf.d --network mysqlnet --name mysqlserver -e MYSQL_ROOT_PASSWORD=password -p 3306:3306 mysql
+    ```
+  - sign into MySQL and execute command to create the database:
+    ```
+    create database bujo;
+    ```
+    - if interested in running tests, a schema for the test database can be
+      found in `sql/schema.sql` that can be added to initialize the testing
+      database
+
+### 2. Environment setup
+  - to install the JDK, execute the following commands:
+  ```bash
+  sudo apt update
+  sudo apt install openjdk-17-jdk
+  sudo update-alternatives --config java
+  ```
+  - the response should be:
+    ```
+    There is only one alternative in link group java (providing /usr/bin/java): /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+    Nothing to configure.
+    ```
+  - add the following Java and application configuration to the environment,
+    ignoring the first line if adding to `~/.bashrc` or if `~/.bash_profile`
+    already exists
+    - create a file: `~/.bash_profile` (can be done in the terminal using
+      `nano ~/.bash_profile`, copying and pasting or using a Windows system may
+      create invalid line breaks)
+    - replace `password` with the password used to create the database
+      ```bash
+      source ~/.bashrc
+
+      # JDK 17 CONFIGURATION
+      export PATH="/usr/lib/jvm/java-17-openjdk-amd64/bin/java:$PATH"
+      export JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
+
+      # BOOKSHELF API CONFIGURATION
+      export DB_URL=jdbc:mysql://localhost:3306/containers
+      export DB_USERNAME=root
+      export DB_PASSWORD=password
+      export ALLOWED_ORIGINS="http://localhost:3000"
+      ```
+
+### 3. Running the application
+  - to create and run the application for the first time, use the
+    `/scripts/update-api.sh` script, which will restart the database container
+    `bookshelfserver` and create the application container `bookshelf-api`
+  - for all following runs of the application, `/scripts/run-api.sh` will start
+    both containers
+  - when running, the application API can be found at `http://localhost:8080/api`
+  - to use the React frontend interface, follow
+    [React instructions](../react-ui/README.md) to create the local environment
+    and install npm if needed
