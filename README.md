@@ -1,15 +1,14 @@
 # Bookshelf Application
 
-Spring RESTful web application with React UI for tracking personal reading
-habits.
+Add your books to your bookshelf, tracking when books were read, and collect all 
+your notes from each book. Provides a single location for keeping track of reading 
+and note taking.
 
-### Setup
+### Links
 
-Project setup can be found [here](./docs/setup.md).
-
-### Requirements Documentation
-
-Functional and non-functional requirements can be found [here](./docs/requirements.md).
+- [project overview](https://oneexists.github.io/bookshelf-project)
+- [setup](./docs/setup.md)
+- [requirements documentation](./docs/requirements.md)
 
 ### Technologies
 
@@ -21,7 +20,9 @@ Functional and non-functional requirements can be found [here](./docs/requiremen
 - [JUnit Jupiter](https://junit.org/junit5/docs/current/user-guide/),
   [Mockito](https://site.mockito.org/)
 - [React](https://reactjs.org/)
+- [HTML5](https://developer.mozilla.org/en-US/docs/Glossary/HTML5)
 - [Bootstrap 5](https://getbootstrap.com/)
+- [CSS3](https://www.css3.info/)
 
 ## Process Analysis
 
