@@ -8,7 +8,7 @@
   - Password validation: 8 character length with at least one letter, one digit
     and one special character
 - Add, edit and delete books
-- Add reading activity to a book
+- Add and edit a book's reading activity
 
 ## Non-Functional
 
@@ -16,6 +16,7 @@
 
 - React front-end interface
 - Bootstrap/CSS module styling
+- Utilize a card layout for books on bookshelf
 
 ### User Experience
 
@@ -26,7 +27,6 @@
   - Assertive error display on forms to notify screen readers
   - Descriptions of form field requirements
 - Standardize custom components such as form input, submission and button formatting
-- Utilize a card layout for books on bookshelf
 
 ## Class Diagram
 
