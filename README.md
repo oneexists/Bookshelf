@@ -80,6 +80,20 @@ and note taking.
     new Date("2022-12-13".replace(/-/g, '/')).toLocaleDateString()
     ```
 
+## Target Process
+
+- Delete reading activity
+- List finished books
+- List unfinished books
+- List books in progress
+- Provide reading statistics (yearly and overall)
+  - books read
+  - pages read
+  - by language
+- Add quotes to books
+- Add notes to books
+  - optionally tag note with topics
+
 ## Resources
 
 - Spring Data REST:
