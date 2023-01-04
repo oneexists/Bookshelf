@@ -1,19 +1,19 @@
 import { Routes, Route } from "react-router-dom";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
-import Home from "./components/Home";
-import Login from "./components/Login";
-import NotFound from "./components/NotFound";
-import Register from "./components/Register";
+import Home from "./features/Home";
+import Login from "./features/Login";
+import NotFound from "./features/NotFound";
+import Register from "./features/Register";
 import { useAuth } from "./hooks/useAuth";
 import { useEffect } from "react";
 import { refresh } from "./services/authService";
-import Bookshelf from "./components/Bookshelf";
-import BookView from "./components/Bookshelf/BookView";
-import BookAdd from "./components/Bookshelf/book/BookAdd";
-import BookEdit from "./components/Bookshelf/BookEdit";
-import ReadingLogAdd from "./components/ReadingLog/ReadingLogAdd";
-import ReadingLogEdit from "./components/ReadingLog/ReadingLogEdit";
+import AllBooks from "./features/Bookshelf/components/AllBooks";
+import BookView from "./features/Bookshelf/components/BookView";
+import BookAdd from "./features/Bookshelf/components/BookAdd";
+import BookEdit from "./features/Bookshelf/components/BookEdit";
+import ReadingLogAdd from "./features/ReadingLog/components/ReadingLogAdd";
+import ReadingLogEdit from "./features/ReadingLog/components/ReadingLogEdit";
 
 function App() {
     const auth = useAuth();
@@ -31,7 +31,7 @@ function App() {
                 {(auth.user)
                 ? <>
                   <Route path="/">
-                    <Route index element={<Bookshelf />} />
+                    <Route index element={<AllBooks />} />
                   </Route>
                   
                   <Route path="books">
