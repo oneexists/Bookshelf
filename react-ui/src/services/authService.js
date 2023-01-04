@@ -1,8 +1,7 @@
-const API_URL = process.env.REACT_APP_API_URL;
-const TOKEN_KEY = "bujo-bookshelf";
+import { APP_USERS_URL, AUTHENTICATE_URL, REFRESH_URL, TOKEN_KEY } from "../config/bookshelfApi";
 
 export async function authenticate({ username, password }) {
-    const response = await fetch(`${API_URL}/authenticate`, {
+    const response = await fetch(AUTHENTICATE_URL, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -20,7 +19,7 @@ export async function authenticate({ username, password }) {
 export async function refresh() {
     const token = localStorage.getItem(TOKEN_KEY);
     if (token) {
-        const response = await fetch(`${API_URL}/refresh`, {
+        const response = await fetch(REFRESH_URL, {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -36,7 +35,7 @@ export async function refresh() {
 }
 
 export async function register({ username, password }) {
-    const response = await fetch(`${API_URL}/api/appUsers`, {
+    const response = await fetch(APP_USERS_URL, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

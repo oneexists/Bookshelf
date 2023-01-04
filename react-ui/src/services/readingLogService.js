@@ -1,7 +1,4 @@
-const API_URL = process.env.REACT_APP_API_URL;
-
-const READING_LOG_URL = `${API_URL}/api/readingLogs`;
-const TOKEN_KEY = "bujo-bookshelf";
+import { READING_LOG_URL, TOKEN_KEY } from "../config/bookshelfApi";
 
 export async function createLog({ bookId, start, finish }) {
     const response = await fetch(READING_LOG_URL, {

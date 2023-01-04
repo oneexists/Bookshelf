@@ -1,8 +1,7 @@
-const API_URL = process.env.REACT_APP_API_URL;
-const TOKEN_KEY = "bujo-bookshelf";
+import { APP_USERS_URL, BOOKS_URL, TOKEN_KEY } from "../config/bookshelfApi";
 
 export async function findUserBooks({ id }) {
-    const response = await fetch(`${API_URL}/api/appUsers/${id}/books?projection=inlineAuthor`, {
+    const response = await fetch(`${APP_USERS_URL}/${id}/books?projection=inlineAuthor`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -17,7 +16,7 @@ export async function findUserBooks({ id }) {
 }
 
 export async function createBook({ title, pages, language, author, appUserId }) {
-    const response = await fetch(`${API_URL}/api/books`, {
+    const response = await fetch(BOOKS_URL, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -36,7 +35,7 @@ export async function createBook({ title, pages, language, author, appUserId }) 
 }
 
 export async function deleteBookById(id) {
-    const response = await fetch(`${API_URL}/api/books/${id}`, {
+    const response = await fetch(`${BOOKS_URL}/${id}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
@@ -54,7 +53,7 @@ export async function deleteBookById(id) {
 }
 
 export async function updateBook({ bookId, title, pages, language, author, appUserId }) {
-    const response = await fetch(`${API_URL}/api/books/${bookId}`, {
+    const response = await fetch(`${BOOKS_URL}/${bookId}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",

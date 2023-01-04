@@ -1,7 +1,4 @@
-const API_URL = process.env.REACT_APP_API_URL;
-
-const AUTHORS_URL = `${API_URL}/api/authors`;
-const TOKEN_KEY = "bujo-bookshelf";
+import { AUTHORS_URL, TOKEN_KEY } from "../config/bookshelfApi";
 
 export async function searchAuthor(name) {
     const searchResponse = await fetch(`${AUTHORS_URL}/search/name?name=${name}`);
