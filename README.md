@@ -80,6 +80,26 @@ and note taking.
     new Date("2022-12-13".replace(/-/g, '/')).toLocaleDateString()
     ```
 
+
+- Create Docker build scripts
+  - two scripts: one for updating, one for running
+    - `scripts/update-api.sh`:
+      - starts MySQL database container `bookshelfserver`
+      - removes current back-end application container `bookshelf-api`
+      - builds new back-end application Docker image using Maven
+      - creates new `bookshelf-api` Docker container
+    - `scripts/run-api.sh`:
+      - starts database container `bookshelfserver`
+      - starts back-end container `bookshelf-api`
+  - created `.gitattributes` file to standardize Bash script endings as `LF` rather 
+    than Windows standard `CRLF`
+    - [Documentation](https://docs.github.com/en/get-started/getting-started-with-git/configuring-git-to-handle-line-endings)
+      from GitHub
+    - implementation in `.gitattributes` file:
+      ```
+      *.sh text eol=lf
+      ```
+
 ## Target Process
 
 - Delete reading activity
