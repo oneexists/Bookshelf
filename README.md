@@ -69,8 +69,8 @@ and note taking.
     - [useDataSource](./react-ui/src/hooks/useDataSource.js)
     - [useInput](./react-ui/src/hooks/useInput.js)
   - Higher Order Components
-    - [withAuthor](./react-ui/src/components/Bookshelf/book/withAuthor.js)
-    - [withBooks](./react-ui/src/components/Bookshelf/book/withBooks.js)
+    - [withAuthor](./react-ui/src/features/hoc/withAuthor.js)
+    - [withBooks](./react-ui/src/features/hoc/withBooks.js)
 
 
 - Add styling using React `styled-components` and CSS Modules
