@@ -110,6 +110,21 @@ and note taking.
       *.sh text eol=lf
       ```
 
+
+- Remove arrow function from delete button to prevent excess re-rendering
+  - [Updated delete button](./react-ui/src/features/Bookshelf/components/BookView/BookViewButtonBar.js)
+    ```javascript
+    const DeleteButton = memo(({ onClick }) => (
+        <DangerButton text="Delete Book" handleClick={onClick} />
+    ));
+    ```
+    ```javascript
+    const handleDelete = useCallback(() => {
+        deleteBookById(bookId).then(navigate("/"));
+    }, [bookId, navigate]);
+    ```
+  - [Function Components with inner callbacks](https://stackoverflow.com/questions/36677733/why-shouldnt-jsx-props-use-arrow-functions-or-bind)
+
 ## Target Process
 
 - Delete reading activity
