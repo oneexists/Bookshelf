@@ -87,6 +87,10 @@ and note taking.
     ```
 
 
+- Simplify `AppUserDetails` implementation by extending Spring Security `User`
+  - [Reference](https://stackoverflow.com/questions/20349594/adding-additional-details-to-principal-object-stored-in-spring-security-context)
+
+
 - Create Docker build scripts
   - two scripts: one for updating, one for running
     - `scripts/update-api.sh`:
