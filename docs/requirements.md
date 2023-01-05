@@ -8,7 +8,7 @@
   - Password validation: 8 character length with at least one letter, one digit
     and one special character
 - Add, edit and delete books
-- Add and edit a book's reading activity
+- Add, edit and delete a book's reading activity
 
 ## Non-Functional
 

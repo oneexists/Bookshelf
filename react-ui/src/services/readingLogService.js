@@ -37,3 +37,21 @@ export async function editLog({ readingLogId, start, finish }) {
     }
     return Promise.reject();
 }
+
+export async function deleteLogById(id) {
+    const response = await fetch(`${READING_LOG_URL}/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        }
+    });
+
+    if (response.ok) {
+        return Promise.resolve();
+    } else if (response.status === 400) {
+        const errors = await response.json();
+        return Promise.reject(errors);
+    }
+    return Promise.reject();
+}

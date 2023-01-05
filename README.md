@@ -127,7 +127,6 @@ and note taking.
 
 ## Target Process
 
-- Delete reading activity
 - List finished books
 - List unfinished books
 - List books in progress
