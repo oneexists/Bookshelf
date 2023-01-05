@@ -36,6 +36,9 @@ function App() {
                   
                   <Route path="books">
                     <Route path="add" element={<BookAdd />} />
+                    <Route path="unfinished" element={<NotFound />} />
+                    <Route path="in-progress" element={<NotFound />} />
+                    <Route path="finished" element={<NotFound />} />
 
                     <Route path=":id">
                         <Route index element={<BookView />} />
