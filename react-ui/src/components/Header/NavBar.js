@@ -8,7 +8,15 @@ export default function NavBar() {
         <nav className="navbar navbar-expand-md navbar-dark bg-dark">
             <div className="container-fluid">
                 <div className="navbar-header">
-                    <NavLink to="/" className="navbar-brand"><img height="32" src={process.env.PUBLIC_URL + "/book-icon.png"} alt="logo" />Bookshelf</NavLink>
+                    <div className="nav navbar-nav">
+                        <NavLink to="/" className="navbar-brand"><img height="32" src={process.env.PUBLIC_URL + "/book-icon.png"} alt="logo" />Bookshelf</NavLink>
+                        {(auth.user) &&
+                        <>
+                            <NavLink to="/quotes" className="nav-link">Quotes</NavLink>
+                            <NavLink to="/notes" className="nav-link">Notes</NavLink>
+                        </>
+                        }
+                    </div>
                 </div>
                     {(auth.user)
                     ?
