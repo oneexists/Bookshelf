@@ -1,26 +1,32 @@
 # Bookshelf Application
 
-Add your books to your bookshelf, tracking when books were read, and collect all 
-your notes from each book. Provides a single location for keeping track of reading 
+Add your books to your bookshelf, tracking when books were read, and collect all
+your notes from each book. Provides a single location for keeping track of reading
 and note taking.
 
 ### Links
 
-- [project overview](https://oneexists.github.io/bookshelf-project)
-- [setup](./docs/setup.md)
-- [requirements documentation](./docs/requirements.md)
+- [Project Overview](https://oneexists.github.io/bookshelf-project)
+- [Setup](./docs/setup.md)
+- [Requirements Documentation](./docs/requirements.md)
 
 ### Technologies
 
+#### Back-End
+
+- [MySQL](https://www.mysql.com/)
 - [Spring Data JPA](https://spring.io/projects/spring-data-jpa),
   [Hibernate](https://hibernate.org/)
-- [Spring Data REST](https://spring.io/projects/spring-data-rest)
 - [Spring Security](https://spring.io/projects/spring-security)
-- [MySQL](https://www.mysql.com/)
+- [JJWT](https://github.com/jwtk/jjwt)
+- [Spring Data REST](https://spring.io/projects/spring-data-rest)
 - [JUnit Jupiter](https://junit.org/junit5/docs/current/user-guide/),
   [Mockito](https://site.mockito.org/)
-- [React](https://reactjs.org/)
+
+#### Front-End
+
 - [HTML5](https://developer.mozilla.org/en-US/docs/Glossary/HTML5)
+- [React](https://reactjs.org/)
 - [Bootstrap 5](https://getbootstrap.com/)
 - [CSS3](https://www.css3.info/)
 
@@ -69,11 +75,11 @@ and note taking.
 
 - Add styling using React `styled-components` and CSS Modules
 - Parse reading log dates from JSON string values in JavaScript for date formatting
-  - date appeared to be one day off due to time zone resolution while creating a new 
+  - date appeared to be one day off due to time zone resolution while creating a new
     Date in JavaScript
-  - used a regular expression as suggested 
+  - used a regular expression as suggested
     [here](https://stackoverflow.com/questions/7556591/is-the-javascript-date-object-always-one-day-off)
-    to convert dates from `YYYY-MM-DD` to `YYYY/MM/DD` before creating a new Date to 
+    to convert dates from `YYYY-MM-DD` to `YYYY/MM/DD` before creating a new Date to
     for date formatting
   - example of parsing and formatting date:
     ```javascript
@@ -91,7 +97,7 @@ and note taking.
     - `scripts/run-api.sh`:
       - starts database container `bookshelfserver`
       - starts back-end container `bookshelf-api`
-  - created `.gitattributes` file to standardize Bash script endings as `LF` rather 
+  - created `.gitattributes` file to standardize Bash script endings as `LF` rather
     than Windows standard `CRLF`
     - [Documentation](https://docs.github.com/en/get-started/getting-started-with-git/configuring-git-to-handle-line-endings)
       from GitHub
