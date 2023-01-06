@@ -63,10 +63,15 @@
 ### 3. Running the application
 
   - navigate to the `scripts` directory
-  - to run the first time: `./run.sh -ur`
-    - creates API image using `-u` option
-    - starts React front-end using `-r` option
-  - starting the API: `./run.sh`
-  - starting the API and React front-end: `./run.sh -r`
-    - further information for using React can be found [here](../react-ui/README.md)
-  - help menu with usage instructions: `./run.sh -h`
+- to run the first time: `./run.sh -ur`
+  - creates API image using `-u` option
+  - starts React front-end using `-r` option
+- starting the API: `./run.sh`
+- starting the API and React front-end: `./run.sh -r`
+  - further information for using React can be found [here](../react-ui/README.md)
+- help menu with usage instructions: `./run.sh -h`
+
+### 4. Shutting Down the API
+
+- <kbd>Ctrl + C</kbd> will shut down the React application
+- `./run.sh -k` will shut down the API and database

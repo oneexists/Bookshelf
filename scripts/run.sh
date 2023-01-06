@@ -85,7 +85,7 @@ then
 	start_api
 fi
 
-if [ "$node" = true ]
+if [ "$react" = true ]
 then
-	start_node
+	start_react
 fi
