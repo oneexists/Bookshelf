@@ -3,6 +3,7 @@
 ## Docker Containerization Configuration
 
 ### 1. Initialize MySQL database
+
   - create Docker volumes:
     ```bash
     docker volume create mysql_data
@@ -26,6 +27,7 @@
       database
 
 ### 2. Environment setup
+
   - to install the JDK, execute the following commands:
   ```bash
   sudo apt update
@@ -59,12 +61,12 @@
       ```
 
 ### 3. Running the application
-  - to create and run the application for the first time, use the
-    `/scripts/update-api.sh` script, which will restart the database container
-    `bookshelfserver` and create the application container `bookshelf-api`
-  - for all following runs of the application, `/scripts/run-api.sh` will start
-    both containers
-  - when running, the application API can be found at `http://localhost:8080/api`
-  - to use the React frontend interface, follow
-    [React instructions](../react-ui/README.md) to create the local environment
-    and install npm if needed
+
+  - navigate to the `scripts` directory
+  - to run the first time: `./run.sh -ur`
+    - creates API image using `-u` option
+    - starts React front-end using `-r` option
+  - starting the API: `./run.sh`
+  - starting the API and React front-end: `./run.sh -r`
+    - further information for using React can be found [here](../react-ui/README.md)
+  - help menu with usage instructions: `./run.sh -h`
