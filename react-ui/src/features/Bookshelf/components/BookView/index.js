@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useDataSource } from "../../../../hooks/useDataSource";
 import { serverResource } from "../../../../services/serverResource";
 import BookDetails from "../../layouts/BookDetails";
-import BookLogs from "../../../ReadingLog/components/BookLogs";
+import BookLogs from "../ReadingLogs";
 import { BOOKS_URL } from "../../../../config/bookshelfApi";
 import PageLayout from "../../../../components/layouts/PageLayout";
 import BookViewButtonBar from "./BookViewButtonBar";

@@ -1,9 +1,9 @@
 import ReadingLogDetails from "./ReadingLogDetails";
-import { useDataSource } from "../../../hooks/useDataSource";
-import { serverResource } from "../../../services/serverResource";
-import { ComponentList } from "../../../components/layouts/ComponentList";
+import { useDataSource } from "../../../../hooks/useDataSource";
+import { serverResource } from "../../../../services/serverResource";
+import { ComponentList } from "../../../../components/layouts/ComponentList";
 
-export default function BookLogs({ url }) {
+export default function ReadingLogs({ url }) {
     const result = useDataSource(serverResource(url));
     const { _embedded } = result || {};
     const { readingLogs } = _embedded || {};

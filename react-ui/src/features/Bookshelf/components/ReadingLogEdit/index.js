@@ -12,7 +12,7 @@ export default function ReadingLogEdit() {
 
     return readingLog && (
         <ReadingLogSplitLayout 
-            component={<ReadingLogEditForm { ...{ readingLogId: logId, start, finish} } />} 
+            component={<ReadingLogEditForm { ...{ start, finish} } />} 
             pageTitle="Edit Reading Log" 
         />
     );
