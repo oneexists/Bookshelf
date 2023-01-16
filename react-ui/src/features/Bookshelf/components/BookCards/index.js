@@ -1,5 +1,5 @@
 import { ComponentList } from "../../../../components/layouts/ComponentList";
-import BookCard from "./BookCard";
+import BookCard from "../../layouts/BookCard";
 
 export default function BookCards({ books }) {
     return (

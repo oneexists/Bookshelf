@@ -1,7 +1,7 @@
-import BookDetails from "../BookDetails";
-import SecondaryNavLinkButton from "../../../../components/buttons/SecondaryNavLinkButton";
-import WarningNavLinkButton from "../../../../components/buttons/WarningNavLinkButton";
-import ButtonBar from "../../../../components/layouts/ButtonBar";
+import BookDetails from "../components/BookDetails";
+import SecondaryNavLinkButton from "../../../components/buttons/SecondaryNavLinkButton";
+import WarningNavLinkButton from "../../../components/buttons/WarningNavLinkButton";
+import ButtonBar from "../../../components/layouts/ButtonBar";
 
 export default function BookCard({ book }) {
     const { bookId, title, author, language, pages } = book;
