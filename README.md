@@ -22,6 +22,8 @@ and note taking.
 - [Spring Data REST](https://spring.io/projects/spring-data-rest)
 - [JUnit Jupiter](https://junit.org/junit5/docs/current/user-guide/),
   [Mockito](https://site.mockito.org/)
+- [Maven](https://maven.apache.org/),
+  [Google Jib](https://cloud.google.com/java/getting-started/jib)
 
 #### Front-End
 
@@ -156,3 +158,5 @@ and note taking.
     - [React: Design Patterns](https://www.linkedin.com/learning/react-design-patterns/take-your-react-skills-to-the-next-level)
     - [React Hooks](https://www.linkedin.com/learning/react-hooks/understanding-modern-react)
     - [Building Modern UIs with React Router v6](https://www.linkedin.com/learning/building-modern-uis-with-react-router-v6/building-modern-uis)
+- Docker:
+  - [Introduction to Docker for Java Developers](https://www.linkedin.com/learning/introduction-to-docker-for-java-developers)
