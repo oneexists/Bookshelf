@@ -15,7 +15,7 @@ export default function BookEdit() {
     const BookEditFormLoadedAuthor = withAuthor(BookEditForm, href);
 
     return book && (
-        <PageLayout pageTitle="Edit Book">
+        <PageLayout pageTitle={`Edit "${title}"`}>
             <BookEditFormLoadedAuthor { ...{ title, pages, language } } />
         </PageLayout>
     );
