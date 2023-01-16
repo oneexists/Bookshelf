@@ -20,6 +20,9 @@ class BookRepositoryTest {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
+    final String ENGLISH = "English";
+    final String WAR_AND_PEACE = "War and Peace";
+
     @BeforeEach
     void setUp() {
         jdbcTemplate.update("call set_known_good_state();");
@@ -46,8 +49,8 @@ class BookRepositoryTest {
 
     Book getExpectedBook() {
         Book expected = new Book();
-        expected.setTitle("War and Peace");
-        expected.setLanguage("English");
+        expected.setTitle(WAR_AND_PEACE);
+        expected.setLanguage(ENGLISH);
         expected.setPages(1296);
 
         return expected;

@@ -35,6 +35,12 @@ class AppUserServiceImplTest {
 	@Autowired
 	AppUserValidation validation;
 
+	final String USERNAME = "test username";
+	final String PASSWORD = "P@ssw0rd!";
+	final String USERNAME_REQUIRED = "username is required";
+	final String PASSWORD_REQUIRED = "password is required";
+	final String USERNAME_EXISTS = "provided username already exists";
+
 	@BeforeEach
 	void setUp() {
 		service = new AppUserServiceImpl(repository, passwordEncoder, validation);
@@ -45,7 +51,7 @@ class AppUserServiceImplTest {
 	 */
 	@Test
 	void testLoadUserByUsername() {
-		AppUser expected = new AppUser("test username", "P@ssw0rd!", AppUserRole.USER);
+		AppUser expected = new AppUser(USERNAME, PASSWORD, AppUserRole.USER);
 		expected.setAppUserId(2L);
 		given(repository.findByUsername(expected.getUsername())).willReturn(Optional.of(expected));
 		ArgumentCaptor<String> loadArgCaptor = ArgumentCaptor.forClass(String.class);
@@ -69,8 +75,8 @@ class AppUserServiceImplTest {
 	 */
 	@Test
 	void testShouldCreate() {
-		AppUserDTO appUserDto = new AppUserDTO("test username", "P@ssw0rd!");
-		AppUser expected = new AppUser("test username", "P@ssw0rd!", AppUserRole.USER);
+		AppUserDTO appUserDto = new AppUserDTO(USERNAME, PASSWORD);
+		AppUser expected = new AppUser(USERNAME, PASSWORD, AppUserRole.USER);
 		expected.setAppUserId(2L);
 		given(passwordEncoder.encode(any(String.class))).willReturn(expected.getPassword());
 		given(repository.save(any(AppUser.class))).willReturn(expected);
@@ -85,7 +91,7 @@ class AppUserServiceImplTest {
 	
 	@Test
 	void testShouldNotCreateNullUsername() {
-		AppUserDTO appUserDto = new AppUserDTO(null, "P@ssw0rd!");
+		AppUserDTO appUserDto = new AppUserDTO(null, PASSWORD);
 		
 		Result<AppUserDetails> result = service.create(appUserDto);
 		
@@ -93,12 +99,12 @@ class AppUserServiceImplTest {
 		assertFalse(result.isSuccess());
 		assertNull(result.getPayload());
 		assertEquals(1, result.getMessages().size());
-		assertTrue(result.getMessages().get(0).contains("username is required"));
+		assertTrue(result.getMessages().get(0).contains(USERNAME_REQUIRED));
 	}
 	
 	@Test
 	void testShouldNotCreateEmptyUsername() {
-		AppUserDTO appUserDto = new AppUserDTO("\t", "P@ssw0rd!");
+		AppUserDTO appUserDto = new AppUserDTO("\t", PASSWORD);
 		
 		Result<AppUserDetails> result = service.create(appUserDto);
 		
@@ -106,12 +112,12 @@ class AppUserServiceImplTest {
 		assertFalse(result.isSuccess());
 		assertNull(result.getPayload());
 		assertEquals(1, result.getMessages().size());
-		assertTrue(result.getMessages().get(0).contains("username is required"));
+		assertTrue(result.getMessages().get(0).contains(USERNAME_REQUIRED));
 	}
 	
 	@Test
 	void testShouldNotCreateNullPassword() {
-		AppUserDTO appUserDto = new AppUserDTO("test username", null);
+		AppUserDTO appUserDto = new AppUserDTO(USERNAME, null);
 		
 		Result<AppUserDetails> result = service.create(appUserDto);
 		
@@ -119,12 +125,12 @@ class AppUserServiceImplTest {
 		assertFalse(result.isSuccess());
 		assertNull(result.getPayload());
 		assertEquals(1, result.getMessages().size());
-		assertTrue(result.getMessages().get(0).contains("password is required"));
+		assertTrue(result.getMessages().get(0).contains(PASSWORD_REQUIRED));
 	}
 	
 	@Test
 	void testShouldNotCreateEmptyPassword() {
-		AppUserDTO appUserDto = new AppUserDTO("test username", "   ");
+		AppUserDTO appUserDto = new AppUserDTO(USERNAME, "   ");
 		
 		Result<AppUserDetails> result = service.create(appUserDto);
 		
@@ -132,13 +138,13 @@ class AppUserServiceImplTest {
 		assertFalse(result.isSuccess());
 		assertNull(result.getPayload());
 		assertEquals(1, result.getMessages().size());
-		assertTrue(result.getMessages().get(0).contains("password is required"));
+		assertTrue(result.getMessages().get(0).contains(PASSWORD_REQUIRED));
 	}
 	
 	@Test
 	void testShouldNotCreateDuplicateUsername() {
 		given(repository.save(any(AppUser.class))).willThrow(DataIntegrityViolationException.class);
-		AppUserDTO appUserDto = new AppUserDTO("test username", "P@ssw0rd!");
+		AppUserDTO appUserDto = new AppUserDTO(USERNAME, PASSWORD);
 		
 		Result<AppUserDetails> result = service.create(appUserDto);
 		
@@ -146,6 +152,6 @@ class AppUserServiceImplTest {
 		assertFalse(result.isSuccess());
 		assertNull(result.getPayload());
 		assertEquals(1, result.getMessages().size());
-		assertTrue(result.getMessages().get(0).contains("provided username already exists"));
+		assertTrue(result.getMessages().get(0).contains(USERNAME_EXISTS));
 	}
 }

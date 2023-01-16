@@ -13,12 +13,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class AppUserValidatorTest {
-    String USERNAME_FIELD = "username";
-    String PASSWORD_FIELD = "password";
     @Autowired
     AppUserValidator validator;
     Errors errors;
     AppUser input;
+
+    final String USERNAME_FIELD = "username";
+    final String PASSWORD_FIELD = "password";
 
     @BeforeEach
     void setUp() {

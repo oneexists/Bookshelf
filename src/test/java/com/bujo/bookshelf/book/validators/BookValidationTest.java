@@ -14,18 +14,28 @@ class BookValidationTest {
 
     BookDTO theRegulatorsDto;
 
+    final Long BOOK_ID, APP_USER_ID = BOOK_ID = 1L;
+    final String THE_REGULATORS = "The Regulators";
+    final String STEPHEN_KING = "Stephen King";
+    final String ENGLISH = "English";
+    final int PAGE_COUNT = 512;
+    final String ERR_BOOK_REQUIRED = "book is required";
+    final String ERR_TITLE_REQUIRED = "title is required";
+    final String ERR_AT_LEAST_ONE_PAGE_REQUIRED = "book must have at least one page";
+    final String ERR_AUTHOR_REQUIRED = "author is required";
+
     /**
      * Test method for {@link com.bujo.bookshelf.book.validators.BookValidation#validate(BookDTO)}.
      */
     @Test
     void testShouldValidateBook() {
         theRegulatorsDto = new BookDTO(
-                1L,
-                1L,
-                "The Regulators",
-                "Stephen King",
-                "English",
-                512);
+                BOOK_ID,
+                APP_USER_ID,
+                THE_REGULATORS,
+                STEPHEN_KING,
+                ENGLISH,
+                PAGE_COUNT);
 
         Result<BookDTO> result = validation.validate(theRegulatorsDto);
 
@@ -45,7 +55,7 @@ class BookValidationTest {
     @Test
     void testShouldNotValidateNullBookDto() {
         Result<BookDTO> expected = new Result<>();
-        expected.addMessage(ActionStatus.NOT_FOUND, "book is required");
+        expected.addMessage(ActionStatus.NOT_FOUND, ERR_BOOK_REQUIRED);
 
         validateErrorResult(expected, validation.validate(theRegulatorsDto));
     }
@@ -53,15 +63,15 @@ class BookValidationTest {
     @Test
     void testShouldNotValidateNullTitle() {
         theRegulatorsDto = new BookDTO(
-                1L,
-                1L,
+                BOOK_ID,
+                APP_USER_ID,
                 null,
-                "Stephen King",
-                "English",
-                512);
+                STEPHEN_KING,
+                ENGLISH,
+                PAGE_COUNT);
 
         Result<BookDTO> expected = new Result<>();
-        expected.addMessage(ActionStatus.INVALID, "title is required");
+        expected.addMessage(ActionStatus.INVALID, ERR_TITLE_REQUIRED);
 
         validateErrorResult(expected, validation.validate(theRegulatorsDto));
     }
@@ -69,15 +79,15 @@ class BookValidationTest {
     @Test
     void testShouldNotValidateEmptyTitle() {
         theRegulatorsDto = new BookDTO(
-                1L,
-                1L,
+                BOOK_ID,
+                APP_USER_ID,
                 "\t",
-                "Stephen King",
-                "English",
-                512);
+                STEPHEN_KING,
+                ENGLISH,
+                PAGE_COUNT);
 
         Result<BookDTO> expected = new Result<>();
-        expected.addMessage(ActionStatus.INVALID, "title is required");
+        expected.addMessage(ActionStatus.INVALID, ERR_TITLE_REQUIRED);
 
         validateErrorResult(expected, validation.validate(theRegulatorsDto));
     }
@@ -85,15 +95,15 @@ class BookValidationTest {
     @Test
     void testShouldNotValidateZeroPages() {
         theRegulatorsDto = new BookDTO(
-                1L,
-                1L,
-                "The Regulators",
-                "Stephen King",
-                "English",
+                BOOK_ID,
+                APP_USER_ID,
+                THE_REGULATORS,
+                STEPHEN_KING,
+                ENGLISH,
                 0);
 
         Result<BookDTO> expected = new Result<>();
-        expected.addMessage(ActionStatus.INVALID, "book must have at least one page");
+        expected.addMessage(ActionStatus.INVALID, ERR_AT_LEAST_ONE_PAGE_REQUIRED);
 
         validateErrorResult(expected, validation.validate(theRegulatorsDto));
     }
@@ -101,14 +111,14 @@ class BookValidationTest {
     @Test
     void testShouldNotValidateNegativePages() {
         theRegulatorsDto = new BookDTO(
-                1L,
-                1L,
-                "The Regulators",
-                "Stephen King",
-                "English",
+                BOOK_ID,
+                APP_USER_ID,
+                THE_REGULATORS,
+                STEPHEN_KING,
+                ENGLISH,
                 -300);
         Result<BookDTO> expected = new Result<>();
-        expected.addMessage(ActionStatus.INVALID, "book must have at least one page");
+        expected.addMessage(ActionStatus.INVALID, ERR_AT_LEAST_ONE_PAGE_REQUIRED);
 
         validateErrorResult(expected, validation.validate(theRegulatorsDto));
     }
@@ -116,14 +126,14 @@ class BookValidationTest {
     @Test
     void testShouldNotValidateNullAuthor() {
         theRegulatorsDto = new BookDTO(
-                1L,
-                1L,
-                "The Regulators",
+                BOOK_ID,
+                APP_USER_ID,
+                THE_REGULATORS,
                 null,
-                "English",
-                512);
+                ENGLISH,
+                PAGE_COUNT);
         Result<BookDTO> expected = new Result<>();
-        expected.addMessage(ActionStatus.INVALID, "author is required");
+        expected.addMessage(ActionStatus.INVALID, ERR_AUTHOR_REQUIRED);
 
         validateErrorResult(expected, validation.validate(theRegulatorsDto));
     }
@@ -131,14 +141,14 @@ class BookValidationTest {
     @Test
     void testShouldNOtValidateEmptyAuthor() {
         theRegulatorsDto = new BookDTO(
-                1L,
-                1L,
-                "The Regulators",
+                BOOK_ID,
+                APP_USER_ID,
+                THE_REGULATORS,
                 " ",
-                "English",
-                512);
+                ENGLISH,
+                PAGE_COUNT);
         Result<BookDTO> expected = new Result<>();
-        expected.addMessage(ActionStatus.INVALID, "author is required");
+        expected.addMessage(ActionStatus.INVALID, ERR_AUTHOR_REQUIRED);
 
         validateErrorResult(expected, validation.validate(theRegulatorsDto));
     }

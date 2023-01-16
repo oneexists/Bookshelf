@@ -12,11 +12,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class AuthorValidatorTest {
-    String NAME_FIELD = "name";
     @Autowired
     AuthorValidator validator;
     Errors errors;
     Author input;
+
+    final String NAME_FIELD = "name";
 
     @BeforeEach
     void setUp() {

@@ -37,6 +37,9 @@ class ReadingLogServiceImplTest {
     @Autowired
     ReadingLogValidation validation;
 
+    final String ERR_BOOK_NOT_FOUND = "book not found";
+    final String ERR_INVALID_REQUEST = "invalid request";
+
     AppUser appUser = new AppUser();
     Author stephenKing = new Author();
     Book heartsInAtlantis = new Book();
@@ -49,26 +52,26 @@ class ReadingLogServiceImplTest {
         service = new ReadingLogServiceImpl(bookService, repository, validation);
 
         appUser.setAppUserId(1L);
-        stephenKing = initializeAuthor(4L, "Stephen King");
-        heartsInAtlantis = initializeBook(1L, stephenKing, "Hearts in Atlantis", 640);
+        stephenKing = initializeStephenKing();
+        heartsInAtlantis = initializeHeartsInAtlantis();
         heartsInAtlantisLog = initializeReadingLog(heartsInAtlantis, LocalDate.now().minusDays(3), LocalDate.now());
     }
 
-    private Author initializeAuthor(Long id, String name) {
+    private Author initializeStephenKing() {
         Author newAuthor = new Author();
-        newAuthor.setAuthorId(id);
-        newAuthor.setName(name);
+        newAuthor.setAuthorId(4L);
+        newAuthor.setName("Stephen King");
         return newAuthor;
     }
 
-    private Book initializeBook(Long id, Author author, String title, int pages) {
+    private Book initializeHeartsInAtlantis() {
         Book newBook = new Book();
         newBook.setUser(appUser);
-        newBook.setBookId(id);
-        newBook.setAuthor(author);
-        newBook.setTitle(title);
+        newBook.setBookId(1L);
+        newBook.setAuthor(stephenKing);
+        newBook.setTitle("Hearts in Atlantis");
         newBook.setLanguage("English");
-        newBook.setPages(pages);
+        newBook.setPages(640);
         return newBook;
     }
 
@@ -90,7 +93,7 @@ class ReadingLogServiceImplTest {
         ArgumentCaptor<ReadingLog> newReadingLogArgCaptor = ArgumentCaptor.forClass(ReadingLog.class);
 
         readingLogDto = new ReadingLogDTO(
-                1L,
+                heartsInAtlantis.getBookId(),
                 LocalDate.now().minusDays(3),
                 LocalDate.now().minusDays(2));
 
@@ -125,7 +128,7 @@ class ReadingLogServiceImplTest {
                 LocalDate.now().minusDays(2));
 
         Result<ReadingLogDTO> expected = new Result<>();
-        expected.addMessage(ActionStatus.NOT_FOUND, "book not found");
+        expected.addMessage(ActionStatus.NOT_FOUND, ERR_BOOK_NOT_FOUND);
 
         validateErrorResult(expected, service.create(readingLogDto, appUser.getAppUserId()));
     }
@@ -134,12 +137,12 @@ class ReadingLogServiceImplTest {
     void testShouldNotCreateReadingLogMissingUser() {
         given(bookService.findById(heartsInAtlantis.getBookId())).willReturn(Optional.of(heartsInAtlantis));
         readingLogDto = new ReadingLogDTO(
-                1L,
+                heartsInAtlantis.getBookId(),
                 LocalDate.now().minusDays(3),
                 LocalDate.now().minusDays(2));
 
         Result<ReadingLogDTO> expected = new Result<>();
-        expected.addMessage(ActionStatus.INVALID, "invalid request");
+        expected.addMessage(ActionStatus.INVALID, ERR_INVALID_REQUEST);
 
         validateErrorResult(expected, service.create(readingLogDto, 1_000L));
     }
