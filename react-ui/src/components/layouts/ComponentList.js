@@ -5,8 +5,8 @@ export const ComponentList = ({
 }) => {
     return (
         <>
-            {items.map((item, i) => (
-                <ItemComponent key={i} {...{ [resourceName]: item }} /> 
+            {items.map((item) => (
+                <ItemComponent key={item} {...{ [resourceName]: item }} /> 
             ))}
         </>
     )
