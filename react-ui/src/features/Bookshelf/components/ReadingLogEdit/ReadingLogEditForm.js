@@ -1,12 +1,13 @@
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useInput } from "../../../../hooks/useInput";
 import { editLog } from "../../../../services/readingLogService";
 import ErrorPanel from "../../../../components/forms/ErrorPanel";
 import SectionLabel from "../../../../components/forms/SectionLabel";
 import SubmitPanel from "../../../../components/forms/SubmitPanel";
 
-export default function ReadingLogEditForm({ readingLogId, start, finish }) {
+export default function ReadingLogEditForm({ start, finish }) {
+    const { logId } = useParams();
     const errorRef = useRef();
     const navigate = useNavigate();
 
@@ -18,7 +19,7 @@ export default function ReadingLogEditForm({ readingLogId, start, finish }) {
         evt.preventDefault();
 
         editLog({ 
-            readingLogId, 
+            readingLogId: logId, 
             start: startProps.value,
             finish: finishProps.value
         }).then(() => {

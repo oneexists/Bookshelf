@@ -1,8 +1,8 @@
 import { memo, useCallback } from "react";
-import DangerButton from "../../../components/buttons/DangerButton";
-import { deleteLogById } from "../../../services/readingLogService";
-import SecondaryNavLinkButton from "../../../components/buttons/SecondaryNavLinkButton";
-import ButtonBar from "../../../components/layouts/ButtonBar";
+import DangerButton from "../../../../components/buttons/DangerButton";
+import { deleteLogById } from "../../../../services/readingLogService";
+import SecondaryNavLinkButton from "../../../../components/buttons/SecondaryNavLinkButton";
+import ButtonBar from "../../../../components/layouts/ButtonBar";
 
 const DeleteButton = memo(({ onClick }) => (
     <DangerButton text="Delete" handleClick={onClick} />
