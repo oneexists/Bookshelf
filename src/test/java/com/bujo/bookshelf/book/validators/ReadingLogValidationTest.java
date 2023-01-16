@@ -16,15 +16,23 @@ class ReadingLogValidationTest {
 
     ReadingLogDTO readingLogDto;
 
+    final String ERR_READING_LOG_REQUIRED = "reading log is required";
+    final String ERR_BOOK_REQUIRED = "book is required";
+    final String ERR_START_DATE_REQUIRED = "start date is required";
+    final String ERR_FUTURE_START_DATE = "start date must be in the past";
+    final String ERR_START_DATE_AFTER_FINISH_DATE = "start date must be before finish date";
+    final String ERR_FUTURE_FINISH_DATE = "finish date must be in the past";
+
+    private void setReadingLogDto(Long bookId, LocalDate start, LocalDate finish) {
+        readingLogDto = new ReadingLogDTO(bookId, start, finish);
+    }
+
     /**
      * Test method for {@link com.bujo.bookshelf.book.validators.ReadingLogValidation#validate(ReadingLogDTO)}.
      */
     @Test
     void testShouldValidateReadingLog() {
-        readingLogDto = new ReadingLogDTO(
-                1L,
-                LocalDate.now().minusDays(2),
-                LocalDate.now().minusDays(1));
+        setReadingLogDto(1L, LocalDate.now().minusDays(2), LocalDate.now().minusDays(1));
 
         Result<ReadingLogDTO> result = validation.validate(readingLogDto);
 
@@ -44,72 +52,57 @@ class ReadingLogValidationTest {
     @Test
     void testShouldNotValidateNullReadingLogDto() {
         Result<ReadingLogDTO> expected = new Result<>();
-        expected.addMessage(ActionStatus.NOT_FOUND, "reading log is required");
+        expected.addMessage(ActionStatus.NOT_FOUND, ERR_READING_LOG_REQUIRED);
 
         validateErrorResult(expected, validation.validate(readingLogDto));
     }
 
     @Test
     void testShouldNotValidateNullBookId() {
-        readingLogDto = new ReadingLogDTO(
-                null,
-                LocalDate.now().minusDays(2),
-                LocalDate.now().minusDays(1));
+        setReadingLogDto(null, LocalDate.now().minusDays(2), LocalDate.now().minusDays(1));
 
         Result<ReadingLogDTO> expected = new Result<>();
-        expected.addMessage(ActionStatus.INVALID, "book is required");
+        expected.addMessage(ActionStatus.INVALID, ERR_BOOK_REQUIRED);
 
         validateErrorResult(expected, validation.validate(readingLogDto));
     }
 
     @Test
     void testShouldNotValidateNullStart() {
-        readingLogDto = new ReadingLogDTO(
-                1L,
-                null,
-                LocalDate.now().minusDays(1));
+        setReadingLogDto(1L, null, LocalDate.now().minusDays(1));
 
         Result<ReadingLogDTO> expected = new Result<>();
-        expected.addMessage(ActionStatus.INVALID, "start date is required");
+        expected.addMessage(ActionStatus.INVALID, ERR_START_DATE_REQUIRED);
 
         validateErrorResult(expected, validation.validate(readingLogDto));
     }
 
     @Test
     void testShouldNotValidateFutureStart() {
-        readingLogDto = new ReadingLogDTO(
-                1L,
-                LocalDate.now().plusDays(2),
-                null);
+        setReadingLogDto(1L, LocalDate.now().plusDays(2), null);
 
         Result<ReadingLogDTO> expected = new Result<>();
-        expected.addMessage(ActionStatus.INVALID, "start date must be in the past");
+        expected.addMessage(ActionStatus.INVALID, ERR_FUTURE_START_DATE);
 
         validateErrorResult(expected, validation.validate(readingLogDto));
     }
 
     @Test
     void testShouldNotValidateFinishBeforeStart() {
-        readingLogDto = new ReadingLogDTO(
-                1L,
-                LocalDate.now().minusDays(1),
-                LocalDate.now().minusDays(2));
+        setReadingLogDto(1L, LocalDate.now().minusDays(1), LocalDate.now().minusDays(2));
 
         Result<ReadingLogDTO> expected = new Result<>();
-        expected.addMessage(ActionStatus.INVALID, "start date must be before finish date");
+        expected.addMessage(ActionStatus.INVALID, ERR_START_DATE_AFTER_FINISH_DATE);
 
         validateErrorResult(expected, validation.validate(readingLogDto));
     }
 
     @Test
     void testShouldNotValidateFutureFinish() {
-        readingLogDto = new ReadingLogDTO(
-                1L,
-                LocalDate.now().minusDays(1),
-                LocalDate.now().plusDays(2));
+        setReadingLogDto(1L, LocalDate.now().minusDays(1), LocalDate.now().plusDays(2));
 
         Result<ReadingLogDTO> expected = new Result<>();
-        expected.addMessage(ActionStatus.INVALID, "finish date must be in the past");
+        expected.addMessage(ActionStatus.INVALID, ERR_FUTURE_FINISH_DATE);
 
         validateErrorResult(expected, validation.validate(readingLogDto));
     }

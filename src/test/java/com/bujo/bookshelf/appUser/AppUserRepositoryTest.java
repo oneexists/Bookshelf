@@ -22,6 +22,9 @@ class AppUserRepositoryTest {
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 
+	final String USERNAME = "username";
+	final String PASSWORD = "$2a$10$bJ.Q1/9A/1i4LpO90CVnHO.DK464jvQnrXUo0QHJggWEhgLF3eElm";
+
 	@BeforeEach
 	void setUp() {
 		jdbcTemplate.update("call set_known_good_state();");
@@ -29,7 +32,7 @@ class AppUserRepositoryTest {
 
 	@Test
 	void testShouldFindById() {
-		AppUser expected = new AppUser("username", "$2a$10$bJ.Q1/9A/1i4LpO90CVnHO.DK464jvQnrXUo0QHJggWEhgLF3eElm", AppUserRole.USER);
+		AppUser expected = new AppUser(USERNAME, PASSWORD, AppUserRole.USER);
 
 		AppUser actual = repository.findById(1L).orElse(null);
 
@@ -39,9 +42,9 @@ class AppUserRepositoryTest {
 
 	@Test
 	void testShouldFindByUsername() {
-		AppUser expected = new AppUser("username", "$2a$10$bJ.Q1/9A/1i4LpO90CVnHO.DK464jvQnrXUo0QHJggWEhgLF3eElm", AppUserRole.USER);
+		AppUser expected = new AppUser(USERNAME, PASSWORD, AppUserRole.USER);
 		
-		AppUser actual = repository.findByUsername("username").orElse(null);
+		AppUser actual = repository.findByUsername(USERNAME).orElse(null);
 		
 		assertNotNull(actual);
 		assertEquals(expected.getUsername(), actual.getUsername());
@@ -62,7 +65,7 @@ class AppUserRepositoryTest {
 
 	@Test
 	void testShouldNotCreateDuplicateUsername() {
-		AppUser duplicate = new AppUser("username", "$2a$10$bJ.Q1/9A/1i4LpO90CVnHO.DK464jvQnrXUo0QHJggWEhgLF3eElm", AppUserRole.USER);
+		AppUser duplicate = new AppUser(USERNAME, PASSWORD, AppUserRole.USER);
 		
 		assertThatThrownBy(() -> repository.save(duplicate))
 			.isInstanceOf(DataIntegrityViolationException.class);

@@ -15,12 +15,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class AuthorRepositoryTest {
-    String AUTHOR_NAME = "Leo Tolstoy";
-    String NEW_AUTHOR_NAME = "Stephen King";
     @Autowired
     AuthorRepository repository;
     @Autowired
     JdbcTemplate jdbcTemplate;
+
+    final String AUTHOR_NAME = "Leo Tolstoy";
+    final String NEW_AUTHOR_NAME = "Stephen King";
 
     @BeforeEach
     void setUp() {
