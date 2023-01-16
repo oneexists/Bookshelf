@@ -1,20 +1,19 @@
 import { useEffect, useRef, useState } from "react";
-import { useAuth } from "../../../hooks/useAuth";
-import ErrorPanel from "../../../components/forms/ErrorPanel";
-import SectionLabel from "../../../components/forms/SectionLabel";
-import SubmitPanel from "../../../components/forms/SubmitPanel";
-import { useInput } from "../../../hooks/useInput";
-import { createBook } from "../../../services/bookService";
 import { useNavigate } from "react-router-dom";
-import PageLayout from "../../../components/layouts/PageLayout";
+import { useAuth } from "../../../../hooks/useAuth";
+import { useInput } from "../../../../hooks/useInput";
+import { createBook } from "../../../../services/bookService";
+import ErrorPanel from "../../../../components/forms/ErrorPanel";
+import SectionLabel from "../../../../components/forms/SectionLabel";
+import SubmitPanel from "../../../../components/forms/SubmitPanel";
 
-export default function BookAdd() {
+export default function BookAddForm() {
     const auth = useAuth();
     const navigate = useNavigate();
 
     const errorRef = useRef();
     const titleRef = useRef();
-
+    
     const [ titleProps, resetTitle ] = useInput("");
     const [ authorProps, resetAuthor ] = useInput("");
     const [ pagesProps, resetPages ] = useInput("");
@@ -24,7 +23,7 @@ export default function BookAdd() {
     useEffect(() => {
         titleRef.current.focus();
     }, []);
-
+    
     const handleSubmit = async (evt) => {
         evt.preventDefault();
 
@@ -44,9 +43,9 @@ export default function BookAdd() {
             setErrorMsg((r) => setErrorMsg(["Error saving book"]));
         });
     }
-
+    
     return (
-        <PageLayout pageTitle="Add Book">
+        <>
             <ErrorPanel errorRef={errorRef} errorMsg={errorMsg} />
 
             <form onSubmit={handleSubmit}>
@@ -96,6 +95,6 @@ export default function BookAdd() {
 
                 <SubmitPanel text="Add" />
             </form>
-        </PageLayout>
-    );
+        </>
+    )
 }
