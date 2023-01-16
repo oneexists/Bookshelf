@@ -43,13 +43,14 @@ class BookServiceImplTest {
     final String STEPHEN_KING = "Stephen King";
     final String KURT_VONNEGUT = "Kurt Vonnegut";
     final String RICHARD_BACHMAN = "Richard Bachman";
+    final String THE_REGULATORS = "The Regulators";
+    final String HEARTS_IN_ATLANTIS = "Hearts in Atlantis";
+    final String HOCUS_POCUS = "Hocus Pocus";
 
     AppUser appUser = new AppUser();
-    Book hocusPocus = new Book();
-    Book heartsInAtlantis = new Book();
-    Book theRegulators = new Book();
 
     Map<String, Author> authors = new HashMap<>();
+    Map<String, Book> books = new HashMap<>();
 
     @BeforeEach
     void setUp() {
@@ -58,13 +59,10 @@ class BookServiceImplTest {
         appUser.setAppUserId(1L);
 
         initializeAuthors();
+        initializeBooks();
 
-        theRegulators = initializeBook(3L, authors.get(STEPHEN_KING), "The Regulators", 512);
-        heartsInAtlantis = initializeBook(4L, authors.get(STEPHEN_KING), "Hearts in Atlantis", 640);
-        hocusPocus = initializeBook(5L, authors.get(KURT_VONNEGUT), "Hocus Pocus", 322);
-
-        authors.get(STEPHEN_KING).setBooks(Set.of(theRegulators, heartsInAtlantis));
-        authors.get(KURT_VONNEGUT).setBooks(Set.of(hocusPocus));
+        authors.get(STEPHEN_KING).setBooks(Set.of(books.get(THE_REGULATORS), books.get(HEARTS_IN_ATLANTIS)));
+        authors.get(KURT_VONNEGUT).setBooks(Set.of(books.get(HOCUS_POCUS)));
     }
 
     private void initializeAuthors() {
@@ -78,6 +76,12 @@ class BookServiceImplTest {
         newAuthor.setAuthorId(id);
         newAuthor.setName(name);
         return newAuthor;
+    }
+
+    private void initializeBooks() {
+        books.put(THE_REGULATORS, initializeBook(3L, authors.get(STEPHEN_KING), THE_REGULATORS, 512));
+        books.put(HEARTS_IN_ATLANTIS, initializeBook(4L, authors.get(STEPHEN_KING), HEARTS_IN_ATLANTIS, 640));
+        books.put(HOCUS_POCUS, initializeBook(5L, authors.get(KURT_VONNEGUT), HOCUS_POCUS, 322));
     }
 
     private Book initializeBook(Long id, Author author, String title, int pages) {
@@ -96,19 +100,19 @@ class BookServiceImplTest {
      */
     @Test
     void testCreateBookExistingAuthor() {
-        authors.get(STEPHEN_KING).setBooks(Set.of(heartsInAtlantis));
+        authors.get(STEPHEN_KING).setBooks(Set.of(books.get(HEARTS_IN_ATLANTIS)));
         given(authorRepository.findByName(authors.get(STEPHEN_KING).getName())).willReturn(authors.get(STEPHEN_KING));
-        given(bookRepository.save(any(Book.class))).willReturn(theRegulators);
+        given(bookRepository.save(any(Book.class))).willReturn(books.get(THE_REGULATORS));
         given(appUserRepository.findById(appUser.getAppUserId())).willReturn(Optional.of(appUser));
         ArgumentCaptor<Book> newBookArgCaptor = ArgumentCaptor.forClass(Book.class);
 
         BookDTO bookDto = new BookDTO(
-                theRegulators.getBookId(),
+                books.get(THE_REGULATORS).getBookId(),
                 appUser.getAppUserId(),
-                theRegulators.getTitle(),
+                THE_REGULATORS,
                 STEPHEN_KING,
-                theRegulators.getLanguage(),
-                theRegulators.getPages());
+                books.get(THE_REGULATORS).getLanguage(),
+                books.get(THE_REGULATORS).getPages());
 
         service.create(bookDto);
         verify(bookRepository).save(newBookArgCaptor.capture());
@@ -126,19 +130,19 @@ class BookServiceImplTest {
      */
     @Test
     void testCreateBookNewAuthor() {
-        theRegulators.setAuthor(authors.get(RICHARD_BACHMAN));
+        books.get(THE_REGULATORS).setAuthor(authors.get(RICHARD_BACHMAN));
         given(authorRepository.findByName(authors.get(RICHARD_BACHMAN).getName())).willReturn(authors.get(RICHARD_BACHMAN));
-        given(bookRepository.save(any(Book.class))).willReturn(theRegulators);
+        given(bookRepository.save(any(Book.class))).willReturn(books.get(THE_REGULATORS));
         given(appUserRepository.findById(appUser.getAppUserId())).willReturn(Optional.of(appUser));
         ArgumentCaptor<Book> newBookArgCaptor = ArgumentCaptor.forClass(Book.class);
 
         BookDTO bookDto = new BookDTO(
-                theRegulators.getBookId(),
+                books.get(THE_REGULATORS).getBookId(),
                 appUser.getAppUserId(),
-                theRegulators.getTitle(),
+                THE_REGULATORS,
                 RICHARD_BACHMAN,
-                theRegulators.getLanguage(),
-                theRegulators.getPages());
+                books.get(THE_REGULATORS).getLanguage(),
+                books.get(THE_REGULATORS).getPages());
 
         service.create(bookDto);
         verify(bookRepository).save(newBookArgCaptor.capture());
@@ -154,12 +158,12 @@ class BookServiceImplTest {
     @Test
     void testShouldNotCreateEmptyTitle() {
         BookDTO bookDto = new BookDTO(
-                theRegulators.getBookId(),
+                books.get(THE_REGULATORS).getBookId(),
                 appUser.getAppUserId(),
                 "\t",
                 RICHARD_BACHMAN,
-                theRegulators.getLanguage(),
-                theRegulators.getPages());
+                books.get(THE_REGULATORS).getLanguage(),
+                books.get(THE_REGULATORS).getPages());
 
         Result<BookDTO> result = service.create(bookDto);
 
@@ -171,12 +175,12 @@ class BookServiceImplTest {
     @Test
     void testShouldNotCreateNullTitle() {
         BookDTO bookDto = new BookDTO(
-                theRegulators.getBookId(),
+                books.get(THE_REGULATORS).getBookId(),
                 appUser.getAppUserId(),
                 null,
                 RICHARD_BACHMAN,
-                theRegulators.getLanguage(),
-                theRegulators.getPages());
+                books.get(THE_REGULATORS).getLanguage(),
+                books.get(THE_REGULATORS).getPages());
 
         Result<BookDTO> result = service.create(bookDto);
 
@@ -188,11 +192,11 @@ class BookServiceImplTest {
     @Test
     void testShouldNotCreateZeroPages() {
         BookDTO bookDto = new BookDTO(
-                theRegulators.getBookId(),
+                books.get(THE_REGULATORS).getBookId(),
                 appUser.getAppUserId(),
-                theRegulators.getTitle(),
+                THE_REGULATORS,
                 RICHARD_BACHMAN,
-                theRegulators.getLanguage(),
+                books.get(THE_REGULATORS).getLanguage(),
                 0);
 
         Result<BookDTO> result = service.create(bookDto);
@@ -205,11 +209,11 @@ class BookServiceImplTest {
     @Test
     void testShouldNotCreateNegativePages() {
         BookDTO bookDto = new BookDTO(
-                theRegulators.getBookId(),
+                books.get(THE_REGULATORS).getBookId(),
                 appUser.getAppUserId(),
-                theRegulators.getTitle(),
+                THE_REGULATORS,
                 RICHARD_BACHMAN,
-                theRegulators.getLanguage(),
+                books.get(THE_REGULATORS).getLanguage(),
                 -22);
 
         Result<BookDTO> result = service.create(bookDto);
@@ -222,12 +226,12 @@ class BookServiceImplTest {
     @Test
     void testShouldNotCreateEmptyAuthor() {
         BookDTO bookDto = new BookDTO(
-                theRegulators.getBookId(),
+                books.get(THE_REGULATORS).getBookId(),
                 appUser.getAppUserId(),
-                theRegulators.getTitle(),
+                THE_REGULATORS,
                 " ",
-                theRegulators.getLanguage(),
-                theRegulators.getPages());
+                books.get(THE_REGULATORS).getLanguage(),
+                books.get(THE_REGULATORS).getPages());
 
         Result<BookDTO> result = service.create(bookDto);
 
@@ -239,12 +243,12 @@ class BookServiceImplTest {
     @Test
     void testShouldNotCreateNullAuthor() {
         BookDTO bookDto = new BookDTO(
-                theRegulators.getBookId(),
+                books.get(THE_REGULATORS).getBookId(),
                 appUser.getAppUserId(),
-                theRegulators.getTitle(),
+                THE_REGULATORS,
                 null,
-                theRegulators.getLanguage(),
-                theRegulators.getPages());
+                books.get(THE_REGULATORS).getLanguage(),
+                books.get(THE_REGULATORS).getPages());
 
         Result<BookDTO> result = service.create(bookDto);
 
@@ -258,14 +262,14 @@ class BookServiceImplTest {
      */
     @Test
     void testDeleteBookById() {
-        given(bookRepository.findById(theRegulators.getBookId())).willReturn(Optional.of(theRegulators));
+        given(bookRepository.findById(books.get(THE_REGULATORS).getBookId())).willReturn(Optional.of(books.get(THE_REGULATORS)));
         given(authorRepository.findById(authors.get(STEPHEN_KING).getAuthorId())).willReturn(Optional.of(authors.get(STEPHEN_KING)));
         ArgumentCaptor<Long> deleteBookByIdArgCaptor = ArgumentCaptor.forClass(Long.class);
 
-        service.deleteById(theRegulators.getBookId(), appUser.getAppUserId());
+        service.deleteById(books.get(THE_REGULATORS).getBookId(), appUser.getAppUserId());
         verify(bookRepository).deleteById(deleteBookByIdArgCaptor.capture());
 
-        assertThat(deleteBookByIdArgCaptor.getValue()).isEqualTo(theRegulators.getBookId());
+        assertThat(deleteBookByIdArgCaptor.getValue()).isEqualTo(books.get(THE_REGULATORS).getBookId());
         verify(authorRepository, never()).deleteById(any(Long.class));
     }
 
@@ -274,16 +278,16 @@ class BookServiceImplTest {
      */
     @Test
     void testDeleteBookByIdAndDeleteAuthor() {
-        given(bookRepository.findById(hocusPocus.getBookId())).willReturn(Optional.of(hocusPocus));
+        given(bookRepository.findById(books.get(HOCUS_POCUS).getBookId())).willReturn(Optional.of(books.get(HOCUS_POCUS)));
         given(authorRepository.findById(authors.get(KURT_VONNEGUT).getAuthorId())).willReturn(Optional.of(authors.get(KURT_VONNEGUT)));
         ArgumentCaptor<Long> deleteBookArgCaptor = ArgumentCaptor.forClass(Long.class);
         ArgumentCaptor<Long> deleteAuthorArgCaptor = ArgumentCaptor.forClass(Long.class);
 
-        service.deleteById(hocusPocus.getBookId(), appUser.getAppUserId());
+        service.deleteById(books.get(HOCUS_POCUS).getBookId(), appUser.getAppUserId());
         verify(bookRepository).deleteById(deleteBookArgCaptor.capture());
         verify(authorRepository).deleteById(deleteAuthorArgCaptor.capture());
 
-        assertThat(deleteBookArgCaptor.getValue()).isEqualTo(hocusPocus.getBookId());
+        assertThat(deleteBookArgCaptor.getValue()).isEqualTo(books.get(HOCUS_POCUS).getBookId());
         assertThat(deleteAuthorArgCaptor.getValue()).isEqualTo(authors.get(KURT_VONNEGUT).getAuthorId());
     }
 
@@ -298,9 +302,9 @@ class BookServiceImplTest {
 
     @Test
     void testShouldNotDeleteMismatchUserId() {
-        given(bookRepository.findById(theRegulators.getBookId())).willReturn(Optional.of(theRegulators));
+        given(bookRepository.findById(books.get(THE_REGULATORS).getBookId())).willReturn(Optional.of(books.get(THE_REGULATORS)));
 
-        service.deleteById(theRegulators.getBookId(), 1_000L);
+        service.deleteById(books.get(THE_REGULATORS).getBookId(), 1_000L);
 
         verify(bookRepository, never()).deleteById(any());
     }
@@ -312,14 +316,14 @@ class BookServiceImplTest {
     void testUpdateAuthorOneBook() {
         given(authorRepository.findById(authors.get(KURT_VONNEGUT).getAuthorId())).willReturn(Optional.of(authors.get(KURT_VONNEGUT)));
         given(authorRepository.findByName(authors.get(KURT_VONNEGUT).getName())).willReturn(authors.get(KURT_VONNEGUT));
-        given(bookRepository.findById(hocusPocus.getBookId())).willReturn(Optional.of(hocusPocus));
+        given(bookRepository.findById(books.get(HOCUS_POCUS).getBookId())).willReturn(Optional.of(books.get(HOCUS_POCUS)));
         ArgumentCaptor<Author> saveAuthorArgCaptor = ArgumentCaptor.forClass(Author.class);
         ArgumentCaptor<Book> saveBookArgCaptor = ArgumentCaptor.forClass(Book.class);
 
         BookDTO bookDto = new BookDTO(
                 5L,
                 1L,
-                "Hocus Pocus",
+                HOCUS_POCUS,
                 "Kurt Vonnegut Jr.",
                 "English",
                 340);
@@ -342,14 +346,14 @@ class BookServiceImplTest {
         given(authorRepository.findById(authors.get(STEPHEN_KING).getAuthorId())).willReturn(Optional.of(authors.get(STEPHEN_KING)));
         given(authorRepository.findByName(authors.get(STEPHEN_KING).getName())).willReturn(authors.get(STEPHEN_KING));
         given(authorRepository.save(any(Author.class))).willReturn(authors.get(RICHARD_BACHMAN));
-        given(bookRepository.findById(theRegulators.getBookId())).willReturn(Optional.of(theRegulators));
+        given(bookRepository.findById(books.get(THE_REGULATORS).getBookId())).willReturn(Optional.of(books.get(THE_REGULATORS)));
         ArgumentCaptor<Author> saveAuthorArgCaptor = ArgumentCaptor.forClass(Author.class);
         ArgumentCaptor<Book> saveBookArgCaptor = ArgumentCaptor.forClass(Book.class);
 
         BookDTO bookDto = new BookDTO(
                 3L,
                 1L,
-                "The Regulators",
+                THE_REGULATORS,
                 RICHARD_BACHMAN,
                 "English",
                 512);
@@ -368,11 +372,11 @@ class BookServiceImplTest {
      */
     @Test
     void testUpdateBookToExistingAuthor() {
-        theRegulators.setAuthor(authors.get(RICHARD_BACHMAN));
-        authors.get(RICHARD_BACHMAN).setBooks(Set.of(theRegulators));
-        authors.get(STEPHEN_KING).setBooks(Set.of(heartsInAtlantis));
+        books.get(THE_REGULATORS).setAuthor(authors.get(RICHARD_BACHMAN));
+        authors.get(RICHARD_BACHMAN).setBooks(Set.of(books.get(THE_REGULATORS)));
+        authors.get(STEPHEN_KING).setBooks(Set.of(books.get(HEARTS_IN_ATLANTIS)));
 
-        given(bookRepository.findById(theRegulators.getBookId())).willReturn(Optional.of(theRegulators));
+        given(bookRepository.findById(books.get(THE_REGULATORS).getBookId())).willReturn(Optional.of(books.get(THE_REGULATORS)));
         given(authorRepository.findById(authors.get(RICHARD_BACHMAN).getAuthorId())).willReturn(Optional.of(authors.get(RICHARD_BACHMAN)));
         given(authorRepository.findByName(authors.get(STEPHEN_KING).getName())).willReturn(authors.get(STEPHEN_KING));
         ArgumentCaptor<Book> saveBookArgCaptor = ArgumentCaptor.forClass(Book.class);
@@ -380,7 +384,7 @@ class BookServiceImplTest {
         BookDTO bookDto = new BookDTO(
                 3L,
                 1L,
-                "The Regulators",
+                THE_REGULATORS,
                 STEPHEN_KING,
                 "English",
                 512);
@@ -397,11 +401,11 @@ class BookServiceImplTest {
      */
     @Test
     void testDeleteAuthorWithoutBooks() {
-        theRegulators.setAuthor(authors.get(RICHARD_BACHMAN));
-        authors.get(RICHARD_BACHMAN).setBooks(Set.of(theRegulators));
-        authors.get(STEPHEN_KING).setBooks(Set.of(heartsInAtlantis));
+        books.get(THE_REGULATORS).setAuthor(authors.get(RICHARD_BACHMAN));
+        authors.get(RICHARD_BACHMAN).setBooks(Set.of(books.get(THE_REGULATORS)));
+        authors.get(STEPHEN_KING).setBooks(Set.of(books.get(HEARTS_IN_ATLANTIS)));
 
-        given(bookRepository.findById(theRegulators.getBookId())).willReturn(Optional.of(theRegulators));
+        given(bookRepository.findById(books.get(THE_REGULATORS).getBookId())).willReturn(Optional.of(books.get(THE_REGULATORS)));
         given(authorRepository.findById(authors.get(RICHARD_BACHMAN).getAuthorId())).willReturn(Optional.of(authors.get(RICHARD_BACHMAN)));
         given(authorRepository.findByName(authors.get(STEPHEN_KING).getName())).willReturn(authors.get(STEPHEN_KING));
         ArgumentCaptor<Long> deleteAuthorIdArgCaptor = ArgumentCaptor.forClass(Long.class);
@@ -409,7 +413,7 @@ class BookServiceImplTest {
         BookDTO bookDto = new BookDTO(
                 3L,
                 1L,
-                "The Regulators",
+                THE_REGULATORS,
                 STEPHEN_KING,
                 "English",
                 512);
@@ -427,7 +431,7 @@ class BookServiceImplTest {
         BookDTO bookDto = new BookDTO(
                 1_000L,
                 1L,
-                "The Regulators",
+                THE_REGULATORS,
                 STEPHEN_KING,
                 "English",
                 512);
@@ -441,12 +445,12 @@ class BookServiceImplTest {
 
     @Test
     void testShouldNotUpdateMismatchUserId() {
-        given(bookRepository.findById(theRegulators.getBookId())).willReturn(Optional.of(theRegulators));
+        given(bookRepository.findById(books.get(THE_REGULATORS).getBookId())).willReturn(Optional.of(books.get(THE_REGULATORS)));
 
         BookDTO bookDto = new BookDTO(
                 3L,
                 1_000L,
-                "The Regulators",
+                THE_REGULATORS,
                 STEPHEN_KING,
                 "English",
                 512);
@@ -460,7 +464,7 @@ class BookServiceImplTest {
 
     @Test
     void testShouldNotUpdateEmptyTitle() {
-        given(bookRepository.findById(theRegulators.getBookId())).willReturn(Optional.of(theRegulators));
+        given(bookRepository.findById(books.get(THE_REGULATORS).getBookId())).willReturn(Optional.of(books.get(THE_REGULATORS)));
 
         BookDTO bookDto = new BookDTO(
                 3L,
@@ -479,7 +483,7 @@ class BookServiceImplTest {
 
     @Test
     void testShouldNotUpdateNullTitle() {
-        given(bookRepository.findById(theRegulators.getBookId())).willReturn(Optional.of(theRegulators));
+        given(bookRepository.findById(books.get(THE_REGULATORS).getBookId())).willReturn(Optional.of(books.get(THE_REGULATORS)));
 
         BookDTO bookDto = new BookDTO(
                 3L,
@@ -498,12 +502,12 @@ class BookServiceImplTest {
 
     @Test
     void testShouldNotUpdateEmptyAuthor() {
-        given(bookRepository.findById(theRegulators.getBookId())).willReturn(Optional.of(theRegulators));
+        given(bookRepository.findById(books.get(THE_REGULATORS).getBookId())).willReturn(Optional.of(books.get(THE_REGULATORS)));
 
         BookDTO bookDto = new BookDTO(
                 3L,
                 1L,
-                "The Regulators",
+                THE_REGULATORS,
                 "\t",
                 "English",
                 512);
@@ -517,12 +521,12 @@ class BookServiceImplTest {
 
     @Test
     void testShouldNotUpdateNullAuthor() {
-        given(bookRepository.findById(theRegulators.getBookId())).willReturn(Optional.of(theRegulators));
+        given(bookRepository.findById(books.get(THE_REGULATORS).getBookId())).willReturn(Optional.of(books.get(THE_REGULATORS)));
 
         BookDTO bookDto = new BookDTO(
                 3L,
                 1L,
-                "The Regulators",
+                THE_REGULATORS,
                 null,
                 "English",
                 512);
@@ -536,12 +540,12 @@ class BookServiceImplTest {
 
     @Test
     void testShouldUpdateEmptyLanguage() {
-        given(bookRepository.findById(theRegulators.getBookId())).willReturn(Optional.of(theRegulators));
+        given(bookRepository.findById(books.get(THE_REGULATORS).getBookId())).willReturn(Optional.of(books.get(THE_REGULATORS)));
 
         BookDTO bookDto = new BookDTO(
                 3L,
                 1L,
-                "The Regulators",
+                THE_REGULATORS,
                 STEPHEN_KING,
                 "",
                 512);
@@ -553,12 +557,12 @@ class BookServiceImplTest {
 
     @Test
     void testShouldUpdateNullLanguage() {
-        given(bookRepository.findById(theRegulators.getBookId())).willReturn(Optional.of(theRegulators));
+        given(bookRepository.findById(books.get(THE_REGULATORS).getBookId())).willReturn(Optional.of(books.get(THE_REGULATORS)));
 
         BookDTO bookDto = new BookDTO(
                 3L,
                 1L,
-                "The Regulators",
+                THE_REGULATORS,
                 STEPHEN_KING,
                 null,
                 512);
@@ -570,12 +574,12 @@ class BookServiceImplTest {
 
     @Test
     void testShouldNotUpdateZeroPages() {
-        given(bookRepository.findById(theRegulators.getBookId())).willReturn(Optional.of(theRegulators));
+        given(bookRepository.findById(books.get(THE_REGULATORS).getBookId())).willReturn(Optional.of(books.get(THE_REGULATORS)));
 
         BookDTO bookDto = new BookDTO(
                 3L,
                 1L,
-                "The Regulators",
+                THE_REGULATORS,
                 STEPHEN_KING,
                 "English",
                 0);
@@ -589,12 +593,12 @@ class BookServiceImplTest {
 
     @Test
     void testShouldNotUpdateNegativePages() {
-        given(bookRepository.findById(theRegulators.getBookId())).willReturn(Optional.of(theRegulators));
+        given(bookRepository.findById(books.get(THE_REGULATORS).getBookId())).willReturn(Optional.of(books.get(THE_REGULATORS)));
 
         BookDTO bookDto = new BookDTO(
                 3L,
                 1L,
-                "The Regulators",
+                THE_REGULATORS,
                 STEPHEN_KING,
                 "English",
                 -153);
