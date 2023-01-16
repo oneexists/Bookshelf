@@ -15,12 +15,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class ReadingLogValidatorTest {
-    String START_FIELD = "start";
-    String FINISH_FIELD = "finish";
     @Autowired
     ReadingLogValidator validator;
     Errors errors;
     ReadingLog input;
+
+    final String START_FIELD = "start";
+    final String FINISH_FIELD = "finish";
 
     @BeforeEach
     void setUp() {
@@ -28,11 +29,15 @@ class ReadingLogValidatorTest {
         errors = new BeanPropertyBindingResult(input, "input");
     }
 
+    private void setInput(LocalDate start, LocalDate finish) {
+        input.setBook(new Book());
+        input.setStart(start);
+        input.setFinish(finish);
+    }
+
     @Test
     void testShouldValidate() {
-        input.setBook(new Book());
-        input.setStart(LocalDate.now().minusDays(2));
-        input.setFinish(LocalDate.now());
+        setInput(LocalDate.now().minusDays(2), LocalDate.now());
 
         validator.validate(input, errors);
 
@@ -41,7 +46,7 @@ class ReadingLogValidatorTest {
 
     @Test
     void testNullStartShouldNotValidate() {
-        input.setBook(new Book());
+        setInput(null, null);
 
         validator.validate(input, errors);
 
@@ -51,8 +56,7 @@ class ReadingLogValidatorTest {
 
     @Test
     void testFutureStartShouldNotValidate() {
-        input.setBook(new Book());
-        input.setStart(LocalDate.now().plusDays(2));
+        setInput(LocalDate.now().plusDays(2), null);
 
         validator.validate(input, errors);
 
@@ -62,9 +66,7 @@ class ReadingLogValidatorTest {
 
     @Test
     void testFutureFinishShouldNotValidate() {
-        input.setBook(new Book());
-        input.setStart(LocalDate.now().minusDays(2));
-        input.setFinish(LocalDate.now().plusDays(4));
+        setInput(LocalDate.now().minusDays(2), LocalDate.now().plusDays(4));
 
         validator.validate(input, errors);
 
