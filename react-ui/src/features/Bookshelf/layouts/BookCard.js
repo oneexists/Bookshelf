@@ -1,4 +1,4 @@
-import BookDetails from "../components/BookDetails";
+import BookDetails from "./BookDetails";
 import SecondaryNavLinkButton from "../../../components/buttons/SecondaryNavLinkButton";
 import WarningNavLinkButton from "../../../components/buttons/WarningNavLinkButton";
 import ButtonBar from "../../../components/layouts/ButtonBar";
