@@ -2,9 +2,9 @@ import { useParams } from "react-router-dom";
 import { useDataSource } from "../../../hooks/useDataSource";
 import { serverResource } from "../../../services/serverResource";
 import { BOOKS_URL } from "../../../config/bookshelfApi";
-import BookDetails from "../../Bookshelf/components/BookDetails";
 import { SplitScreen } from "../../../components/layouts/SplitScreen";
 import PageLayout from "../../../components/layouts/PageLayout";
+import BookDetails from "../../Bookshelf/layouts/BookDetails";
 
 export default function ReadingLogSplitLayout({ component, pageTitle }) {
     const { id } = useParams("id");
