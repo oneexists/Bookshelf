@@ -40,12 +40,17 @@ class BookServiceImplTest {
     @Autowired
     BookValidation validation;
 
+    final String ENGLISH = "English";
     final String STEPHEN_KING = "Stephen King";
     final String KURT_VONNEGUT = "Kurt Vonnegut";
     final String RICHARD_BACHMAN = "Richard Bachman";
     final String THE_REGULATORS = "The Regulators";
     final String HEARTS_IN_ATLANTIS = "Hearts in Atlantis";
     final String HOCUS_POCUS = "Hocus Pocus";
+    final String ERR_TITLE_REQUIRED = "title is required";
+    final String ERR_AT_LEAST_ONE_PAGE_REQUIRED = "book must have at least one page";
+    final String ERR_AUTHOR_REQUIRED = "author is required";
+    final String ERR_BOOK_NOT_FOUND = "book was not found";
 
     AppUser appUser = new AppUser();
 
@@ -90,7 +95,7 @@ class BookServiceImplTest {
         newBook.setBookId(id);
         newBook.setAuthor(author);
         newBook.setTitle(title);
-        newBook.setLanguage("English");
+        newBook.setLanguage(ENGLISH);
         newBook.setPages(pages);
         return newBook;
     }
@@ -111,7 +116,7 @@ class BookServiceImplTest {
                 appUser.getAppUserId(),
                 THE_REGULATORS,
                 STEPHEN_KING,
-                books.get(THE_REGULATORS).getLanguage(),
+                ENGLISH,
                 books.get(THE_REGULATORS).getPages());
 
         service.create(bookDto);
@@ -141,7 +146,7 @@ class BookServiceImplTest {
                 appUser.getAppUserId(),
                 THE_REGULATORS,
                 RICHARD_BACHMAN,
-                books.get(THE_REGULATORS).getLanguage(),
+                ENGLISH,
                 books.get(THE_REGULATORS).getPages());
 
         service.create(bookDto);
@@ -162,14 +167,14 @@ class BookServiceImplTest {
                 appUser.getAppUserId(),
                 "\t",
                 RICHARD_BACHMAN,
-                books.get(THE_REGULATORS).getLanguage(),
+                ENGLISH,
                 books.get(THE_REGULATORS).getPages());
 
         Result<BookDTO> result = service.create(bookDto);
 
         assertFalse(result.isSuccess());
         assertEquals(1, result.getMessages().size());
-        assertEquals("title is required", result.getMessages().get(0));
+        assertEquals(ERR_TITLE_REQUIRED, result.getMessages().get(0));
     }
 
     @Test
@@ -179,14 +184,14 @@ class BookServiceImplTest {
                 appUser.getAppUserId(),
                 null,
                 RICHARD_BACHMAN,
-                books.get(THE_REGULATORS).getLanguage(),
+                ENGLISH,
                 books.get(THE_REGULATORS).getPages());
 
         Result<BookDTO> result = service.create(bookDto);
 
         assertFalse(result.isSuccess());
         assertEquals(1, result.getMessages().size());
-        assertEquals("title is required", result.getMessages().get(0));
+        assertEquals(ERR_TITLE_REQUIRED, result.getMessages().get(0));
     }
 
     @Test
@@ -196,14 +201,14 @@ class BookServiceImplTest {
                 appUser.getAppUserId(),
                 THE_REGULATORS,
                 RICHARD_BACHMAN,
-                books.get(THE_REGULATORS).getLanguage(),
+                ENGLISH,
                 0);
 
         Result<BookDTO> result = service.create(bookDto);
 
         assertFalse(result.isSuccess());
         assertEquals(1, result.getMessages().size());
-        assertEquals("book must have at least one page", result.getMessages().get(0));
+        assertEquals(ERR_AT_LEAST_ONE_PAGE_REQUIRED, result.getMessages().get(0));
     }
 
     @Test
@@ -213,14 +218,14 @@ class BookServiceImplTest {
                 appUser.getAppUserId(),
                 THE_REGULATORS,
                 RICHARD_BACHMAN,
-                books.get(THE_REGULATORS).getLanguage(),
+                ENGLISH,
                 -22);
 
         Result<BookDTO> result = service.create(bookDto);
 
         assertFalse(result.isSuccess());
         assertEquals(1, result.getMessages().size());
-        assertEquals("book must have at least one page", result.getMessages().get(0));
+        assertEquals(ERR_AT_LEAST_ONE_PAGE_REQUIRED, result.getMessages().get(0));
     }
 
     @Test
@@ -230,14 +235,14 @@ class BookServiceImplTest {
                 appUser.getAppUserId(),
                 THE_REGULATORS,
                 " ",
-                books.get(THE_REGULATORS).getLanguage(),
+                ENGLISH,
                 books.get(THE_REGULATORS).getPages());
 
         Result<BookDTO> result = service.create(bookDto);
 
         assertFalse(result.isSuccess());
         assertEquals(1, result.getMessages().size());
-        assertEquals("author is required", result.getMessages().get(0));
+        assertEquals(ERR_AUTHOR_REQUIRED, result.getMessages().get(0));
     }
 
     @Test
@@ -247,14 +252,14 @@ class BookServiceImplTest {
                 appUser.getAppUserId(),
                 THE_REGULATORS,
                 null,
-                books.get(THE_REGULATORS).getLanguage(),
+                ENGLISH,
                 books.get(THE_REGULATORS).getPages());
 
         Result<BookDTO> result = service.create(bookDto);
 
         assertFalse(result.isSuccess());
         assertEquals(1, result.getMessages().size());
-        assertEquals("author is required", result.getMessages().get(0));
+        assertEquals(ERR_AUTHOR_REQUIRED, result.getMessages().get(0));
     }
 
     /**
@@ -321,11 +326,11 @@ class BookServiceImplTest {
         ArgumentCaptor<Book> saveBookArgCaptor = ArgumentCaptor.forClass(Book.class);
 
         BookDTO bookDto = new BookDTO(
-                5L,
-                1L,
+                books.get(HOCUS_POCUS).getBookId(),
+                appUser.getAppUserId(),
                 HOCUS_POCUS,
                 "Kurt Vonnegut Jr.",
-                "English",
+                ENGLISH,
                 340);
 
         service.update(bookDto);
@@ -351,12 +356,12 @@ class BookServiceImplTest {
         ArgumentCaptor<Book> saveBookArgCaptor = ArgumentCaptor.forClass(Book.class);
 
         BookDTO bookDto = new BookDTO(
-                3L,
-                1L,
+                books.get(THE_REGULATORS).getBookId(),
+                appUser.getAppUserId(),
                 THE_REGULATORS,
                 RICHARD_BACHMAN,
-                "English",
-                512);
+                ENGLISH,
+                books.get(THE_REGULATORS).getPages());
 
         service.update(bookDto);
         verify(authorRepository).save(saveAuthorArgCaptor.capture());
@@ -382,12 +387,12 @@ class BookServiceImplTest {
         ArgumentCaptor<Book> saveBookArgCaptor = ArgumentCaptor.forClass(Book.class);
 
         BookDTO bookDto = new BookDTO(
-                3L,
-                1L,
+                books.get(THE_REGULATORS).getBookId(),
+                appUser.getAppUserId(),
                 THE_REGULATORS,
                 STEPHEN_KING,
-                "English",
-                512);
+                ENGLISH,
+                books.get(THE_REGULATORS).getPages());
 
         service.update(bookDto);
         verify(bookRepository).saveAndFlush(saveBookArgCaptor.capture());
@@ -411,12 +416,12 @@ class BookServiceImplTest {
         ArgumentCaptor<Long> deleteAuthorIdArgCaptor = ArgumentCaptor.forClass(Long.class);
 
         BookDTO bookDto = new BookDTO(
-                3L,
-                1L,
+                books.get(THE_REGULATORS).getBookId(),
+                appUser.getAppUserId(),
                 THE_REGULATORS,
                 STEPHEN_KING,
-                "English",
-                512);
+                ENGLISH,
+                books.get(THE_REGULATORS).getPages());
 
         service.update(bookDto);
         verify(authorRepository).deleteById(deleteAuthorIdArgCaptor.capture());
@@ -430,17 +435,17 @@ class BookServiceImplTest {
 
         BookDTO bookDto = new BookDTO(
                 1_000L,
-                1L,
+                appUser.getAppUserId(),
                 THE_REGULATORS,
                 STEPHEN_KING,
-                "English",
-                512);
+                ENGLISH,
+                books.get(THE_REGULATORS).getPages());
 
         Result<BookDTO> result = service.update(bookDto);
 
         assertFalse(result.isSuccess());
         assertEquals(1, result.getMessages().size());
-        assertEquals("book was not found", result.getMessages().get(0));
+        assertEquals(ERR_BOOK_NOT_FOUND, result.getMessages().get(0));
     }
 
     @Test
@@ -448,18 +453,18 @@ class BookServiceImplTest {
         given(bookRepository.findById(books.get(THE_REGULATORS).getBookId())).willReturn(Optional.of(books.get(THE_REGULATORS)));
 
         BookDTO bookDto = new BookDTO(
-                3L,
+                books.get(THE_REGULATORS).getBookId(),
                 1_000L,
                 THE_REGULATORS,
                 STEPHEN_KING,
-                "English",
-                512);
+                ENGLISH,
+                books.get(THE_REGULATORS).getPages());
 
         Result<BookDTO> result = service.update(bookDto);
 
         assertFalse(result.isSuccess());
         assertEquals(1, result.getMessages().size());
-        assertEquals("book was not found", result.getMessages().get(0));
+        assertEquals(ERR_BOOK_NOT_FOUND, result.getMessages().get(0));
     }
 
     @Test
@@ -467,18 +472,18 @@ class BookServiceImplTest {
         given(bookRepository.findById(books.get(THE_REGULATORS).getBookId())).willReturn(Optional.of(books.get(THE_REGULATORS)));
 
         BookDTO bookDto = new BookDTO(
-                3L,
-                1L,
+                books.get(THE_REGULATORS).getBookId(),
+                appUser.getAppUserId(),
                 "   ",
                 STEPHEN_KING,
-                "English",
-                512);
+                ENGLISH,
+                books.get(THE_REGULATORS).getPages());
 
         Result<BookDTO> result = service.update(bookDto);
 
         assertFalse(result.isSuccess());
         assertEquals(1, result.getMessages().size());
-        assertEquals("title is required", result.getMessages().get(0));
+        assertEquals(ERR_TITLE_REQUIRED, result.getMessages().get(0));
     }
 
     @Test
@@ -486,18 +491,18 @@ class BookServiceImplTest {
         given(bookRepository.findById(books.get(THE_REGULATORS).getBookId())).willReturn(Optional.of(books.get(THE_REGULATORS)));
 
         BookDTO bookDto = new BookDTO(
-                3L,
-                1L,
+                books.get(THE_REGULATORS).getBookId(),
+                appUser.getAppUserId(),
                 null,
                 STEPHEN_KING,
-                "English",
-                512);
+                ENGLISH,
+                books.get(THE_REGULATORS).getPages());
 
         Result<BookDTO> result = service.update(bookDto);
 
         assertFalse(result.isSuccess());
         assertEquals(1, result.getMessages().size());
-        assertEquals("title is required", result.getMessages().get(0));
+        assertEquals(ERR_TITLE_REQUIRED, result.getMessages().get(0));
     }
 
     @Test
@@ -505,18 +510,18 @@ class BookServiceImplTest {
         given(bookRepository.findById(books.get(THE_REGULATORS).getBookId())).willReturn(Optional.of(books.get(THE_REGULATORS)));
 
         BookDTO bookDto = new BookDTO(
-                3L,
-                1L,
+                books.get(THE_REGULATORS).getBookId(),
+                appUser.getAppUserId(),
                 THE_REGULATORS,
                 "\t",
-                "English",
-                512);
+                ENGLISH,
+                books.get(THE_REGULATORS).getPages());
 
         Result<BookDTO> result = service.update(bookDto);
 
         assertFalse(result.isSuccess());
         assertEquals(1, result.getMessages().size());
-        assertEquals("author is required", result.getMessages().get(0));
+        assertEquals(ERR_AUTHOR_REQUIRED, result.getMessages().get(0));
     }
 
     @Test
@@ -524,18 +529,18 @@ class BookServiceImplTest {
         given(bookRepository.findById(books.get(THE_REGULATORS).getBookId())).willReturn(Optional.of(books.get(THE_REGULATORS)));
 
         BookDTO bookDto = new BookDTO(
-                3L,
-                1L,
+                books.get(THE_REGULATORS).getBookId(),
+                appUser.getAppUserId(),
                 THE_REGULATORS,
                 null,
-                "English",
-                512);
+                ENGLISH,
+                books.get(THE_REGULATORS).getPages());
 
         Result<BookDTO> result = service.update(bookDto);
 
         assertFalse(result.isSuccess());
         assertEquals(1, result.getMessages().size());
-        assertEquals("author is required", result.getMessages().get(0));
+        assertEquals(ERR_AUTHOR_REQUIRED, result.getMessages().get(0));
     }
 
     @Test
@@ -543,12 +548,12 @@ class BookServiceImplTest {
         given(bookRepository.findById(books.get(THE_REGULATORS).getBookId())).willReturn(Optional.of(books.get(THE_REGULATORS)));
 
         BookDTO bookDto = new BookDTO(
-                3L,
-                1L,
+                books.get(THE_REGULATORS).getBookId(),
+                appUser.getAppUserId(),
                 THE_REGULATORS,
                 STEPHEN_KING,
                 "",
-                512);
+                books.get(THE_REGULATORS).getPages());
 
         Result<BookDTO> result = service.update(bookDto);
 
@@ -560,12 +565,12 @@ class BookServiceImplTest {
         given(bookRepository.findById(books.get(THE_REGULATORS).getBookId())).willReturn(Optional.of(books.get(THE_REGULATORS)));
 
         BookDTO bookDto = new BookDTO(
-                3L,
-                1L,
+                books.get(THE_REGULATORS).getBookId(),
+                appUser.getAppUserId(),
                 THE_REGULATORS,
                 STEPHEN_KING,
                 null,
-                512);
+                books.get(THE_REGULATORS).getPages());
 
         Result<BookDTO> result = service.update(bookDto);
 
@@ -577,18 +582,18 @@ class BookServiceImplTest {
         given(bookRepository.findById(books.get(THE_REGULATORS).getBookId())).willReturn(Optional.of(books.get(THE_REGULATORS)));
 
         BookDTO bookDto = new BookDTO(
-                3L,
-                1L,
+                books.get(THE_REGULATORS).getBookId(),
+                appUser.getAppUserId(),
                 THE_REGULATORS,
                 STEPHEN_KING,
-                "English",
+                ENGLISH,
                 0);
 
         Result<BookDTO> result = service.update(bookDto);
 
         assertFalse(result.isSuccess());
         assertEquals(1, result.getMessages().size());
-        assertEquals("book must have at least one page", result.getMessages().get(0));
+        assertEquals(ERR_AT_LEAST_ONE_PAGE_REQUIRED, result.getMessages().get(0));
     }
 
     @Test
@@ -596,17 +601,17 @@ class BookServiceImplTest {
         given(bookRepository.findById(books.get(THE_REGULATORS).getBookId())).willReturn(Optional.of(books.get(THE_REGULATORS)));
 
         BookDTO bookDto = new BookDTO(
-                3L,
-                1L,
+                books.get(THE_REGULATORS).getBookId(),
+                appUser.getAppUserId(),
                 THE_REGULATORS,
                 STEPHEN_KING,
-                "English",
+                ENGLISH,
                 -153);
 
         Result<BookDTO> result = service.update(bookDto);
 
         assertFalse(result.isSuccess());
         assertEquals(1, result.getMessages().size());
-        assertEquals("book must have at least one page", result.getMessages().get(0));
+        assertEquals(ERR_AT_LEAST_ONE_PAGE_REQUIRED, result.getMessages().get(0));
     }
 }
