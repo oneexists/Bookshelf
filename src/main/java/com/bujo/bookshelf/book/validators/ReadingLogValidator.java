@@ -34,6 +34,10 @@ public class ReadingLogValidator implements Validator {
         if (readingLog.getFinish() != null && readingLog.getFinish().isAfter(LocalDate.now())) {
             errors.rejectValue("finish", "finish.invalid");
         }
+
+        if (readingLog.getFinish() != null && readingLog.getFinish().isBefore(readingLog.getStart())) {
+            errors.rejectValue("finish", "finish.invalid");
+        }
     }
 
 }
