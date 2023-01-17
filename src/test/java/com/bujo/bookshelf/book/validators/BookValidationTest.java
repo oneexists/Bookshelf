@@ -3,12 +3,14 @@ package com.bujo.bookshelf.book.validators;
 import com.bujo.bookshelf.book.models.BookDTO;
 import com.bujo.bookshelf.response.ActionStatus;
 import com.bujo.bookshelf.response.Result;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@DisplayName("Test BookValidation Class")
 class BookValidationTest {
     BookValidation validation = new BookValidation();
 
@@ -28,6 +30,7 @@ class BookValidationTest {
      * Test method for {@link com.bujo.bookshelf.book.validators.BookValidation#validate(BookDTO)}.
      */
     @Test
+    @DisplayName("Should validate valid Book")
     void testShouldValidateBook() {
         theRegulatorsDto = new BookDTO(
                 BOOK_ID,
@@ -52,7 +55,11 @@ class BookValidationTest {
         assertNull(result.getPayload());
     }
 
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.validators.BookValidation#validate(BookDTO)}.
+     */
     @Test
+    @DisplayName("Should not validate null BookDTO")
     void testShouldNotValidateNullBookDto() {
         Result<BookDTO> expected = new Result<>();
         expected.addMessage(ActionStatus.NOT_FOUND, ERR_BOOK_REQUIRED);
@@ -60,7 +67,11 @@ class BookValidationTest {
         validateErrorResult(expected, validation.validate(theRegulatorsDto));
     }
 
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.validators.BookValidation#validate(BookDTO)}.
+     */
     @Test
+    @DisplayName("Should not validate null title")
     void testShouldNotValidateNullTitle() {
         theRegulatorsDto = new BookDTO(
                 BOOK_ID,
@@ -76,7 +87,11 @@ class BookValidationTest {
         validateErrorResult(expected, validation.validate(theRegulatorsDto));
     }
 
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.validators.BookValidation#validate(BookDTO)}.
+     */
     @Test
+    @DisplayName("Should not validate empty title")
     void testShouldNotValidateEmptyTitle() {
         theRegulatorsDto = new BookDTO(
                 BOOK_ID,
@@ -92,7 +107,11 @@ class BookValidationTest {
         validateErrorResult(expected, validation.validate(theRegulatorsDto));
     }
 
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.validators.BookValidation#validate(BookDTO)}.
+     */
     @Test
+    @DisplayName("Should not validate zero pages")
     void testShouldNotValidateZeroPages() {
         theRegulatorsDto = new BookDTO(
                 BOOK_ID,
@@ -108,7 +127,11 @@ class BookValidationTest {
         validateErrorResult(expected, validation.validate(theRegulatorsDto));
     }
 
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.validators.BookValidation#validate(BookDTO)}.
+     */
     @Test
+    @DisplayName("Should not validate negative pages")
     void testShouldNotValidateNegativePages() {
         theRegulatorsDto = new BookDTO(
                 BOOK_ID,
@@ -123,7 +146,11 @@ class BookValidationTest {
         validateErrorResult(expected, validation.validate(theRegulatorsDto));
     }
 
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.validators.BookValidation#validate(BookDTO)}.
+     */
     @Test
+    @DisplayName("Should not validate null Author name")
     void testShouldNotValidateNullAuthor() {
         theRegulatorsDto = new BookDTO(
                 BOOK_ID,
@@ -138,7 +165,11 @@ class BookValidationTest {
         validateErrorResult(expected, validation.validate(theRegulatorsDto));
     }
 
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.validators.BookValidation#validate(BookDTO)}.
+     */
     @Test
+    @DisplayName("Should not validate empty Author name")
     void testShouldNOtValidateEmptyAuthor() {
         theRegulatorsDto = new BookDTO(
                 BOOK_ID,

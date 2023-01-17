@@ -2,15 +2,19 @@ package com.bujo.bookshelf.book.validators;
 
 import com.bujo.bookshelf.book.models.Author;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 
+import java.util.Objects;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@DisplayName("Test AuthorValidator Class")
 class AuthorValidatorTest {
     @Autowired
     AuthorValidator validator;
@@ -18,6 +22,7 @@ class AuthorValidatorTest {
     Author input;
 
     final String NAME_FIELD = "name";
+    final String EMPTY_NAME_CODE = "name.empty";
 
     @BeforeEach
     void setUp() {
@@ -25,7 +30,29 @@ class AuthorValidatorTest {
         errors = new BeanPropertyBindingResult(input, "input");
     }
 
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.validators.AuthorValidator#supports(Class)}.
+     */
     @Test
+    @DisplayName("Should support Author class")
+    void testShouldSupportAuthorClass() {
+        assertTrue(validator.supports(Author.class));
+    }
+
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.validators.AuthorValidator#supports(Class)}.
+     */
+    @Test
+    @DisplayName("Should not support invalid class")
+    void testShouldNotSupportInvalidClass() {
+        assertFalse(validator.supports(Object.class));
+    }
+
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.validators.AuthorValidator#validate(java.lang.Object, org.springframework.validation.Errors)}.
+     */
+    @Test
+    @DisplayName("Should validate valid Author")
     void testShouldValidate() {
         input.setName("author name");
 
@@ -34,7 +61,11 @@ class AuthorValidatorTest {
         assertFalse(errors.hasErrors());
     }
 
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.validators.AuthorValidator#validate(java.lang.Object, org.springframework.validation.Errors)}.
+     */
     @Test
+    @DisplayName("Should not validate empty Author name")
     void testEmptyNameShouldNotValidate() {
         input.setName("   ");
 
@@ -42,9 +73,14 @@ class AuthorValidatorTest {
 
         assertTrue(errors.hasErrors());
         assertNotNull(errors.getFieldError(NAME_FIELD));
+        assertEquals(EMPTY_NAME_CODE, Objects.requireNonNull(errors.getFieldError(NAME_FIELD)).getCode());
     }
 
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.validators.AuthorValidator#validate(java.lang.Object, org.springframework.validation.Errors)}.
+     */
     @Test
+    @DisplayName("Should not validate null Author name")
     void testNullNameShouldNotValidate() {
         validator.validate(input, errors);
 

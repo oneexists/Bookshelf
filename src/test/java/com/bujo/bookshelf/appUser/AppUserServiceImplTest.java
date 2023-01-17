@@ -10,6 +10,7 @@ import static org.mockito.Mockito.verify;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import com.bujo.bookshelf.appUser.models.AppUserRole;
 import com.bujo.bookshelf.response.Result;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@DisplayName("Test AppUserServiceImpl Class")
 class AppUserServiceImplTest {
 	AppUserService service;
 	@MockBean
@@ -50,6 +52,7 @@ class AppUserServiceImplTest {
 	 * Test method for {@link com.bujo.bookshelf.appUser.AppUserServiceImpl#loadUserByUsername(java.lang.String)}.
 	 */
 	@Test
+	@DisplayName("Should find AppUser by existing username")
 	void testLoadUserByUsername() {
 		AppUser expected = new AppUser(USERNAME, PASSWORD, AppUserRole.USER);
 		expected.setAppUserId(2L);
@@ -61,8 +64,12 @@ class AppUserServiceImplTest {
 		
 		assertThat(loadArgCaptor.getValue()).isEqualTo(expected.getUsername());
 	}
-	
+
+	/**
+	 * Test method for {@link com.bujo.bookshelf.appUser.AppUserServiceImpl#loadUserByUsername(java.lang.String)}.
+	 */
 	@Test
+	@DisplayName("Should not find AppUser by username that does not exist")
 	void testShouldNotLoadUserByUsername() {
 		String input = "missing username";
 		given(repository.findByUsername(input)).willReturn(Optional.empty());
@@ -74,6 +81,7 @@ class AppUserServiceImplTest {
 	 * Test method for {@link com.bujo.bookshelf.appUser.AppUserServiceImpl#create(com.bujo.bookshelf.appUser.models.AppUserDTO)}.
 	 */
 	@Test
+	@DisplayName("Should create valid AppUser")
 	void testShouldCreate() {
 		AppUserDTO appUserDto = new AppUserDTO(USERNAME, PASSWORD);
 		AppUser expected = new AppUser(USERNAME, PASSWORD, AppUserRole.USER);
@@ -88,8 +96,12 @@ class AppUserServiceImplTest {
 		assertThat(createArgCaptor.getValue().getUsername()).isEqualTo(expected.getUsername());
 		assertThat(createArgCaptor.getValue().getPassword()).isEqualTo(expected.getPassword());
 	}
-	
+
+	/**
+	 * Test method for {@link com.bujo.bookshelf.appUser.AppUserServiceImpl#create(com.bujo.bookshelf.appUser.models.AppUserDTO)}.
+	 */
 	@Test
+	@DisplayName("Should not create AppUser with null username")
 	void testShouldNotCreateNullUsername() {
 		AppUserDTO appUserDto = new AppUserDTO(null, PASSWORD);
 		
@@ -101,8 +113,12 @@ class AppUserServiceImplTest {
 		assertEquals(1, result.getMessages().size());
 		assertTrue(result.getMessages().get(0).contains(USERNAME_REQUIRED));
 	}
-	
+
+	/**
+	 * Test method for {@link com.bujo.bookshelf.appUser.AppUserServiceImpl#create(com.bujo.bookshelf.appUser.models.AppUserDTO)}.
+	 */
 	@Test
+	@DisplayName("Should not create AppUser with empty username")
 	void testShouldNotCreateEmptyUsername() {
 		AppUserDTO appUserDto = new AppUserDTO("\t", PASSWORD);
 		
@@ -114,8 +130,12 @@ class AppUserServiceImplTest {
 		assertEquals(1, result.getMessages().size());
 		assertTrue(result.getMessages().get(0).contains(USERNAME_REQUIRED));
 	}
-	
+
+	/**
+	 * Test method for {@link com.bujo.bookshelf.appUser.AppUserServiceImpl#create(com.bujo.bookshelf.appUser.models.AppUserDTO)}.
+	 */
 	@Test
+	@DisplayName("Should not create AppUser with null password")
 	void testShouldNotCreateNullPassword() {
 		AppUserDTO appUserDto = new AppUserDTO(USERNAME, null);
 		
@@ -127,8 +147,12 @@ class AppUserServiceImplTest {
 		assertEquals(1, result.getMessages().size());
 		assertTrue(result.getMessages().get(0).contains(PASSWORD_REQUIRED));
 	}
-	
+
+	/**
+	 * Test method for {@link com.bujo.bookshelf.appUser.AppUserServiceImpl#create(com.bujo.bookshelf.appUser.models.AppUserDTO)}.
+	 */
 	@Test
+	@DisplayName("Should not create AppUser with empty password")
 	void testShouldNotCreateEmptyPassword() {
 		AppUserDTO appUserDto = new AppUserDTO(USERNAME, "   ");
 		
@@ -140,8 +164,12 @@ class AppUserServiceImplTest {
 		assertEquals(1, result.getMessages().size());
 		assertTrue(result.getMessages().get(0).contains(PASSWORD_REQUIRED));
 	}
-	
+
+	/**
+	 * Test method for {@link com.bujo.bookshelf.appUser.AppUserServiceImpl#create(com.bujo.bookshelf.appUser.models.AppUserDTO)}.
+	 */
 	@Test
+	@DisplayName("Should not create AppUser with existing username")
 	void testShouldNotCreateDuplicateUsername() {
 		given(repository.save(any(AppUser.class))).willThrow(DataIntegrityViolationException.class);
 		AppUserDTO appUserDto = new AppUserDTO(USERNAME, PASSWORD);

@@ -2,6 +2,7 @@ package com.bujo.bookshelf.book.repositories;
 
 import com.bujo.bookshelf.book.models.Book;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -14,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@DisplayName("Test BookRepository Interface")
 class BookRepositoryTest {
     @Autowired
     BookRepository repository;
@@ -28,7 +30,11 @@ class BookRepositoryTest {
         jdbcTemplate.update("call set_known_good_state();");
     }
 
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.repositories.BookRepository#findAll()}.
+     */
     @Test
+    @DisplayName("Should find all books")
     void testShouldFindAll() {
         List<Book> actual = repository.findAll();
 
@@ -36,7 +42,11 @@ class BookRepositoryTest {
         assertEquals(5, actual.size());
     }
 
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.repositories.BookRepository#findById(Object)}.
+     */
     @Test
+    @DisplayName("Should find Book by existing ID")
     void testShouldFindById() {
         Book expected = getExpectedBook();
         Book actual = repository.findById(1L).orElse(null);
@@ -56,14 +66,22 @@ class BookRepositoryTest {
         return expected;
     }
 
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.repositories.BookRepository#findById(Object)}.
+     */
     @Test
+    @DisplayName("Should not find Book by ID that does not exist")
     void testShouldNotFindByMissingId() {
         Book actual = repository.findById(1_000_000L).orElse(null);
 
         assertNull(actual);
     }
 
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.repositories.BookRepository#deleteById(Object)}.
+     */
     @Test
+    @DisplayName("Should delete Book by ID")
     void testShouldDeleteById() {
         repository.deleteById(2L);
 

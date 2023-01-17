@@ -10,6 +10,7 @@ import com.bujo.bookshelf.book.validators.ReadingLogValidation;
 import com.bujo.bookshelf.response.ActionStatus;
 import com.bujo.bookshelf.response.Result;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@DisplayName("Test ReadingLogServiceImpl Class")
 class ReadingLogServiceImplTest {
     ReadingLogService service;
     @MockBean
@@ -87,6 +89,7 @@ class ReadingLogServiceImplTest {
      * Test method for {@link com.bujo.bookshelf.book.services.ReadingLogServiceImpl#create(ReadingLogDTO, Long)}.
      */
     @Test
+    @DisplayName("Should create valid ReadingLog")
     void testShouldCreateReadingLog() {
         given(bookService.findById(heartsInAtlantis.getBookId())).willReturn(Optional.of(heartsInAtlantis));
         given(repository.save(any(ReadingLog.class))).willReturn(heartsInAtlantisLog);
@@ -105,7 +108,11 @@ class ReadingLogServiceImplTest {
         assertThat(newReadingLogArgCaptor.getValue().getFinish()).isEqualTo(readingLogDto.finish());
     }
 
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.services.ReadingLogServiceImpl#create(ReadingLogDTO, Long)}.
+     */
     @Test
+    @DisplayName("Should not create ReadingLog with null properties")
     void testShouldNotCreateInvalidReadingLog() {
         service.create(readingLogDto, appUser.getAppUserId());
         verify(repository, never()).save(any());
@@ -119,7 +126,11 @@ class ReadingLogServiceImplTest {
         assertNull(result.getPayload());
     }
 
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.services.ReadingLogServiceImpl#create(ReadingLogDTO, Long)}.
+     */
     @Test
+    @DisplayName("Should not create ReadingLog with Book that does not exist")
     void testShouldNotCreateReadingLogMissingBook() {
         given(bookService.findById(any())).willReturn(Optional.empty());
         readingLogDto = new ReadingLogDTO(
@@ -133,7 +144,11 @@ class ReadingLogServiceImplTest {
         validateErrorResult(expected, service.create(readingLogDto, appUser.getAppUserId()));
     }
 
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.services.ReadingLogServiceImpl#create(ReadingLogDTO, Long)}.
+     */
     @Test
+    @DisplayName("Should not create ReadingLog for AppUser that does not exist")
     void testShouldNotCreateReadingLogMissingUser() {
         given(bookService.findById(heartsInAtlantis.getBookId())).willReturn(Optional.of(heartsInAtlantis));
         readingLogDto = new ReadingLogDTO(

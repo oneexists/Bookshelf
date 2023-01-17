@@ -3,6 +3,7 @@ package com.bujo.bookshelf.book.validators;
 import com.bujo.bookshelf.book.models.ReadingLogDTO;
 import com.bujo.bookshelf.response.ActionStatus;
 import com.bujo.bookshelf.response.Result;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@DisplayName("Test ReadingLogValidation Class")
 class ReadingLogValidationTest {
     ReadingLogValidation validation = new ReadingLogValidation();
 
@@ -31,6 +33,7 @@ class ReadingLogValidationTest {
      * Test method for {@link com.bujo.bookshelf.book.validators.ReadingLogValidation#validate(ReadingLogDTO)}.
      */
     @Test
+    @DisplayName("Should validate valid Reading Log")
     void testShouldValidateReadingLog() {
         setReadingLogDto(1L, LocalDate.now().minusDays(2), LocalDate.now().minusDays(1));
 
@@ -49,7 +52,11 @@ class ReadingLogValidationTest {
         assertNull(result.getPayload());
     }
 
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.validators.ReadingLogValidation#validate(ReadingLogDTO)}.
+     */
     @Test
+    @DisplayName("Should not validate null ReadingLogDTO")
     void testShouldNotValidateNullReadingLogDto() {
         Result<ReadingLogDTO> expected = new Result<>();
         expected.addMessage(ActionStatus.NOT_FOUND, ERR_READING_LOG_REQUIRED);
@@ -57,7 +64,11 @@ class ReadingLogValidationTest {
         validateErrorResult(expected, validation.validate(readingLogDto));
     }
 
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.validators.ReadingLogValidation#validate(ReadingLogDTO)}.
+     */
     @Test
+    @DisplayName("Should not validate null Book ID")
     void testShouldNotValidateNullBookId() {
         setReadingLogDto(null, LocalDate.now().minusDays(2), LocalDate.now().minusDays(1));
 
@@ -67,7 +78,11 @@ class ReadingLogValidationTest {
         validateErrorResult(expected, validation.validate(readingLogDto));
     }
 
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.validators.ReadingLogValidation#validate(ReadingLogDTO)}.
+     */
     @Test
+    @DisplayName("Should not validate null start date")
     void testShouldNotValidateNullStart() {
         setReadingLogDto(1L, null, LocalDate.now().minusDays(1));
 
@@ -77,7 +92,11 @@ class ReadingLogValidationTest {
         validateErrorResult(expected, validation.validate(readingLogDto));
     }
 
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.validators.ReadingLogValidation#validate(ReadingLogDTO)}.
+     */
     @Test
+    @DisplayName("Should not validate start date in the future")
     void testShouldNotValidateFutureStart() {
         setReadingLogDto(1L, LocalDate.now().plusDays(2), null);
 
@@ -87,7 +106,11 @@ class ReadingLogValidationTest {
         validateErrorResult(expected, validation.validate(readingLogDto));
     }
 
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.validators.ReadingLogValidation#validate(ReadingLogDTO)}.
+     */
     @Test
+    @DisplayName("Should not validate finish date before start date")
     void testShouldNotValidateFinishBeforeStart() {
         setReadingLogDto(1L, LocalDate.now().minusDays(1), LocalDate.now().minusDays(2));
 
@@ -97,7 +120,11 @@ class ReadingLogValidationTest {
         validateErrorResult(expected, validation.validate(readingLogDto));
     }
 
+    /**
+     * Test method for {@link com.bujo.bookshelf.book.validators.ReadingLogValidation#validate(ReadingLogDTO)}.
+     */
     @Test
+    @DisplayName("Should not validate finish date in the future")
     void testShouldNotValidateFutureFinish() {
         setReadingLogDto(1L, LocalDate.now().minusDays(1), LocalDate.now().plusDays(2));
 
