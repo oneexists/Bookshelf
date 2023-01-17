@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,138 +49,146 @@ class AppUserServiceImplTest {
 		service = new AppUserServiceImpl(repository, passwordEncoder, validation);
 	}
 
-	/**
-	 * Test method for {@link com.bujo.bookshelf.appUser.AppUserServiceImpl#loadUserByUsername(java.lang.String)}.
-	 */
-	@Test
-	@DisplayName("Should find AppUser by existing username")
-	void testLoadUserByUsername() {
-		AppUser expected = new AppUser(USERNAME, PASSWORD, AppUserRole.USER);
-		expected.setAppUserId(2L);
-		given(repository.findByUsername(expected.getUsername())).willReturn(Optional.of(expected));
-		ArgumentCaptor<String> loadArgCaptor = ArgumentCaptor.forClass(String.class);
-		
-		service.loadUserByUsername(expected.getUsername());
-		verify(repository).findByUsername(loadArgCaptor.capture());
-		
-		assertThat(loadArgCaptor.getValue()).isEqualTo(expected.getUsername());
+	@Nested
+	@DisplayName("Test AppUserService load AppUser by username")
+	class AppUserLoadByUsernameTest {
+		/**
+		 * Test method for {@link com.bujo.bookshelf.appUser.AppUserServiceImpl#loadUserByUsername(java.lang.String)}.
+		 */
+		@Test
+		@DisplayName("Should load existing username")
+		void testLoadUserByUsername() {
+			AppUser expected = new AppUser(USERNAME, PASSWORD, AppUserRole.USER);
+			expected.setAppUserId(2L);
+			given(repository.findByUsername(expected.getUsername())).willReturn(Optional.of(expected));
+			ArgumentCaptor<String> loadArgCaptor = ArgumentCaptor.forClass(String.class);
+
+			service.loadUserByUsername(expected.getUsername());
+			verify(repository).findByUsername(loadArgCaptor.capture());
+
+			assertThat(loadArgCaptor.getValue()).isEqualTo(expected.getUsername());
+		}
+
+		/**
+		 * Test method for {@link com.bujo.bookshelf.appUser.AppUserServiceImpl#loadUserByUsername(java.lang.String)}.
+		 */
+		@Test
+		@DisplayName("Should not load username that does not exist")
+		void testShouldNotLoadUserByUsername() {
+			String input = "missing username";
+			given(repository.findByUsername(input)).willReturn(Optional.empty());
+
+			assertThatThrownBy(() -> service.loadUserByUsername(input)).isInstanceOf(UsernameNotFoundException.class);
+		}
 	}
 
-	/**
-	 * Test method for {@link com.bujo.bookshelf.appUser.AppUserServiceImpl#loadUserByUsername(java.lang.String)}.
-	 */
-	@Test
-	@DisplayName("Should not find AppUser by username that does not exist")
-	void testShouldNotLoadUserByUsername() {
-		String input = "missing username";
-		given(repository.findByUsername(input)).willReturn(Optional.empty());
-		
-		assertThatThrownBy(() -> service.loadUserByUsername(input)).isInstanceOf(UsernameNotFoundException.class);
-	}
+	@Nested
+	@DisplayName("Test AppUserService create AppUser")
+	class AppUserCreateTest {
+		/**
+		 * Test method for {@link com.bujo.bookshelf.appUser.AppUserServiceImpl#create(com.bujo.bookshelf.appUser.models.AppUserDTO)}.
+		 */
+		@Test
+		@DisplayName("Should create when valid")
+		void testShouldCreate() {
+			AppUserDTO appUserDto = new AppUserDTO(USERNAME, PASSWORD);
+			AppUser expected = new AppUser(USERNAME, PASSWORD, AppUserRole.USER);
+			expected.setAppUserId(2L);
+			given(passwordEncoder.encode(any(String.class))).willReturn(expected.getPassword());
+			given(repository.save(any(AppUser.class))).willReturn(expected);
+			ArgumentCaptor<AppUser> createArgCaptor = ArgumentCaptor.forClass(AppUser.class);
 
-	/**
-	 * Test method for {@link com.bujo.bookshelf.appUser.AppUserServiceImpl#create(com.bujo.bookshelf.appUser.models.AppUserDTO)}.
-	 */
-	@Test
-	@DisplayName("Should create valid AppUser")
-	void testShouldCreate() {
-		AppUserDTO appUserDto = new AppUserDTO(USERNAME, PASSWORD);
-		AppUser expected = new AppUser(USERNAME, PASSWORD, AppUserRole.USER);
-		expected.setAppUserId(2L);
-		given(passwordEncoder.encode(any(String.class))).willReturn(expected.getPassword());
-		given(repository.save(any(AppUser.class))).willReturn(expected);
-		ArgumentCaptor<AppUser> createArgCaptor = ArgumentCaptor.forClass(AppUser.class);
-		
-		service.create(appUserDto);
-		verify(repository).save(createArgCaptor.capture());
-		
-		assertThat(createArgCaptor.getValue().getUsername()).isEqualTo(expected.getUsername());
-		assertThat(createArgCaptor.getValue().getPassword()).isEqualTo(expected.getPassword());
-	}
+			service.create(appUserDto);
+			verify(repository).save(createArgCaptor.capture());
 
-	/**
-	 * Test method for {@link com.bujo.bookshelf.appUser.AppUserServiceImpl#create(com.bujo.bookshelf.appUser.models.AppUserDTO)}.
-	 */
-	@Test
-	@DisplayName("Should not create AppUser with null username")
-	void testShouldNotCreateNullUsername() {
-		AppUserDTO appUserDto = new AppUserDTO(null, PASSWORD);
-		
-		Result<AppUserDetails> result = service.create(appUserDto);
-		
-		assertNotNull(result);
-		assertFalse(result.isSuccess());
-		assertNull(result.getPayload());
-		assertEquals(1, result.getMessages().size());
-		assertTrue(result.getMessages().get(0).contains(USERNAME_REQUIRED));
-	}
+			assertThat(createArgCaptor.getValue().getUsername()).isEqualTo(expected.getUsername());
+			assertThat(createArgCaptor.getValue().getPassword()).isEqualTo(expected.getPassword());
+		}
 
-	/**
-	 * Test method for {@link com.bujo.bookshelf.appUser.AppUserServiceImpl#create(com.bujo.bookshelf.appUser.models.AppUserDTO)}.
-	 */
-	@Test
-	@DisplayName("Should not create AppUser with empty username")
-	void testShouldNotCreateEmptyUsername() {
-		AppUserDTO appUserDto = new AppUserDTO("\t", PASSWORD);
-		
-		Result<AppUserDetails> result = service.create(appUserDto);
-		
-		assertNotNull(result);
-		assertFalse(result.isSuccess());
-		assertNull(result.getPayload());
-		assertEquals(1, result.getMessages().size());
-		assertTrue(result.getMessages().get(0).contains(USERNAME_REQUIRED));
-	}
+		/**
+		 * Test method for {@link com.bujo.bookshelf.appUser.AppUserServiceImpl#create(com.bujo.bookshelf.appUser.models.AppUserDTO)}.
+		 */
+		@Test
+		@DisplayName("Should not create null username")
+		void testShouldNotCreateNullUsername() {
+			AppUserDTO appUserDto = new AppUserDTO(null, PASSWORD);
 
-	/**
-	 * Test method for {@link com.bujo.bookshelf.appUser.AppUserServiceImpl#create(com.bujo.bookshelf.appUser.models.AppUserDTO)}.
-	 */
-	@Test
-	@DisplayName("Should not create AppUser with null password")
-	void testShouldNotCreateNullPassword() {
-		AppUserDTO appUserDto = new AppUserDTO(USERNAME, null);
-		
-		Result<AppUserDetails> result = service.create(appUserDto);
-		
-		assertNotNull(result);
-		assertFalse(result.isSuccess());
-		assertNull(result.getPayload());
-		assertEquals(1, result.getMessages().size());
-		assertTrue(result.getMessages().get(0).contains(PASSWORD_REQUIRED));
-	}
+			Result<AppUserDetails> result = service.create(appUserDto);
 
-	/**
-	 * Test method for {@link com.bujo.bookshelf.appUser.AppUserServiceImpl#create(com.bujo.bookshelf.appUser.models.AppUserDTO)}.
-	 */
-	@Test
-	@DisplayName("Should not create AppUser with empty password")
-	void testShouldNotCreateEmptyPassword() {
-		AppUserDTO appUserDto = new AppUserDTO(USERNAME, "   ");
-		
-		Result<AppUserDetails> result = service.create(appUserDto);
-		
-		assertNotNull(result);
-		assertFalse(result.isSuccess());
-		assertNull(result.getPayload());
-		assertEquals(1, result.getMessages().size());
-		assertTrue(result.getMessages().get(0).contains(PASSWORD_REQUIRED));
-	}
+			assertNotNull(result);
+			assertFalse(result.isSuccess());
+			assertNull(result.getPayload());
+			assertEquals(1, result.getMessages().size());
+			assertTrue(result.getMessages().get(0).contains(USERNAME_REQUIRED));
+		}
 
-	/**
-	 * Test method for {@link com.bujo.bookshelf.appUser.AppUserServiceImpl#create(com.bujo.bookshelf.appUser.models.AppUserDTO)}.
-	 */
-	@Test
-	@DisplayName("Should not create AppUser with existing username")
-	void testShouldNotCreateDuplicateUsername() {
-		given(repository.save(any(AppUser.class))).willThrow(DataIntegrityViolationException.class);
-		AppUserDTO appUserDto = new AppUserDTO(USERNAME, PASSWORD);
-		
-		Result<AppUserDetails> result = service.create(appUserDto);
-		
-		assertNotNull(result);
-		assertFalse(result.isSuccess());
-		assertNull(result.getPayload());
-		assertEquals(1, result.getMessages().size());
-		assertTrue(result.getMessages().get(0).contains(USERNAME_EXISTS));
+		/**
+		 * Test method for {@link com.bujo.bookshelf.appUser.AppUserServiceImpl#create(com.bujo.bookshelf.appUser.models.AppUserDTO)}.
+		 */
+		@Test
+		@DisplayName("Should not create with empty username")
+		void testShouldNotCreateEmptyUsername() {
+			AppUserDTO appUserDto = new AppUserDTO("\t", PASSWORD);
+
+			Result<AppUserDetails> result = service.create(appUserDto);
+
+			assertNotNull(result);
+			assertFalse(result.isSuccess());
+			assertNull(result.getPayload());
+			assertEquals(1, result.getMessages().size());
+			assertTrue(result.getMessages().get(0).contains(USERNAME_REQUIRED));
+		}
+
+		/**
+		 * Test method for {@link com.bujo.bookshelf.appUser.AppUserServiceImpl#create(com.bujo.bookshelf.appUser.models.AppUserDTO)}.
+		 */
+		@Test
+		@DisplayName("Should not create with null password")
+		void testShouldNotCreateNullPassword() {
+			AppUserDTO appUserDto = new AppUserDTO(USERNAME, null);
+
+			Result<AppUserDetails> result = service.create(appUserDto);
+
+			assertNotNull(result);
+			assertFalse(result.isSuccess());
+			assertNull(result.getPayload());
+			assertEquals(1, result.getMessages().size());
+			assertTrue(result.getMessages().get(0).contains(PASSWORD_REQUIRED));
+		}
+
+		/**
+		 * Test method for {@link com.bujo.bookshelf.appUser.AppUserServiceImpl#create(com.bujo.bookshelf.appUser.models.AppUserDTO)}.
+		 */
+		@Test
+		@DisplayName("Should not create with empty password")
+		void testShouldNotCreateEmptyPassword() {
+			AppUserDTO appUserDto = new AppUserDTO(USERNAME, "   ");
+
+			Result<AppUserDetails> result = service.create(appUserDto);
+
+			assertNotNull(result);
+			assertFalse(result.isSuccess());
+			assertNull(result.getPayload());
+			assertEquals(1, result.getMessages().size());
+			assertTrue(result.getMessages().get(0).contains(PASSWORD_REQUIRED));
+		}
+
+		/**
+		 * Test method for {@link com.bujo.bookshelf.appUser.AppUserServiceImpl#create(com.bujo.bookshelf.appUser.models.AppUserDTO)}.
+		 */
+		@Test
+		@DisplayName("Should not create AppUser with existing username")
+		void testShouldNotCreateDuplicateUsername() {
+			given(repository.save(any(AppUser.class))).willThrow(DataIntegrityViolationException.class);
+			AppUserDTO appUserDto = new AppUserDTO(USERNAME, PASSWORD);
+
+			Result<AppUserDetails> result = service.create(appUserDto);
+
+			assertNotNull(result);
+			assertFalse(result.isSuccess());
+			assertNull(result.getPayload());
+			assertEquals(1, result.getMessages().size());
+			assertTrue(result.getMessages().get(0).contains(USERNAME_EXISTS));
+		}
 	}
 }

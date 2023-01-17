@@ -4,6 +4,7 @@ import com.bujo.bookshelf.book.models.ReadingLogDTO;
 import com.bujo.bookshelf.response.ActionStatus;
 import com.bujo.bookshelf.response.Result;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -33,7 +34,7 @@ class ReadingLogValidationTest {
      * Test method for {@link com.bujo.bookshelf.book.validators.ReadingLogValidation#validate(ReadingLogDTO)}.
      */
     @Test
-    @DisplayName("Should validate valid Reading Log")
+    @DisplayName("Should validate valid")
     void testShouldValidateReadingLog() {
         setReadingLogDto(1L, LocalDate.now().minusDays(2), LocalDate.now().minusDays(1));
 
@@ -78,59 +79,67 @@ class ReadingLogValidationTest {
         validateErrorResult(expected, validation.validate(readingLogDto));
     }
 
-    /**
-     * Test method for {@link com.bujo.bookshelf.book.validators.ReadingLogValidation#validate(ReadingLogDTO)}.
-     */
-    @Test
-    @DisplayName("Should not validate null start date")
-    void testShouldNotValidateNullStart() {
-        setReadingLogDto(1L, null, LocalDate.now().minusDays(1));
+    @Nested
+    @DisplayName("Test ReadingLogValidation validate start date")
+    class ReadingLogValidationValidateStartDateTest {
+        /**
+         * Test method for {@link com.bujo.bookshelf.book.validators.ReadingLogValidation#validate(ReadingLogDTO)}.
+         */
+        @Test
+        @DisplayName("Should not validate null date")
+        void testShouldNotValidateNullStart() {
+            setReadingLogDto(1L, null, LocalDate.now().minusDays(1));
 
-        Result<ReadingLogDTO> expected = new Result<>();
-        expected.addMessage(ActionStatus.INVALID, ERR_START_DATE_REQUIRED);
+            Result<ReadingLogDTO> expected = new Result<>();
+            expected.addMessage(ActionStatus.INVALID, ERR_START_DATE_REQUIRED);
 
-        validateErrorResult(expected, validation.validate(readingLogDto));
+            validateErrorResult(expected, validation.validate(readingLogDto));
+        }
+
+        /**
+         * Test method for {@link com.bujo.bookshelf.book.validators.ReadingLogValidation#validate(ReadingLogDTO)}.
+         */
+        @Test
+        @DisplayName("Should not validate date in the future")
+        void testShouldNotValidateFutureStart() {
+            setReadingLogDto(1L, LocalDate.now().plusDays(2), null);
+
+            Result<ReadingLogDTO> expected = new Result<>();
+            expected.addMessage(ActionStatus.INVALID, ERR_FUTURE_START_DATE);
+
+            validateErrorResult(expected, validation.validate(readingLogDto));
+        }
     }
 
-    /**
-     * Test method for {@link com.bujo.bookshelf.book.validators.ReadingLogValidation#validate(ReadingLogDTO)}.
-     */
-    @Test
-    @DisplayName("Should not validate start date in the future")
-    void testShouldNotValidateFutureStart() {
-        setReadingLogDto(1L, LocalDate.now().plusDays(2), null);
+    @Nested
+    @DisplayName("Test ReadingLogValidation validate finish date")
+    class ReadingLogValidationValidateFinishDateTest {
+        /**
+         * Test method for {@link com.bujo.bookshelf.book.validators.ReadingLogValidation#validate(ReadingLogDTO)}.
+         */
+        @Test
+        @DisplayName("Should not validate date before start date")
+        void testShouldNotValidateFinishBeforeStart() {
+            setReadingLogDto(1L, LocalDate.now().minusDays(1), LocalDate.now().minusDays(2));
 
-        Result<ReadingLogDTO> expected = new Result<>();
-        expected.addMessage(ActionStatus.INVALID, ERR_FUTURE_START_DATE);
+            Result<ReadingLogDTO> expected = new Result<>();
+            expected.addMessage(ActionStatus.INVALID, ERR_START_DATE_AFTER_FINISH_DATE);
 
-        validateErrorResult(expected, validation.validate(readingLogDto));
-    }
+            validateErrorResult(expected, validation.validate(readingLogDto));
+        }
 
-    /**
-     * Test method for {@link com.bujo.bookshelf.book.validators.ReadingLogValidation#validate(ReadingLogDTO)}.
-     */
-    @Test
-    @DisplayName("Should not validate finish date before start date")
-    void testShouldNotValidateFinishBeforeStart() {
-        setReadingLogDto(1L, LocalDate.now().minusDays(1), LocalDate.now().minusDays(2));
+        /**
+         * Test method for {@link com.bujo.bookshelf.book.validators.ReadingLogValidation#validate(ReadingLogDTO)}.
+         */
+        @Test
+        @DisplayName("Should not validate date in the future")
+        void testShouldNotValidateFutureFinish() {
+            setReadingLogDto(1L, LocalDate.now().minusDays(1), LocalDate.now().plusDays(2));
 
-        Result<ReadingLogDTO> expected = new Result<>();
-        expected.addMessage(ActionStatus.INVALID, ERR_START_DATE_AFTER_FINISH_DATE);
+            Result<ReadingLogDTO> expected = new Result<>();
+            expected.addMessage(ActionStatus.INVALID, ERR_FUTURE_FINISH_DATE);
 
-        validateErrorResult(expected, validation.validate(readingLogDto));
-    }
-
-    /**
-     * Test method for {@link com.bujo.bookshelf.book.validators.ReadingLogValidation#validate(ReadingLogDTO)}.
-     */
-    @Test
-    @DisplayName("Should not validate finish date in the future")
-    void testShouldNotValidateFutureFinish() {
-        setReadingLogDto(1L, LocalDate.now().minusDays(1), LocalDate.now().plusDays(2));
-
-        Result<ReadingLogDTO> expected = new Result<>();
-        expected.addMessage(ActionStatus.INVALID, ERR_FUTURE_FINISH_DATE);
-
-        validateErrorResult(expected, validation.validate(readingLogDto));
+            validateErrorResult(expected, validation.validate(readingLogDto));
+        }
     }
 }

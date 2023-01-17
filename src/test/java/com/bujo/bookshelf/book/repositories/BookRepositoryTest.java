@@ -83,8 +83,9 @@ class BookRepositoryTest {
     @Test
     @DisplayName("Should delete Book by ID")
     void testShouldDeleteById() {
-        repository.deleteById(2L);
+        repository.deleteById(4L);
 
-        assertNull(repository.findById(2L).orElse(null));
+        assertNull(repository.findById(4L).orElse(null));
+        assertEquals(4, repository.findAll().size());
     }
 }
