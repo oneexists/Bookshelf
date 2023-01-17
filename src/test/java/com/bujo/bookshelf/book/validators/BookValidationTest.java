@@ -4,6 +4,7 @@ import com.bujo.bookshelf.book.models.BookDTO;
 import com.bujo.bookshelf.response.ActionStatus;
 import com.bujo.bookshelf.response.Result;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -26,6 +27,14 @@ class BookValidationTest {
     final String ERR_AT_LEAST_ONE_PAGE_REQUIRED = "book must have at least one page";
     final String ERR_AUTHOR_REQUIRED = "author is required";
 
+    private void validateErrorResult(Result<BookDTO> expected, Result<BookDTO> result) {
+        assertFalse(result.isSuccess());
+        assertEquals(expected.getStatus(), result.getStatus());
+        assertEquals(expected.getMessages().size(), result.getMessages().size());
+        assertArrayEquals(expected.getMessages().toArray(), result.getMessages().toArray());
+        assertNull(result.getPayload());
+    }
+
     /**
      * Test method for {@link com.bujo.bookshelf.book.validators.BookValidation#validate(BookDTO)}.
      */
@@ -47,14 +56,6 @@ class BookValidationTest {
         assertNull(result.getPayload());
     }
 
-    private void validateErrorResult(Result<BookDTO> expected, Result<BookDTO> result) {
-        assertFalse(result.isSuccess());
-        assertEquals(expected.getStatus(), result.getStatus());
-        assertEquals(expected.getMessages().size(), result.getMessages().size());
-        assertArrayEquals(expected.getMessages().toArray(), result.getMessages().toArray());
-        assertNull(result.getPayload());
-    }
-
     /**
      * Test method for {@link com.bujo.bookshelf.book.validators.BookValidation#validate(BookDTO)}.
      */
@@ -67,120 +68,133 @@ class BookValidationTest {
         validateErrorResult(expected, validation.validate(theRegulatorsDto));
     }
 
-    /**
-     * Test method for {@link com.bujo.bookshelf.book.validators.BookValidation#validate(BookDTO)}.
-     */
-    @Test
-    @DisplayName("Should not validate null title")
-    void testShouldNotValidateNullTitle() {
-        theRegulatorsDto = new BookDTO(
-                BOOK_ID,
-                APP_USER_ID,
-                null,
-                STEPHEN_KING,
-                ENGLISH,
-                PAGE_COUNT);
+    @Nested
+    @DisplayName("Test BookValidation validate title")
+    class BookValidationValidateTitleTest {
 
-        Result<BookDTO> expected = new Result<>();
-        expected.addMessage(ActionStatus.INVALID, ERR_TITLE_REQUIRED);
+        /**
+         * Test method for {@link com.bujo.bookshelf.book.validators.BookValidation#validate(BookDTO)}.
+         */
+        @Test
+        @DisplayName("Should not validate null")
+        void testShouldNotValidateNullTitle() {
+            theRegulatorsDto = new BookDTO(
+                    BOOK_ID,
+                    APP_USER_ID,
+                    null,
+                    STEPHEN_KING,
+                    ENGLISH,
+                    PAGE_COUNT);
 
-        validateErrorResult(expected, validation.validate(theRegulatorsDto));
+            Result<BookDTO> expected = new Result<>();
+            expected.addMessage(ActionStatus.INVALID, ERR_TITLE_REQUIRED);
+
+            validateErrorResult(expected, validation.validate(theRegulatorsDto));
+        }
+
+        /**
+         * Test method for {@link com.bujo.bookshelf.book.validators.BookValidation#validate(BookDTO)}.
+         */
+        @Test
+        @DisplayName("Should not validate empty")
+        void testShouldNotValidateEmptyTitle() {
+            theRegulatorsDto = new BookDTO(
+                    BOOK_ID,
+                    APP_USER_ID,
+                    "\t",
+                    STEPHEN_KING,
+                    ENGLISH,
+                    PAGE_COUNT);
+
+            Result<BookDTO> expected = new Result<>();
+            expected.addMessage(ActionStatus.INVALID, ERR_TITLE_REQUIRED);
+
+            validateErrorResult(expected, validation.validate(theRegulatorsDto));
+        }
     }
 
-    /**
-     * Test method for {@link com.bujo.bookshelf.book.validators.BookValidation#validate(BookDTO)}.
-     */
-    @Test
-    @DisplayName("Should not validate empty title")
-    void testShouldNotValidateEmptyTitle() {
-        theRegulatorsDto = new BookDTO(
-                BOOK_ID,
-                APP_USER_ID,
-                "\t",
-                STEPHEN_KING,
-                ENGLISH,
-                PAGE_COUNT);
+    @Nested
+    @DisplayName("Test BookValidation validate pages")
+    class BookValidationValidatePagesTest {
+        /**
+         * Test method for {@link com.bujo.bookshelf.book.validators.BookValidation#validate(BookDTO)}.
+         */
+        @Test
+        @DisplayName("Should not validate zero")
+        void testShouldNotValidateZeroPages() {
+            theRegulatorsDto = new BookDTO(
+                    BOOK_ID,
+                    APP_USER_ID,
+                    THE_REGULATORS,
+                    STEPHEN_KING,
+                    ENGLISH,
+                    0);
 
-        Result<BookDTO> expected = new Result<>();
-        expected.addMessage(ActionStatus.INVALID, ERR_TITLE_REQUIRED);
+            Result<BookDTO> expected = new Result<>();
+            expected.addMessage(ActionStatus.INVALID, ERR_AT_LEAST_ONE_PAGE_REQUIRED);
 
-        validateErrorResult(expected, validation.validate(theRegulatorsDto));
+            validateErrorResult(expected, validation.validate(theRegulatorsDto));
+        }
+
+        /**
+         * Test method for {@link com.bujo.bookshelf.book.validators.BookValidation#validate(BookDTO)}.
+         */
+        @Test
+        @DisplayName("Should not validate negative")
+        void testShouldNotValidateNegativePages() {
+            theRegulatorsDto = new BookDTO(
+                    BOOK_ID,
+                    APP_USER_ID,
+                    THE_REGULATORS,
+                    STEPHEN_KING,
+                    ENGLISH,
+                    -300);
+            Result<BookDTO> expected = new Result<>();
+            expected.addMessage(ActionStatus.INVALID, ERR_AT_LEAST_ONE_PAGE_REQUIRED);
+
+            validateErrorResult(expected, validation.validate(theRegulatorsDto));
+        }
     }
 
-    /**
-     * Test method for {@link com.bujo.bookshelf.book.validators.BookValidation#validate(BookDTO)}.
-     */
-    @Test
-    @DisplayName("Should not validate zero pages")
-    void testShouldNotValidateZeroPages() {
-        theRegulatorsDto = new BookDTO(
-                BOOK_ID,
-                APP_USER_ID,
-                THE_REGULATORS,
-                STEPHEN_KING,
-                ENGLISH,
-                0);
+    @Nested
+    @DisplayName("Test BookValidation validate author name")
+    class BookValidationValidateAuthorNameTest {
+        /**
+         * Test method for {@link com.bujo.bookshelf.book.validators.BookValidation#validate(BookDTO)}.
+         */
+        @Test
+        @DisplayName("Should not validate null")
+        void testShouldNotValidateNullAuthor() {
+            theRegulatorsDto = new BookDTO(
+                    BOOK_ID,
+                    APP_USER_ID,
+                    THE_REGULATORS,
+                    null,
+                    ENGLISH,
+                    PAGE_COUNT);
+            Result<BookDTO> expected = new Result<>();
+            expected.addMessage(ActionStatus.INVALID, ERR_AUTHOR_REQUIRED);
 
-        Result<BookDTO> expected = new Result<>();
-        expected.addMessage(ActionStatus.INVALID, ERR_AT_LEAST_ONE_PAGE_REQUIRED);
+            validateErrorResult(expected, validation.validate(theRegulatorsDto));
+        }
 
-        validateErrorResult(expected, validation.validate(theRegulatorsDto));
-    }
+        /**
+         * Test method for {@link com.bujo.bookshelf.book.validators.BookValidation#validate(BookDTO)}.
+         */
+        @Test
+        @DisplayName("Should not validate empty")
+        void testShouldNOtValidateEmptyAuthor() {
+            theRegulatorsDto = new BookDTO(
+                    BOOK_ID,
+                    APP_USER_ID,
+                    THE_REGULATORS,
+                    " ",
+                    ENGLISH,
+                    PAGE_COUNT);
+            Result<BookDTO> expected = new Result<>();
+            expected.addMessage(ActionStatus.INVALID, ERR_AUTHOR_REQUIRED);
 
-    /**
-     * Test method for {@link com.bujo.bookshelf.book.validators.BookValidation#validate(BookDTO)}.
-     */
-    @Test
-    @DisplayName("Should not validate negative pages")
-    void testShouldNotValidateNegativePages() {
-        theRegulatorsDto = new BookDTO(
-                BOOK_ID,
-                APP_USER_ID,
-                THE_REGULATORS,
-                STEPHEN_KING,
-                ENGLISH,
-                -300);
-        Result<BookDTO> expected = new Result<>();
-        expected.addMessage(ActionStatus.INVALID, ERR_AT_LEAST_ONE_PAGE_REQUIRED);
-
-        validateErrorResult(expected, validation.validate(theRegulatorsDto));
-    }
-
-    /**
-     * Test method for {@link com.bujo.bookshelf.book.validators.BookValidation#validate(BookDTO)}.
-     */
-    @Test
-    @DisplayName("Should not validate null Author name")
-    void testShouldNotValidateNullAuthor() {
-        theRegulatorsDto = new BookDTO(
-                BOOK_ID,
-                APP_USER_ID,
-                THE_REGULATORS,
-                null,
-                ENGLISH,
-                PAGE_COUNT);
-        Result<BookDTO> expected = new Result<>();
-        expected.addMessage(ActionStatus.INVALID, ERR_AUTHOR_REQUIRED);
-
-        validateErrorResult(expected, validation.validate(theRegulatorsDto));
-    }
-
-    /**
-     * Test method for {@link com.bujo.bookshelf.book.validators.BookValidation#validate(BookDTO)}.
-     */
-    @Test
-    @DisplayName("Should not validate empty Author name")
-    void testShouldNOtValidateEmptyAuthor() {
-        theRegulatorsDto = new BookDTO(
-                BOOK_ID,
-                APP_USER_ID,
-                THE_REGULATORS,
-                " ",
-                ENGLISH,
-                PAGE_COUNT);
-        Result<BookDTO> expected = new Result<>();
-        expected.addMessage(ActionStatus.INVALID, ERR_AUTHOR_REQUIRED);
-
-        validateErrorResult(expected, validation.validate(theRegulatorsDto));
+            validateErrorResult(expected, validation.validate(theRegulatorsDto));
+        }
     }
 }

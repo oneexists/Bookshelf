@@ -11,6 +11,7 @@ import com.bujo.bookshelf.response.ActionStatus;
 import com.bujo.bookshelf.response.Result;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +86,14 @@ class ReadingLogServiceImplTest {
         return newReadingLog;
     }
 
+    private void validateErrorResult(Result<ReadingLogDTO> expected, Result<ReadingLogDTO> result) {
+        assertFalse(result.isSuccess());
+        assertEquals(expected.getStatus(), result.getStatus());
+        assertEquals(expected.getMessages().size(), result.getMessages().size());
+        assertArrayEquals(expected.getMessages().toArray(), result.getMessages().toArray());
+        assertNull(result.getPayload());
+    }
+
     /**
      * Test method for {@link com.bujo.bookshelf.book.services.ReadingLogServiceImpl#create(ReadingLogDTO, Long)}.
      */
@@ -116,14 +125,6 @@ class ReadingLogServiceImplTest {
     void testShouldNotCreateInvalidReadingLog() {
         service.create(readingLogDto, appUser.getAppUserId());
         verify(repository, never()).save(any());
-    }
-
-    private void validateErrorResult(Result<ReadingLogDTO> expected, Result<ReadingLogDTO> result) {
-        assertFalse(result.isSuccess());
-        assertEquals(expected.getStatus(), result.getStatus());
-        assertEquals(expected.getMessages().size(), result.getMessages().size());
-        assertArrayEquals(expected.getMessages().toArray(), result.getMessages().toArray());
-        assertNull(result.getPayload());
     }
 
     /**

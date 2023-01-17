@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -44,31 +45,6 @@ class AppUserRepositoryTest {
 	}
 
 	@Test
-	@DisplayName("Should find AppUser by existing username")
-	void testShouldFindByUsername() {
-		AppUser expected = new AppUser(USERNAME, PASSWORD, AppUserRole.USER);
-		
-		AppUser actual = repository.findByUsername(USERNAME).orElse(null);
-		
-		assertNotNull(actual);
-		assertEquals(expected.getUsername(), actual.getUsername());
-		assertEquals(expected.getPassword(), actual.getPassword());
-		assertEquals(expected.getUserRole(), actual.getUserRole());
-		assertEquals(expected.isAccountNonExpired(), actual.isAccountNonExpired());
-		assertEquals(expected.isAccountNonLocked(), actual.isAccountNonLocked());
-		assertEquals(expected.isCredentialsNonExpired(), actual.isCredentialsNonExpired());
-		assertEquals(expected.isEnabled(), actual.isEnabled());
-	}
-
-	@Test
-	@DisplayName("Should not find AppUser by username that does not exist")
-	void testShouldNotFindByUsername() {
-		AppUser actual = repository.findByUsername("not a username").orElse(null);
-		
-		assertNull(actual);
-	}
-
-	@Test
 	@DisplayName("Should not create a new AppUser with existing username")
 	void testShouldNotCreateDuplicateUsername() {
 		AppUser duplicate = new AppUser(USERNAME, PASSWORD, AppUserRole.USER);
@@ -77,4 +53,32 @@ class AppUserRepositoryTest {
 			.isInstanceOf(DataIntegrityViolationException.class);
 	}
 
+	@Nested
+	@DisplayName("Test AppUserRepository find AppUser by username")
+	class AppUserFindByUsernameTest {
+		@Test
+		@DisplayName("Should find by existing username")
+		void testShouldFindByUsername() {
+			AppUser expected = new AppUser(USERNAME, PASSWORD, AppUserRole.USER);
+
+			AppUser actual = repository.findByUsername(USERNAME).orElse(null);
+
+			assertNotNull(actual);
+			assertEquals(expected.getUsername(), actual.getUsername());
+			assertEquals(expected.getPassword(), actual.getPassword());
+			assertEquals(expected.getUserRole(), actual.getUserRole());
+			assertEquals(expected.isAccountNonExpired(), actual.isAccountNonExpired());
+			assertEquals(expected.isAccountNonLocked(), actual.isAccountNonLocked());
+			assertEquals(expected.isCredentialsNonExpired(), actual.isCredentialsNonExpired());
+			assertEquals(expected.isEnabled(), actual.isEnabled());
+		}
+
+		@Test
+		@DisplayName("Should not find by username that does not exist")
+		void testShouldNotFindByUsername() {
+			AppUser actual = repository.findByUsername("not a username").orElse(null);
+
+			assertNull(actual);
+		}
+	}
 }
