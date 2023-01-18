@@ -13,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +25,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.bujo.bookshelf.appUser.models.AppUser;
 import com.bujo.bookshelf.appUser.models.AppUserDTO;
 import com.bujo.bookshelf.appUser.models.AppUserDetails;
-import com.bujo.bookshelf.appUser.models.AppUserRole;
 import com.bujo.bookshelf.response.Result;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
@@ -38,8 +38,6 @@ class AppUserServiceImplTest {
 	@Autowired
 	AppUserValidation validation;
 
-	final String USERNAME = "test username";
-	final String PASSWORD = "P@ssw0rd!";
 	final String USERNAME_REQUIRED = "username is required";
 	final String PASSWORD_REQUIRED = "password is required";
 	final String USERNAME_EXISTS = "provided username already exists";
@@ -50,6 +48,7 @@ class AppUserServiceImplTest {
 	}
 
 	@Nested
+	@ExtendWith(AppUserParameterResolver.class)
 	@DisplayName("Test AppUserService load AppUser by username")
 	class AppUserLoadByUsernameTest {
 		/**
@@ -57,8 +56,7 @@ class AppUserServiceImplTest {
 		 */
 		@Test
 		@DisplayName("Should load existing username")
-		void testLoadUserByUsername() {
-			AppUser expected = new AppUser(USERNAME, PASSWORD, AppUserRole.USER);
+		void testLoadUserByUsername(AppUser expected) {
 			expected.setAppUserId(2L);
 			given(repository.findByUsername(expected.getUsername())).willReturn(Optional.of(expected));
 			ArgumentCaptor<String> loadArgCaptor = ArgumentCaptor.forClass(String.class);
@@ -83,6 +81,7 @@ class AppUserServiceImplTest {
 	}
 
 	@Nested
+	@ExtendWith(AppUserParameterResolver.class)
 	@DisplayName("Test AppUserService create AppUser")
 	class AppUserCreateTest {
 		/**
@@ -90,9 +89,8 @@ class AppUserServiceImplTest {
 		 */
 		@Test
 		@DisplayName("Should create when valid")
-		void testShouldCreate() {
-			AppUserDTO appUserDto = new AppUserDTO(USERNAME, PASSWORD);
-			AppUser expected = new AppUser(USERNAME, PASSWORD, AppUserRole.USER);
+		void testShouldCreate(AppUser expected) {
+			AppUserDTO appUserDto = new AppUserDTO(expected.getUsername(), expected.getPassword());
 			expected.setAppUserId(2L);
 			given(passwordEncoder.encode(any(String.class))).willReturn(expected.getPassword());
 			given(repository.save(any(AppUser.class))).willReturn(expected);
@@ -110,8 +108,8 @@ class AppUserServiceImplTest {
 		 */
 		@Test
 		@DisplayName("Should not create null username")
-		void testShouldNotCreateNullUsername() {
-			AppUserDTO appUserDto = new AppUserDTO(null, PASSWORD);
+		void testShouldNotCreateNullUsername(AppUser expected) {
+			AppUserDTO appUserDto = new AppUserDTO(null, expected.getPassword());
 
 			Result<AppUserDetails> result = service.create(appUserDto);
 
@@ -127,8 +125,8 @@ class AppUserServiceImplTest {
 		 */
 		@Test
 		@DisplayName("Should not create with empty username")
-		void testShouldNotCreateEmptyUsername() {
-			AppUserDTO appUserDto = new AppUserDTO("\t", PASSWORD);
+		void testShouldNotCreateEmptyUsername(AppUser expected) {
+			AppUserDTO appUserDto = new AppUserDTO("\t", expected.getPassword());
 
 			Result<AppUserDetails> result = service.create(appUserDto);
 
@@ -144,8 +142,8 @@ class AppUserServiceImplTest {
 		 */
 		@Test
 		@DisplayName("Should not create with null password")
-		void testShouldNotCreateNullPassword() {
-			AppUserDTO appUserDto = new AppUserDTO(USERNAME, null);
+		void testShouldNotCreateNullPassword(AppUser expected) {
+			AppUserDTO appUserDto = new AppUserDTO(expected.getUsername(), null);
 
 			Result<AppUserDetails> result = service.create(appUserDto);
 
@@ -161,8 +159,8 @@ class AppUserServiceImplTest {
 		 */
 		@Test
 		@DisplayName("Should not create with empty password")
-		void testShouldNotCreateEmptyPassword() {
-			AppUserDTO appUserDto = new AppUserDTO(USERNAME, "   ");
+		void testShouldNotCreateEmptyPassword(AppUser expected) {
+			AppUserDTO appUserDto = new AppUserDTO(expected.getUsername(), "   ");
 
 			Result<AppUserDetails> result = service.create(appUserDto);
 
@@ -178,9 +176,9 @@ class AppUserServiceImplTest {
 		 */
 		@Test
 		@DisplayName("Should not create AppUser with existing username")
-		void testShouldNotCreateDuplicateUsername() {
+		void testShouldNotCreateDuplicateUsername(AppUser expected) {
 			given(repository.save(any(AppUser.class))).willThrow(DataIntegrityViolationException.class);
-			AppUserDTO appUserDto = new AppUserDTO(USERNAME, PASSWORD);
+			AppUserDTO appUserDto = new AppUserDTO(expected.getUsername(), expected.getPassword());
 
 			Result<AppUserDetails> result = service.create(appUserDto);
 

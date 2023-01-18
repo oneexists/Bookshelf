@@ -1,8 +1,6 @@
 package com.bujo.bookshelf.book.services;
 
 import com.bujo.bookshelf.appUser.models.AppUser;
-import com.bujo.bookshelf.book.models.Author;
-import com.bujo.bookshelf.book.models.Book;
 import com.bujo.bookshelf.book.models.ReadingLog;
 import com.bujo.bookshelf.book.models.ReadingLogDTO;
 import com.bujo.bookshelf.book.repositories.ReadingLogRepository;
@@ -11,8 +9,8 @@ import com.bujo.bookshelf.response.ActionStatus;
 import com.bujo.bookshelf.response.Result;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,6 +28,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@ExtendWith(ReadingLogParameterResolver.class)
 @DisplayName("Test ReadingLogServiceImpl Class")
 class ReadingLogServiceImplTest {
     ReadingLogService service;
@@ -43,47 +42,11 @@ class ReadingLogServiceImplTest {
     final String ERR_BOOK_NOT_FOUND = "book not found";
     final String ERR_INVALID_REQUEST = "invalid request";
 
-    AppUser appUser = new AppUser();
-    Author stephenKing = new Author();
-    Book heartsInAtlantis = new Book();
-    ReadingLog heartsInAtlantisLog = new ReadingLog();
-
     ReadingLogDTO readingLogDto;
 
     @BeforeEach
     void setUp() {
         service = new ReadingLogServiceImpl(bookService, repository, validation);
-
-        appUser.setAppUserId(1L);
-        stephenKing = initializeStephenKing();
-        heartsInAtlantis = initializeHeartsInAtlantis();
-        heartsInAtlantisLog = initializeReadingLog(heartsInAtlantis, LocalDate.now().minusDays(3), LocalDate.now());
-    }
-
-    private Author initializeStephenKing() {
-        Author newAuthor = new Author();
-        newAuthor.setAuthorId(4L);
-        newAuthor.setName("Stephen King");
-        return newAuthor;
-    }
-
-    private Book initializeHeartsInAtlantis() {
-        Book newBook = new Book();
-        newBook.setUser(appUser);
-        newBook.setBookId(1L);
-        newBook.setAuthor(stephenKing);
-        newBook.setTitle("Hearts in Atlantis");
-        newBook.setLanguage("English");
-        newBook.setPages(640);
-        return newBook;
-    }
-
-    private ReadingLog initializeReadingLog(Book book, LocalDate start, LocalDate finish) {
-        ReadingLog newReadingLog = new ReadingLog();
-        newReadingLog.setBook(book);
-        newReadingLog.setStart(start);
-        newReadingLog.setFinish(finish);
-        return newReadingLog;
     }
 
     private void validateErrorResult(Result<ReadingLogDTO> expected, Result<ReadingLogDTO> result) {
@@ -99,17 +62,17 @@ class ReadingLogServiceImplTest {
      */
     @Test
     @DisplayName("Should create valid ReadingLog")
-    void testShouldCreateReadingLog() {
-        given(bookService.findById(heartsInAtlantis.getBookId())).willReturn(Optional.of(heartsInAtlantis));
-        given(repository.save(any(ReadingLog.class))).willReturn(heartsInAtlantisLog);
+    void testShouldCreateReadingLog(ReadingLog readingLog) {
+        given(bookService.findById(readingLog.getBook().getBookId())).willReturn(Optional.of(readingLog.getBook()));
+        given(repository.save(any(ReadingLog.class))).willReturn(readingLog);
         ArgumentCaptor<ReadingLog> newReadingLogArgCaptor = ArgumentCaptor.forClass(ReadingLog.class);
 
         readingLogDto = new ReadingLogDTO(
-                heartsInAtlantis.getBookId(),
+                readingLog.getBook().getBookId(),
                 LocalDate.now().minusDays(3),
                 LocalDate.now().minusDays(2));
 
-        service.create(readingLogDto, appUser.getAppUserId());
+        service.create(readingLogDto, readingLog.getBook().getUser().getAppUserId());
         verify(repository).save(newReadingLogArgCaptor.capture());
 
         assertThat(newReadingLogArgCaptor.getValue().getBook().getBookId()).isEqualTo(readingLogDto.bookId());
@@ -122,8 +85,8 @@ class ReadingLogServiceImplTest {
      */
     @Test
     @DisplayName("Should not create ReadingLog with null properties")
-    void testShouldNotCreateInvalidReadingLog() {
-        service.create(readingLogDto, appUser.getAppUserId());
+    void testShouldNotCreateInvalidReadingLog(ReadingLog readingLog) {
+        service.create(readingLogDto, readingLog.getBook().getUser().getAppUserId());
         verify(repository, never()).save(any());
     }
 
@@ -132,7 +95,7 @@ class ReadingLogServiceImplTest {
      */
     @Test
     @DisplayName("Should not create ReadingLog with Book that does not exist")
-    void testShouldNotCreateReadingLogMissingBook() {
+    void testShouldNotCreateReadingLogMissingBook(ReadingLog readingLog) {
         given(bookService.findById(any())).willReturn(Optional.empty());
         readingLogDto = new ReadingLogDTO(
                 1_000L,
@@ -142,7 +105,7 @@ class ReadingLogServiceImplTest {
         Result<ReadingLogDTO> expected = new Result<>();
         expected.addMessage(ActionStatus.NOT_FOUND, ERR_BOOK_NOT_FOUND);
 
-        validateErrorResult(expected, service.create(readingLogDto, appUser.getAppUserId()));
+        validateErrorResult(expected, service.create(readingLogDto, readingLog.getBook().getUser().getAppUserId()));
     }
 
     /**
@@ -150,10 +113,10 @@ class ReadingLogServiceImplTest {
      */
     @Test
     @DisplayName("Should not create ReadingLog for AppUser that does not exist")
-    void testShouldNotCreateReadingLogMissingUser() {
-        given(bookService.findById(heartsInAtlantis.getBookId())).willReturn(Optional.of(heartsInAtlantis));
+    void testShouldNotCreateReadingLogMissingUser(ReadingLog readingLog) {
+        given(bookService.findById(readingLog.getBook().getBookId())).willReturn(Optional.of(readingLog.getBook()));
         readingLogDto = new ReadingLogDTO(
-                heartsInAtlantis.getBookId(),
+                readingLog.getBook().getBookId(),
                 LocalDate.now().minusDays(3),
                 LocalDate.now().minusDays(2));
 

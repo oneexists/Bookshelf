@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -23,8 +24,6 @@ class AuthorRepositoryTest {
     AuthorRepository repository;
     @Autowired
     JdbcTemplate jdbcTemplate;
-
-    final String AUTHOR_NAME = "Leo Tolstoy";
 
     @BeforeEach
     void setUp() {
@@ -56,6 +55,7 @@ class AuthorRepositoryTest {
     }
 
     @Nested
+    @ExtendWith(AuthorParameterResolver.class)
     @DisplayName("Test AppUserRepository find by ID")
     class AppUserRepositoryFindByIdTest {
         /**
@@ -63,11 +63,11 @@ class AuthorRepositoryTest {
          */
         @Test
         @DisplayName("Should find by existing ID")
-        void testShouldFindById() {
+        void testShouldFindById(Author expected) {
             Author actual = repository.findById(1L).orElse(null);
 
             assertNotNull(actual);
-            assertEquals(AUTHOR_NAME, actual.getName());
+            assertEquals(expected.getName(), actual.getName());
         }
 
         /**
@@ -83,6 +83,7 @@ class AuthorRepositoryTest {
     }
 
     @Nested
+    @ExtendWith(AuthorParameterResolver.class)
     @DisplayName("Test AuthorRepository find by name")
     class AuthorRepositoryFindByNameTest {
         /**
@@ -90,12 +91,12 @@ class AuthorRepositoryTest {
          */
         @Test
         @DisplayName("Should find by existing name")
-        void testShouldFindByName() {
-            Author actual = repository.findByName(AUTHOR_NAME);
+        void testShouldFindByName(Author expected) {
+            Author actual = repository.findByName(expected.getName());
 
             assertNotNull(actual);
             assertTrue(actual.getAuthorId() > 0);
-            assertEquals(AUTHOR_NAME, actual.getName());
+            assertEquals(expected.getName(), actual.getName());
         }
 
         /**
