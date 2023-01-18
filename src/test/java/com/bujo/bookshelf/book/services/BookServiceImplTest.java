@@ -18,11 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import static com.bujo.bookshelf.book.services.InitUtility.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -43,63 +43,21 @@ class BookServiceImplTest {
     @Autowired
     BookValidation validation;
 
-    final String ENGLISH = "English";
-    final String STEPHEN_KING = "Stephen King";
-    final String KURT_VONNEGUT = "Kurt Vonnegut";
-    final String RICHARD_BACHMAN = "Richard Bachman";
-    final String THE_REGULATORS = "The Regulators";
-    final String HEARTS_IN_ATLANTIS = "Hearts in Atlantis";
-    final String HOCUS_POCUS = "Hocus Pocus";
     final String ERR_TITLE_REQUIRED = "title is required";
     final String ERR_AT_LEAST_ONE_PAGE_REQUIRED = "book must have at least one page";
     final String ERR_AUTHOR_REQUIRED = "author is required";
 
-    AppUser appUser = new AppUser();
+    AppUser appUser = getAppUser();
 
-    Map<String, Author> authors = new HashMap<>();
-    Map<String, Book> books = new HashMap<>();
+    Map<String, Author> authors = getAuthors();
+    Map<String, Book> books = getBooks();
 
     @BeforeEach
     void setUp() {
         service = new BookServiceImpl(bookRepository, authorRepository, appUserRepository, validation);
 
-        appUser.setAppUserId(1L);
-
-        initializeAuthors();
-        initializeBooks();
-
         authors.get(STEPHEN_KING).setBooks(Set.of(books.get(THE_REGULATORS), books.get(HEARTS_IN_ATLANTIS)));
         authors.get(KURT_VONNEGUT).setBooks(Set.of(books.get(HOCUS_POCUS)));
-    }
-
-    private void initializeAuthors() {
-        authors.put(STEPHEN_KING, initializeAuthor(4L, STEPHEN_KING));
-        authors.put(KURT_VONNEGUT, initializeAuthor(5L, KURT_VONNEGUT));
-        authors.put(RICHARD_BACHMAN, initializeAuthor(6L, RICHARD_BACHMAN));
-    }
-
-    private Author initializeAuthor(Long id, String name) {
-        Author newAuthor = new Author();
-        newAuthor.setAuthorId(id);
-        newAuthor.setName(name);
-        return newAuthor;
-    }
-
-    private void initializeBooks() {
-        books.put(THE_REGULATORS, initializeBook(3L, authors.get(STEPHEN_KING), THE_REGULATORS, 512));
-        books.put(HEARTS_IN_ATLANTIS, initializeBook(4L, authors.get(STEPHEN_KING), HEARTS_IN_ATLANTIS, 640));
-        books.put(HOCUS_POCUS, initializeBook(5L, authors.get(KURT_VONNEGUT), HOCUS_POCUS, 322));
-    }
-
-    private Book initializeBook(Long id, Author author, String title, int pages) {
-        Book newBook = new Book();
-        newBook.setUser(appUser);
-        newBook.setBookId(id);
-        newBook.setAuthor(author);
-        newBook.setTitle(title);
-        newBook.setLanguage(ENGLISH);
-        newBook.setPages(pages);
-        return newBook;
     }
 
     @Nested
@@ -350,9 +308,12 @@ class BookServiceImplTest {
         @Test
         @DisplayName("Should delete by ID")
         void testDeleteBookById() {
+            books.get(THE_REGULATORS).setAuthor(authors.get(STEPHEN_KING));
             given(bookRepository.findById(books.get(THE_REGULATORS).getBookId())).willReturn(Optional.of(books.get(THE_REGULATORS)));
             given(authorRepository.findById(authors.get(STEPHEN_KING).getAuthorId())).willReturn(Optional.of(authors.get(STEPHEN_KING)));
             ArgumentCaptor<Long> deleteBookByIdArgCaptor = ArgumentCaptor.forClass(Long.class);
+
+            System.out.println(authors.get(STEPHEN_KING).getBooks());
 
             service.deleteById(books.get(THE_REGULATORS).getBookId(), appUser.getAppUserId());
             verify(bookRepository).deleteById(deleteBookByIdArgCaptor.capture());
