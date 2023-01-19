@@ -1,3 +1,4 @@
+create database if not exists bookshelf;
 drop database if exists bujo_test;
 create database bujo_test;
 
