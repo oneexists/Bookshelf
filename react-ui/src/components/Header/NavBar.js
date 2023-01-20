@@ -1,5 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import LoginNav from "./LoginNav";
+import UserMenu from "./UserMenu";
 
 export default function NavBar() {
     const auth = useAuth();
@@ -10,11 +12,8 @@ export default function NavBar() {
                 <div className="navbar-header">
                     <div className="nav navbar-nav">
                         <NavLink to="/" className="navbar-brand"><img height="32" src={process.env.PUBLIC_URL + "/book-icon.png"} alt="logo" />Bookshelf</NavLink>
-                        {(auth.user) &&
-                        <>
-                            <NavLink to="/quotes" className="nav-link">Quotes</NavLink>
-                            <NavLink to="/notes" className="nav-link">Notes</NavLink>
-                        </>
+                        {(auth.user) && 
+                            <UserMenu />
                         }
                     </div>
                 </div>
@@ -24,10 +23,7 @@ export default function NavBar() {
                             <li className="nav-item"><NavLink to="/" className="nav-link" onClick={auth.logout}>Logout</NavLink></li>
                         </ul>
                     :
-                        <ul className="nav navbar-nav">
-                            <li className="nav-item"><NavLink to="/login" className="nav-link">Login</NavLink></li>
-                            <li className="nav-item"><NavLink to="/register" className="nav-link">Register</NavLink></li>
-                        </ul>
+                        <LoginNav />
                     }
             </div>
         </nav>
