@@ -1,7 +1,7 @@
-import { useAuth } from "../../../../hooks/useAuth";
-import { withBooks } from "../../hoc/withBooks";
-import BookCards from "./BookCards";
-import BookshelfSplitLayout from "../../layouts/BookshelfSplitLayout";
+import { useAuth } from "../../../../../hooks/useAuth";
+import { withBooks } from "../../../hoc/withBooks";
+import BookCards from "../BookCards";
+import BookshelfSplitLayout from "../../../layouts/BookshelfSplitLayout";
 
 export default function AllBooks() {
     const auth = useAuth();

@@ -8,12 +8,15 @@ import Register from "./features/Register";
 import { useAuth } from "./hooks/useAuth";
 import { useEffect } from "react";
 import { refresh } from "./services/authService";
-import AllBooks from "./features/Bookshelf/components/AllBooks";
+import AllBooks from "./features/Bookshelf/components/bookshelves/AllBooks";
 import BookView from "./features/Bookshelf/components/BookView";
 import BookAdd from "./features/Bookshelf/components/BookAdd";
 import BookEdit from "./features/Bookshelf/components/BookEdit";
 import ReadingLogAdd from "./features/Bookshelf/components/ReadingLogAdd";
 import ReadingLogEdit from "./features/Bookshelf/components/ReadingLogEdit";
+import FinishedBooks from "./features/Bookshelf/components/bookshelves/FinishedBooks";
+import InProgressBooks from "./features/Bookshelf/components/bookshelves/InProgressBooks";
+import UnreadBooks from "./features/Bookshelf/components/bookshelves/UnreadBooks";
 
 function App() {
     const auth = useAuth();
@@ -36,9 +39,9 @@ function App() {
                   
                   <Route path="books">
                     <Route path="add" element={<BookAdd />} />
-                    <Route path="unfinished" element={<NotFound />} />
-                    <Route path="in-progress" element={<NotFound />} />
-                    <Route path="finished" element={<NotFound />} />
+                    <Route path="unread" element={<UnreadBooks />} />
+                    <Route path="in-progress" element={<InProgressBooks />} />
+                    <Route path="finished" element={<FinishedBooks />} />
 
                     <Route path=":id">
                         <Route index element={<BookView />} />
