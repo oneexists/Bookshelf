@@ -77,7 +77,7 @@ update_application() {
     docker start bookshelf-db
     echo ">> Updating application container..."
     ./mvnw package -DskipTests spring-boot:build-image
-    docker run -d --name bookshelf-api --network bookshelf_net -e BOOKSHELF_DB_URL=$BOOKSHELF_DB_URL -e BOOKSHELF_DB_USERNAME=root -e BOOKSHELF_DB_PASSWORD="$BOOKSHELF_DB_PASSWORD" -p 8080:8080 bookshelf:spring-boot
+    docker run -d --name bookshelf-api --network bookshelf_net -e DB_URL=$BOOKSHELF_DB_URL -e DB_USERNAME=root -e DB_PASSWORD="$BOOKSHELF_DB_PASSWORD" -e ALLOWED_ORIGINS="$BOOKSHELF_ALLOWED_ORIGINS" -p 8080:8080 bookshelf:spring-boot
     echo ">> Application updated!"
 	running_message
 	run_react
