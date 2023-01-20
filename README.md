@@ -160,3 +160,5 @@ and note taking.
     - [Building Modern UIs with React Router v6](https://www.linkedin.com/learning/building-modern-uis-with-react-router-v6/building-modern-uis)
 - Docker:
   - [Introduction to Docker for Java Developers](https://www.linkedin.com/learning/introduction-to-docker-for-java-developers)
+- JUnit:
+  - [Java: Testing with JUnit](https://www.linkedin.com/learning/java-testing-with-junit-14267963)
