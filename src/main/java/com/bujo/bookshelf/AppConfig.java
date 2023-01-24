@@ -14,6 +14,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ *  AppConfig is the main configuration class for the application. It sets up cross-origin resource sharing (CORS), a
+ *  password encoder, and configuration for Spring Data REST.
+ *
+ * @author skylar
+ * @version 1.0
+ * @since 1.0
+ */
 @Configuration
 public class AppConfig {
 	private final String[] allowedOrigins;
@@ -26,11 +34,21 @@ public class AppConfig {
 		}
 	}
 
+	/**
+	 * Creates a password encoder.
+	 *
+	 * @return a BCryptPasswordEncoder
+	 */
 	@Bean
 	public PasswordEncoder getPasswordEncoder() {
 		return new BCryptPasswordEncoder(10);
 	}
 
+	/**
+	 * Returns the WebMvcConfigurer with CORS configured.
+	 *
+	 * @return a WebMvcConfigurer
+	 */
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurer() {
