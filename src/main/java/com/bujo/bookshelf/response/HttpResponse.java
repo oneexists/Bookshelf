@@ -2,6 +2,10 @@ package com.bujo.bookshelf.response;
 
 import org.springframework.http.HttpStatus;
 
+/**
+ * This class represents an HTTP response. It contains the status code, the result status, the reason, and the message
+ * of the response.
+ */
 public class HttpResponse {
 	private int status;
 	private HttpStatus result;
@@ -46,6 +50,4 @@ public class HttpResponse {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
-	
 }
