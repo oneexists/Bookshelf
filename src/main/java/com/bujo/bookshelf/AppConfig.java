@@ -19,8 +19,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  *  password encoder, and configuration for Spring Data REST.
  *
  * @author skylar
- * @version 1.0
- * @since 1.0
  */
 @Configuration
 public class AppConfig {
@@ -37,7 +35,7 @@ public class AppConfig {
 	/**
 	 * Creates a password encoder.
 	 *
-	 * @return a BCryptPasswordEncoder
+	 * @return a {@link BCryptPasswordEncoder}
 	 */
 	@Bean
 	public PasswordEncoder getPasswordEncoder() {
@@ -45,9 +43,9 @@ public class AppConfig {
 	}
 
 	/**
-	 * Returns the WebMvcConfigurer with CORS configured.
+	 * Returns the {@link WebMvcConfigurer} with CORS configured.
 	 *
-	 * @return a WebMvcConfigurer
+	 * @return a {@link WebMvcConfigurer}
 	 */
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {

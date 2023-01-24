@@ -10,6 +10,11 @@ import com.bujo.bookshelf.response.Result;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * ReadingLogServiceImpl is a service class that creates {@link ReadingLog} objects.
+ *
+ * @author skylar
+ */
 @Service
 @Transactional
 public class ReadingLogServiceImpl implements ReadingLogService {

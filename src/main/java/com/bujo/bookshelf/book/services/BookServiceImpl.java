@@ -15,6 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+/**
+ * BookServiceImpl is a service class that provides CRUD operations for {@link Book} objects.
+ *
+ * @author skylar
+ */
 @Service
 @Transactional
 public class BookServiceImpl implements BookService {

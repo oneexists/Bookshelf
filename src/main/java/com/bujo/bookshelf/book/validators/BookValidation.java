@@ -5,6 +5,14 @@ import com.bujo.bookshelf.response.ActionStatus;
 import com.bujo.bookshelf.response.Result;
 import org.springframework.stereotype.Component;
 
+/**
+ * This class provides the validation for {@link BookDTO} objects.
+ * It implements validation checks for title, pages, and author name.
+ * If any of the validation checks fail, it adds a message to a {@link Result} object,
+ * and returns the result with the appropriate {@link ActionStatus}.
+ *
+ * @author skylar
+ */
 @Component
 public class BookValidation {
     public Result<BookDTO> validate(BookDTO book) {

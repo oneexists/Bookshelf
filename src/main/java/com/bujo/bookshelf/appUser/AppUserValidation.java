@@ -1,13 +1,26 @@
 package com.bujo.bookshelf.appUser;
 
+import com.bujo.bookshelf.appUser.models.AppUser;
 import org.springframework.stereotype.Component;
 
 import com.bujo.bookshelf.appUser.models.AppUserDetails;
 import com.bujo.bookshelf.response.ActionStatus;
 import com.bujo.bookshelf.response.Result;
 
+/**
+ * AppUserValidation is a class that performs validation on {@link AppUser} data.
+ *
+ * @author skylar
+ */
 @Component
 public class AppUserValidation {
+	/**
+	 * Validates AppUser information.
+	 *
+	 * @param username the {@link AppUser}'s username
+	 * @param password the {@link AppUser}'s password
+	 * @return the result of the validation, containing any error messages
+	 */
 	public Result<AppUserDetails> validate(String username, String password) {
 		Result<AppUserDetails> result = new Result<>();
 		
@@ -34,11 +47,24 @@ public class AppUserValidation {
 		
 		return result;
 	}
-	
+
+	/**
+	 * Determines if a string is null or empty.
+	 *
+	 * @param string the string to check
+	 * @return {@code true} iff the string is null or empty
+	 */
 	public boolean isBlankString(String string ) {
 		return string == null || string.isBlank();
 	}
-	
+
+	/**
+	 * Determines if a password is valid. A valid password must be at least 8 characters long and contain at least one
+	 * digit, one letter, and one special character.
+	 *
+	 * @param password the password to check
+	 * @return {@code true} iff the password is valid
+	 */
 	public boolean isValidPassword(String password) {
 		if (password.length() < 8) {
 			return false;
