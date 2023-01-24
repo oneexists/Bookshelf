@@ -7,6 +7,14 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
+/**
+ * This class provides the validation for {@link ReadingLogDTO} objects.
+ * It implements validation checks for bookId, start and finish date.
+ * If any of the validation checks fail, it adds a message to a {@link Result} object,
+ * and returns the result with the appropriate {@link ActionStatus}.
+ *
+ * @author skylar
+ */
 @Component
 public class ReadingLogValidation {
     public Result<ReadingLogDTO> validate(ReadingLogDTO readingLog) {

@@ -1,5 +1,6 @@
 package com.bujo.bookshelf.appUser;
 
+import com.bujo.bookshelf.appUser.models.AppUser;
 import com.bujo.bookshelf.appUser.models.AppUserDTO;
 import com.bujo.bookshelf.appUser.models.AppUserDetails;
 import com.bujo.bookshelf.response.Result;
@@ -12,6 +13,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * AppUserController is a class that handles the creation of an {@link AppUser}.
+ *
+ * @author skylar
+ */
 @RepositoryRestController
 @ConditionalOnWebApplication
 public class AppUserController {
@@ -21,7 +27,14 @@ public class AppUserController {
         this.service = service;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/appUsers")
+    /**
+     * Handles the creation of an {@link AppUser}.
+     *
+     * @param appUserDto the {@link AppUserDTO} containing the information for the {@link AppUser} to be created
+     * @return a response containing the {@link AppUser} and the newly created ID
+     * or with a BAD_REQUEST status and the error messages if the creation was not successful.
+     */
+    @PostMapping("/appUsers")
     public @ResponseBody ResponseEntity<?> createAppUser(@RequestBody AppUserDTO appUserDto) {
         Result<AppUserDetails> result = service.create(appUserDto);
 

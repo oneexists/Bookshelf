@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 /**
  * This class represents an HTTP response. It contains the status code, the result status, the reason, and the message
  * of the response.
+ *
+ * @author skylar
  */
 public class HttpResponse {
 	private int status;
