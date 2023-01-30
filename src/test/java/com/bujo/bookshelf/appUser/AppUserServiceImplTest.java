@@ -189,4 +189,30 @@ class AppUserServiceImplTest {
 			assertTrue(result.getMessages().get(0).contains(USERNAME_EXISTS));
 		}
 	}
+
+	@Nested
+	@ExtendWith(AppUserParameterResolver.class)
+	@DisplayName("Test AppUserService find AppUser by ID")
+	class AppUserFindByIdTest {
+		/**
+		 * Test method for {@link com.bujo.bookshelf.appUser.AppUserServiceImpl#findById(Long)}.
+		 */
+		@Test
+		@DisplayName("Should find existing AppUser by ID")
+		void testShouldFindExistingAppUserById(AppUser appUser) {
+			appUser.setAppUserId(1L);
+			given(repository.findById(1L)).willReturn(Optional.of(appUser));
+
+			assertNotNull(service.findById(1L).orElse(null));
+		}
+
+		/**
+		 * Test method for {@link com.bujo.bookshelf.appUser.AppUserServiceImpl#findById(Long)}.
+		 */
+		@Test
+		@DisplayName("Should not find missing AppUser by ID")
+		void testShouldNotFindMissingAppUserById() {
+			assertEquals(Optional.empty(), service.findById(1L));
+		}
+	}
 }

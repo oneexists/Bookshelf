@@ -14,6 +14,8 @@ import com.bujo.bookshelf.appUser.models.AppUserRole;
 import com.bujo.bookshelf.response.ActionStatus;
 import com.bujo.bookshelf.response.Result;
 
+import java.util.Optional;
+
 /**
  * AppUserServiceImpl is a service class that provides methods to create and load {@link AppUser} objects.
  *
@@ -62,4 +64,8 @@ public class AppUserServiceImpl implements AppUserService, UserDetailsService {
 		return result;
 	}
 
+	@Override
+	public Optional<AppUser> findById(Long appUserId) {
+		return repository.findById(appUserId);
+	}
 }
