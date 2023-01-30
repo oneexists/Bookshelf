@@ -2,7 +2,9 @@ package com.bujo.bookshelf.book.controllers;
 
 import com.bujo.bookshelf.book.models.Book;
 import com.bujo.bookshelf.book.models.BookDTO;
+import com.bujo.bookshelf.book.models.ReadingLogDTO;
 import com.bujo.bookshelf.book.services.BookService;
+import com.bujo.bookshelf.book.services.ReadingLogService;
 import com.bujo.bookshelf.response.Result;
 import com.bujo.bookshelf.security.JwtConverter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -11,6 +13,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * BookController is a class that handles creation, updates, and deletion of {@link Book} objects.
@@ -21,10 +27,12 @@ import org.springframework.web.bind.annotation.*;
 @ConditionalOnWebApplication
 public class BookController {
     private final BookService service;
+    private final ReadingLogService readingLogService;
     private final JwtConverter jwtConverter;
 
-    public BookController(BookService service, JwtConverter jwtConverter) {
+    public BookController(BookService service, ReadingLogService readingLogService, JwtConverter jwtConverter) {
         this.service = service;
+        this.readingLogService = readingLogService;
         this.jwtConverter = jwtConverter;
     }
 
@@ -76,5 +84,23 @@ public class BookController {
         }
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    /**
+     * Gets all books for a user that have reading logs with no finish date.
+     *
+     * @param token the JWT token passed in the request header, used for extracting user information.
+     * @return a response entity with HTTP status OK and {@link BookDTO} result if user is found
+     * or with a BAD_REQUEST status if unsuccessful.
+     */
+    @GetMapping("/books/inProgress")
+    public @ResponseBody ResponseEntity<?> getInProgressBooks(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        Set<BookDTO> result = service.findInProgress(jwtConverter.getAppUserIdClaimFromToken(token));
+
+        if (result == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

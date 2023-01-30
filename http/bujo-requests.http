@@ -50,3 +50,9 @@ Authorization: Bearer {{jwt}}
     "finish": "2022-12-17",
     "start": "2022-12-14"
 }
+
+### BOOKS IN PROGRESS
+
+GET {{url}}/api/books/inProgress HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
