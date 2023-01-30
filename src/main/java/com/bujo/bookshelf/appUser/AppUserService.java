@@ -8,6 +8,8 @@ import com.bujo.bookshelf.appUser.models.AppUserDTO;
 import com.bujo.bookshelf.appUser.models.AppUserDetails;
 import com.bujo.bookshelf.response.Result;
 
+import java.util.Optional;
+
 public interface AppUserService {
 	/**
 	 * Loads an {@link AppUser} by its username.
@@ -25,4 +27,12 @@ public interface AppUserService {
 	 * @return the result of the create operation, containing the newly created {@link AppUser} if successful
 	 */
 	Result<AppUserDetails> create(AppUserDTO appUserDto);
+
+	/**
+	 * Find an {@link AppUser} by its ID.
+	 *
+	 * @param appUserId the ID of the {@link AppUser}
+	 * @return the {@link Optional} value of the {@link AppUser}
+	 */
+    Optional<AppUser> findById(Long appUserId);
 }
