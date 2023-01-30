@@ -27,13 +27,13 @@ create table book (
     title varchar(200) not null,
     `language` varchar(30) null,
     pages int null,
-    author_id bigint not null,
-    app_user_id bigint not null,
+    author_author_id bigint not null,
+    user_app_user_id bigint not null,
     constraint fk_book_author_id
-		foreign key (author_id)
+		foreign key (author_author_id)
 		references author(author_id),
 	constraint fk_book_app_user_id
-		foreign key (app_user_id)
+		foreign key (user_app_user_id)
 		references app_user(app_user_id)
 );
 
@@ -60,7 +60,8 @@ begin
     alter table app_user auto_increment = 1;
     
     insert into app_user(user_role, username, `password`, is_account_non_expired, is_account_non_locked, is_credentials_non_expired, is_enabled) values
-		(0, 'username', '$2a$10$bJ.Q1/9A/1i4LpO90CVnHO.DK464jvQnrXUo0QHJggWEhgLF3eElm', true, true, true, true);
+		(0, 'username', '$2a$10$bJ.Q1/9A/1i4LpO90CVnHO.DK464jvQnrXUo0QHJggWEhgLF3eElm', true, true, true, true),
+        (0, 'no-books-here', '$2a$10$bJ.Q1/9A/1i4LpO90CVnHO.DK464jvQnrXUo0QHJggWEhgLF3eElm', true, true, true, true);
         
 	insert into author(`name`) values 
 		('Leo Tolstoy'), 
@@ -69,7 +70,7 @@ begin
         ('Stephen King'),
         ('Kurt Vonnegut');
         
-	insert into book(title, `language`, pages, author_id, app_user_id) values
+	insert into book(title, `language`, pages, author_author_id, user_app_user_id) values
 		('War and Peace', 'English', 1296, 1, 1),
         ('L''étranger', 'French', 185, 2, 1),
         ('The Regulators', 'English', 512, 3, 1),
