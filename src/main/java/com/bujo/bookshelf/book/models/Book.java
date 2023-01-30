@@ -22,6 +22,13 @@ public class Book implements Serializable {
     @OneToMany(mappedBy = "book")
     private Set<ReadingLog> readingLogs;
 
+    public boolean isInProgress() {
+        if (readingLogs == null) {
+            return false;
+        }
+        return readingLogs.stream().anyMatch(readingLog -> readingLog.getFinish() == null);
+    }
+
     public Long getBookId() {
         return bookId;
     }
