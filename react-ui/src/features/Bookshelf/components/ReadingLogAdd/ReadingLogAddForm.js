@@ -12,8 +12,8 @@ export default function ReadingLogAddForm() {
 
     const errorRef = useRef();
 
-    const [ startProps, resetStart ] = useInput("");
-    const [ finishProps, resetFinish ] = useInput("");
+    const [ startProps ] = useInput("");
+    const [ finishProps ] = useInput("");
     const [ errorMsg, setErrorMsg ] = useState([]);
 
     const handleSubmit = async(evt) => {
@@ -25,8 +25,6 @@ export default function ReadingLogAddForm() {
             bookId: id 
         }).then(() => {
             navigate("/");
-            resetStart();
-            resetFinish();
         }).catch((r) => setErrorMsg(r));
     }
 

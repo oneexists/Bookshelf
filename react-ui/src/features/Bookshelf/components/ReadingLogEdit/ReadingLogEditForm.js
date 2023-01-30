@@ -11,8 +11,8 @@ export default function ReadingLogEditForm({ start, finish }) {
     const errorRef = useRef();
     const navigate = useNavigate();
 
-    const [ startProps, resetStart ] = useInput(start);
-    const [ finishProps, resetFinish ] = useInput(finish);
+    const [ startProps ] = useInput(start);
+    const [ finishProps ] = useInput(finish);
     const [ errorMsg, setErrorMsg ] = useState([]);
 
     const handleSubmit = async(evt) => {
@@ -24,8 +24,6 @@ export default function ReadingLogEditForm({ start, finish }) {
             finish: finishProps.value
         }).then(() => {
             navigate("/");
-            resetStart();
-            resetFinish();
         }).catch((r) => setErrorMsg(r));
     };
 

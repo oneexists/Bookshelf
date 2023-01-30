@@ -14,10 +14,10 @@ export default function BookAddForm() {
     const errorRef = useRef();
     const titleRef = useRef();
     
-    const [ titleProps, resetTitle ] = useInput("");
-    const [ authorProps, resetAuthor ] = useInput("");
-    const [ pagesProps, resetPages ] = useInput("");
-    const [ languageProps, resetLanguage ] = useInput("");
+    const [ titleProps ] = useInput("");
+    const [ authorProps ] = useInput("");
+    const [ pagesProps ] = useInput("");
+    const [ languageProps ] = useInput("");
     const [ errorMsg, setErrorMsg ] = useState([]);
 
     useEffect(() => {
@@ -35,10 +35,6 @@ export default function BookAddForm() {
             appUserId: auth.user.id
         }).then(() => {
             navigate("/");
-            resetTitle();
-            resetAuthor();
-            resetPages();
-            resetLanguage();
         }).catch((r) => {
             setErrorMsg((r) => setErrorMsg(["Error saving book"]));
         });

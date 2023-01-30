@@ -15,10 +15,10 @@ export default function BookEditForm({ title, name, language, pages }) {
     const errorRef = useRef();
     const titleRef = useRef();
 
-    const [ titleProps, resetTitle ] = useInput(title);
-    const [ authorProps, resetAuthor ] = useInput(name);
-    const [ pagesProps, resetPages ] = useInput(pages);
-    const [ languageProps, resetLanguage ] = useInput(language);
+    const [ titleProps ] = useInput(title);
+    const [ authorProps ] = useInput(name);
+    const [ pagesProps ] = useInput(pages);
+    const [ languageProps ] = useInput(language);
     const [ errorMsg, setErrorMsg ] = useState([]);
 
     useEffect(() => {
@@ -37,10 +37,6 @@ export default function BookEditForm({ title, name, language, pages }) {
             language: languageProps.value 
         }).then(() => {
             navigate("/");
-            resetTitle();
-            resetAuthor();
-            resetPages();
-            resetLanguage();
         }).catch((r) => setErrorMsg(["Error updating book details"]));
         
     }
