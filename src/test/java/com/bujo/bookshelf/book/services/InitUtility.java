@@ -26,7 +26,6 @@ public class InitUtility {
             HOCUS_POCUS, initializeBook(5L, authors.get(KURT_VONNEGUT), HOCUS_POCUS, 322)
     );
 
-
     static AppUser getAppUser() {
         AppUser appUser = new AppUser();
         appUser.setAppUserId(1L);
