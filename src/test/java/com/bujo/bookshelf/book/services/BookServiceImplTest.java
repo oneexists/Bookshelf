@@ -1,6 +1,6 @@
 package com.bujo.bookshelf.book.services;
 
-import com.bujo.bookshelf.appUser.AppUserRepository;
+import com.bujo.bookshelf.appUser.AppUserService;
 import com.bujo.bookshelf.appUser.models.AppUser;
 import com.bujo.bookshelf.book.models.Author;
 import com.bujo.bookshelf.book.models.Book;
@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -39,7 +40,7 @@ class BookServiceImplTest {
     @MockBean
     AuthorRepository authorRepository;
     @MockBean
-    AppUserRepository appUserRepository;
+    AppUserService appUserService;
     @Autowired
     BookValidation validation;
 
@@ -54,10 +55,48 @@ class BookServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        service = new BookServiceImpl(bookRepository, authorRepository, appUserRepository, validation);
+        service = new BookServiceImpl(bookRepository, authorRepository, appUserService, validation);
 
         authors.get(STEPHEN_KING).setBooks(Set.of(books.get(THE_REGULATORS), books.get(HEARTS_IN_ATLANTIS)));
         authors.get(KURT_VONNEGUT).setBooks(Set.of(books.get(HOCUS_POCUS)));
+    }
+
+    @Nested
+    @DisplayName("Test BookServiceImpl find books by AppUser")
+    class BookServiceImplFindByUserTest {
+        /**
+         * Test method for {@link com.bujo.bookshelf.book.services.BookServiceImpl#findByUser(AppUser)}.
+         */
+        @Test
+        void testShouldFindByAppUser() {
+            given(appUserService.findById(appUser.getAppUserId())).willReturn(Optional.of(appUser));
+            given(bookRepository.findByUser(appUser)).willReturn(new HashSet<>(books.values()));
+
+            Set<Book> result = service.findByUser(appUser);
+
+            assertNotNull(result);
+            assertEquals(books.values().size(), result.size());
+        }
+
+        /**
+         * Test method for {@link com.bujo.bookshelf.book.services.BookServiceImpl#findByUser(AppUser)}.
+         */
+        @Test
+        void testShouldFindNoAppUserBooks() {
+            given(appUserService.findById(appUser.getAppUserId())).willReturn(Optional.of(appUser));
+            Set<Book> result = service.findByUser(appUser);
+
+            assertNotNull(result);
+            assertEquals(0, result.size());
+        }
+
+        /**
+         * Test method for {@link com.bujo.bookshelf.book.services.BookServiceImpl#findByUser(AppUser)}.
+         */
+        @Test
+        void testShouldNotFindBooksMissingAppUser() {
+            assertNull(service.findByUser(new AppUser()));
+        }
     }
 
     @Nested
@@ -98,7 +137,7 @@ class BookServiceImplTest {
             authors.get(STEPHEN_KING).setBooks(Set.of(books.get(HEARTS_IN_ATLANTIS)));
             given(authorRepository.findByName(authors.get(STEPHEN_KING).getName())).willReturn(authors.get(STEPHEN_KING));
             given(bookRepository.save(any(Book.class))).willReturn(books.get(THE_REGULATORS));
-            given(appUserRepository.findById(appUser.getAppUserId())).willReturn(Optional.of(appUser));
+            given(appUserService.findById(appUser.getAppUserId())).willReturn(Optional.of(appUser));
             ArgumentCaptor<Book> newBookArgCaptor = ArgumentCaptor.forClass(Book.class);
 
             BookDTO bookDto = new BookDTO(
@@ -129,7 +168,7 @@ class BookServiceImplTest {
             books.get(THE_REGULATORS).setAuthor(authors.get(RICHARD_BACHMAN));
             given(authorRepository.findByName(authors.get(RICHARD_BACHMAN).getName())).willReturn(authors.get(RICHARD_BACHMAN));
             given(bookRepository.save(any(Book.class))).willReturn(books.get(THE_REGULATORS));
-            given(appUserRepository.findById(appUser.getAppUserId())).willReturn(Optional.of(appUser));
+            given(appUserService.findById(appUser.getAppUserId())).willReturn(Optional.of(appUser));
             ArgumentCaptor<Book> newBookArgCaptor = ArgumentCaptor.forClass(Book.class);
 
             BookDTO bookDto = new BookDTO(

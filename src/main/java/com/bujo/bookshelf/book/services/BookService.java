@@ -7,8 +7,11 @@ import com.bujo.bookshelf.response.Result;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.Set;
 
 public interface BookService {
+    Set<BookDTO> findInProgress(Long appUserId);
+
     /**
      * Creates a new {@link Book}.
      *
@@ -16,6 +19,14 @@ public interface BookService {
      * @return the result of the create operation, containing the newly created {@link Book} if successful
      */
     Result<BookDTO> create(BookDTO bookDto);
+
+    /**
+     * Find books by {@link AppUser}.
+     *
+     * @param appUser the {@link AppUser} to search by
+     * @return the set of {@link Book} objects created by the {@link AppUser}
+     */
+    Set<Book> findByUser(AppUser appUser);
 
     /**
      * Finds a {@link Book} by its ID.

@@ -1,6 +1,6 @@
 package com.bujo.bookshelf.book.services;
 
-import com.bujo.bookshelf.appUser.AppUserRepository;
+import com.bujo.bookshelf.appUser.AppUserService;
 import com.bujo.bookshelf.appUser.models.AppUser;
 import com.bujo.bookshelf.book.models.Author;
 import com.bujo.bookshelf.book.models.Book;
@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * BookServiceImpl is a service class that provides CRUD operations for {@link Book} objects.
@@ -25,14 +27,36 @@ import java.util.Optional;
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
-    private final AppUserRepository appUserRepository;
+    private final AppUserService appUserService;
     private final BookValidation validation;
 
-    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository, AppUserRepository appUserRepository, BookValidation validation) {
+    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository, AppUserService appUserService, BookValidation validation) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
-        this.appUserRepository = appUserRepository;
+        this.appUserService = appUserService;
         this.validation = validation;
+    }
+
+    @Override
+    public Set<BookDTO> findInProgress(Long appUserId) {
+        AppUser userResult = appUserService.findById(appUserId).orElse(null);
+        if (userResult == null) {
+            return null;
+        }
+
+        Set<Book> allBooks = findByUser(userResult);
+        Set<Book> inProgressBooks = allBooks.stream()
+                .filter(Book::isInProgress)
+                .collect(Collectors.toSet());
+        return inProgressBooks.stream()
+                .map(book -> new BookDTO(
+                        book.getBookId(),
+                        book.getUser().getAppUserId(),
+                        book.getTitle(),
+                        book.getAuthor().getName(),
+                        book.getLanguage(),
+                        book.getPages()))
+                .collect(Collectors.toSet());
     }
 
     @Override
@@ -48,7 +72,7 @@ public class BookServiceImpl implements BookService {
         if (!isPresent(author)) {
             author = authorRepository.save(createAuthor(bookDto.author()));
         }
-        AppUser appUser = appUserRepository.findById(bookDto.appUserId()).orElse(null);
+        AppUser appUser = appUserService.findById(bookDto.appUserId()).orElse(null);
 
         if (!isPresent(appUser)) {
             result.addMessage(ActionStatus.INVALID, "invalid app user");
@@ -71,6 +95,14 @@ public class BookServiceImpl implements BookService {
                 newBook.getPages()));
 
         return result;
+    }
+
+    @Override
+    public Set<Book> findByUser(AppUser appUser) {
+        if (appUserService.findById(appUser.getAppUserId()).isEmpty()) {
+            return null;
+        }
+        return bookRepository.findByUser(appUser);
     }
 
     @Override
