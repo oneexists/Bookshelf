@@ -1,6 +1,5 @@
 package com.bujo.bookshelf.book.services;
 
-import com.bujo.bookshelf.appUser.models.AppUser;
 import com.bujo.bookshelf.book.models.ReadingLog;
 import com.bujo.bookshelf.book.models.ReadingLogDTO;
 import com.bujo.bookshelf.book.repositories.ReadingLogRepository;
