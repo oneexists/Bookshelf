@@ -1,12 +1,10 @@
-import { useAuth } from "../../../../../hooks/useAuth";
-import { withBooks } from "../../../hoc/withBooks";
+import { withInProgressBooks } from "../../../hoc/withInProgressBooks";
 import BookCards from "../BookCards";
 import BookshelfSplitLayout from "../../../layouts/BookshelfSplitLayout";
 
 export default function InProgressBooks() {
     const MESSAGE = "Go to any book, select 'Add Dates Read' and add a start date to see it appear here!";
-    const auth = useAuth();
-    const BookCardsWithLoader = withBooks(BookCards, auth.user.id, MESSAGE);
+    const BookCardsWithLoader = withInProgressBooks(BookCards, MESSAGE);
 
     return (
         <BookshelfSplitLayout 

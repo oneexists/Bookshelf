@@ -12,6 +12,7 @@ export const AUTHORS_URL = `${API_URL}/api/authors`;
 
 // BOOKS
 export const BOOKS_URL = `${API_URL}/api/books`;
+export const IN_PROGRESS_BOOKS_URL = `${BOOKS_URL}/inProgress`;
 
 // READING LOGS
 export const READING_LOG_URL = `${API_URL}/api/readingLogs`;
