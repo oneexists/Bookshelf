@@ -137,7 +137,7 @@ public class BookServiceImpl implements BookService {
         Result<BookDTO> result = new Result<>();
         Book currentBook = findById(book.bookId()).orElse(null);
 
-        if (currentBook == null || !currentBook.getUser().getAppUserId().equals(book.appUserId())) {
+        if (isValidBook(currentBook, book.appUserId())) {
             result.addMessage(ActionStatus.NOT_FOUND, BOOK_NOT_FOUND_ERR);
             return result;
         }
@@ -161,6 +161,10 @@ public class BookServiceImpl implements BookService {
 
         bookRepository.saveAndFlush(currentBook);
         return result;
+    }
+
+    private boolean isValidBook(Book currentBook, Long appUserId) {
+        return currentBook == null || !currentBook.getUser().getAppUserId().equals(appUserId);
     }
 
     private Author updateAuthor(Author author, String name) {
