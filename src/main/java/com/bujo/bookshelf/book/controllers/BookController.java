@@ -2,7 +2,7 @@ package com.bujo.bookshelf.book.controllers;
 
 import com.bujo.bookshelf.book.models.Book;
 import com.bujo.bookshelf.book.models.BookDTO;
-import com.bujo.bookshelf.book.models.ReadingLogDTO;
+import com.bujo.bookshelf.book.models.ReadingLog;
 import com.bujo.bookshelf.book.services.BookService;
 import com.bujo.bookshelf.book.services.ReadingLogService;
 import com.bujo.bookshelf.response.Result;
@@ -14,9 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * BookController is a class that handles creation, updates, and deletion of {@link Book} objects.
@@ -87,7 +85,7 @@ public class BookController {
     }
 
     /**
-     * Gets all books for a user that have reading logs with no finish date.
+     * Gets all books for a user that have a {@link ReadingLog} with no finish date.
      *
      * @param token the JWT token passed in the request header, used for extracting user information.
      * @return a response entity with HTTP status OK and {@link BookDTO} result if user is found
@@ -96,6 +94,42 @@ public class BookController {
     @GetMapping("/books/inProgress")
     public @ResponseBody ResponseEntity<?> getInProgressBooks(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         Set<BookDTO> result = service.findInProgress(jwtConverter.getAppUserIdClaimFromToken(token));
+
+        if (result == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    /**
+     * Gets all books for a user that have at least one {@link ReadingLog} with a finish date.
+     *
+     * @param token the JWT token passed in the request header, used for extracting user information.
+     * @return a response entity with HTTP status OK and {@link BookDTO} result if user is found
+     * or with a BAD_REQUEST status if unsuccessful.
+     */
+    @GetMapping("/books/finished")
+    public @ResponseBody ResponseEntity<?> getFinishedBooks(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        Set<BookDTO> result = service.findRead(jwtConverter.getAppUserIdClaimFromToken(token));
+
+        if (result == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    /**
+     * Gets all books for a user that do not have a {@link ReadingLog}.
+     *
+     * @param token the JWT token passed in the request header, used for extracting user information.
+     * @return a response entity with HTTP status OK and {@link BookDTO} result if user is found
+     * or with a BAD_REQUEST status if unsuccessful.
+     */
+    @GetMapping("/books/unread")
+    public @ResponseBody ResponseEntity<?> getUnreadBooks(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        Set<BookDTO> result = service.findUnread(jwtConverter.getAppUserIdClaimFromToken(token));
 
         if (result == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
