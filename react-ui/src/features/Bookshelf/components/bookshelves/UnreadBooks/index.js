@@ -1,12 +1,10 @@
-import { useAuth } from "../../../../../hooks/useAuth";
-import { withBooks } from "../../../hoc/withBooks";
+import { withUnreadBooks } from "../../../hoc/withUnreadBooks";
 import BookCards from "../BookCards";
 import BookshelfSplitLayout from "../../../layouts/BookshelfSplitLayout";
 
 export default function UnreadBooks() {
     const MESSAGE = "Add a book you haven't read yet to see it here!";
-    const auth = useAuth();
-    const BookCardsWithLoader = withBooks(BookCards, auth.user.id, MESSAGE);
+    const BookCardsWithLoader = withUnreadBooks(BookCards, MESSAGE);
 
     return (
         <BookshelfSplitLayout 

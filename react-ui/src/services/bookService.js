@@ -1,7 +1,37 @@
-import { APP_USERS_URL, BOOKS_URL, IN_PROGRESS_BOOKS_URL, TOKEN_KEY } from "../config/bookshelfApi";
+import { APP_USERS_URL, BOOKS_URL, FINISHED_BOOKS_URL, IN_PROGRESS_BOOKS_URL, TOKEN_KEY, UNREAD_BOOKS_URL } from "../config/bookshelfApi";
 
 export async function findInProgressUserBooks() {
     const response = await fetch(`${IN_PROGRESS_BOOKS_URL}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        }
+    });
+
+    if (response.ok) {
+        return response.json();
+    }
+    return Promise.reject();
+}
+
+export async function findUnreadUserBooks() {
+    const response = await fetch(`${UNREAD_BOOKS_URL}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem(TOKEN_KEY)}`
+        }
+    });
+
+    if (response.ok) {
+        return response.json();
+    }
+    return Promise.reject();
+}
+
+export async function findFinishedUserBooks() {
+    const response = await fetch(`${FINISHED_BOOKS_URL}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
