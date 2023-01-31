@@ -55,17 +55,10 @@ public class BookServiceImpl implements BookService {
             return result;
         }
 
-        Book newBook = setNewBook(bookDto, author, appUser);
-        newBook = bookRepository.save(newBook);
-
-        result.setPayload(new BookDTO(
-                newBook.getBookId(),
-                newBook.getUser().getAppUserId(),
-                newBook.getTitle(),
-                newBook.getAuthor().getName(),
-                newBook.getLanguage(),
-                newBook.getPages()));
-
+        Book newBook = createBook(bookDto, author, appUser);
+        result.setPayload(
+                BookDTO.fromBook(bookRepository.save(newBook))
+        );
         return result;
     }
 
@@ -78,7 +71,7 @@ public class BookServiceImpl implements BookService {
         return author;
     }
 
-    private Book setNewBook(BookDTO dto, Author author, AppUser user) {
+    private Book createBook(BookDTO dto, Author author, AppUser user) {
         Book newBook = new Book();
         if (isPresent(user)) {
             newBook.setUser(user);
@@ -108,13 +101,7 @@ public class BookServiceImpl implements BookService {
                 .collect(Collectors.toSet());
 
         return inProgressBooks.stream()
-                .map(book -> new BookDTO(
-                        book.getBookId(),
-                        book.getUser().getAppUserId(),
-                        book.getTitle(),
-                        book.getAuthor().getName(),
-                        book.getLanguage(),
-                        book.getPages()))
+                .map(BookDTO::fromBook)
                 .collect(Collectors.toSet());
     }
 
