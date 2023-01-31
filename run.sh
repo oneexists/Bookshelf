@@ -45,14 +45,14 @@ instructions() {
 	echo "       INITIALIZATION INSTRUCTIONS"
     echo "--------------------------------------------"
     echo "Ensure Docker is installed."
-    echo "Run the script with ./run.sh -i the first time"
+    echo "Run the script with ./run.sh -s the first time"
     echo "to populate the environment variables needed."
     echo "Then add the environment variables to your"
     echo "Bash configuration either in the ~/.bashrc"
     echo "file or ~/.bash_profile file."
     echo
     echo "After this is completed, run the script again"
-    echo "using ./run.sh -i to finish initialization of"
+    echo "using ./run.sh -s to finish initialization of"
     echo "the database and application containers."
     echo
     echo "Once initialization is complete, the application"
