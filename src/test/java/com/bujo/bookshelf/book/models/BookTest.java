@@ -41,7 +41,19 @@ class BookTest {
     void testIsNotInProgressNoReadingLogs() {
         assertFalse(book.isInProgress());
     }
-    
+
+    /**
+     * Test method for {@link Book#isInProgress()}.
+     */
+    @Test
+    @DisplayName("Test Book is not in progress with no start or finish date")
+    void testIsNotInProgressReadingLogNoDates() {
+        readingLog.setStart(null);
+        book.setReadingLogs(Set.of(readingLog));
+
+        assertFalse(book.isInProgress());
+    }
+
     /**
      * Test method for {@link Book#isInProgress()}.
      */

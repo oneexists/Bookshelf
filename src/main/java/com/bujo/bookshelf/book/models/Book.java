@@ -4,6 +4,7 @@ import com.bujo.bookshelf.appUser.models.AppUser;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -20,13 +21,13 @@ public class Book implements Serializable {
     private String language;
     private int pages;
     @OneToMany(mappedBy = "book")
-    private Set<ReadingLog> readingLogs;
+    private Set<ReadingLog> readingLogs = new HashSet<>();
 
     public boolean isInProgress() {
         if (readingLogs == null) {
             return false;
         }
-        return readingLogs.stream().anyMatch(readingLog -> readingLog.getFinish() == null);
+        return readingLogs.stream().anyMatch(readingLog -> readingLog.getStart() != null && readingLog.getFinish() == null);
     }
 
     public Long getBookId() {
