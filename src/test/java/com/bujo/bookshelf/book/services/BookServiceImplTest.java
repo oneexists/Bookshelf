@@ -10,10 +10,7 @@ import com.bujo.bookshelf.book.repositories.AuthorRepository;
 import com.bujo.bookshelf.book.repositories.BookRepository;
 import com.bujo.bookshelf.book.validators.BookValidation;
 import com.bujo.bookshelf.response.Result;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -781,6 +778,11 @@ class BookServiceImplTest {
     @ExtendWith(ReadingLogParameterResolver.class)
     @DisplayName("Test BookServiceImpl find in progress Books")
     class BookServiceImplFindInProgressTest {
+        @AfterEach
+        void resetReadingLogs() {
+            books.get(HEARTS_IN_ATLANTIS).setReadingLogs(new HashSet<>());
+        }
+
         /**
          * Test method for {@link com.bujo.bookshelf.book.services.BookServiceImpl#findInProgress(Long)}.
          */
@@ -812,7 +814,6 @@ class BookServiceImplTest {
         @Test
         @DisplayName("Should not find in progress when no books have reading logs")
         void testShouldNotFindNoReadingLogs() {
-            books.get(HEARTS_IN_ATLANTIS).setReadingLogs(new HashSet<>());
             given(appUserService.findById(appUser.getAppUserId())).willReturn(Optional.of(appUser));
             given(bookRepository.findByUser(appUser)).willReturn(new HashSet<>(books.values()));
 
@@ -861,6 +862,11 @@ class BookServiceImplTest {
     @ExtendWith(ReadingLogParameterResolver.class)
     @DisplayName("Test BookServiceImpl find read books")
     class BookServiceImplFindReadTest {
+        @AfterEach
+        void resetReadingLogs() {
+            books.get(HEARTS_IN_ATLANTIS).setReadingLogs(new HashSet<>());
+        }
+
         /**
          * Test method for {@link com.bujo.bookshelf.book.services.BookServiceImpl#findRead(Long)}.
          */
@@ -893,7 +899,6 @@ class BookServiceImplTest {
         @Test
         @DisplayName("Should not find finished when no books have reading logs")
         void testShouldNotFindNoReadingLogs() {
-            books.get(HEARTS_IN_ATLANTIS).setReadingLogs(new HashSet<>());
             given(appUserService.findById(appUser.getAppUserId())).willReturn(Optional.of(appUser));
             given(bookRepository.findByUser(appUser)).willReturn(new HashSet<>(books.values()));
 
@@ -921,6 +926,96 @@ class BookServiceImplTest {
         @DisplayName("Should not find finished when user does not exist")
         void testShouldNotFindMissingAppUser() {
             assertNull(service.findRead(1_000L));
+        }
+    }
+
+    @Nested
+    @ExtendWith(ReadingLogParameterResolver.class)
+    @DisplayName("Test BookServiceImpl find unread books")
+    class BookServiceImplFindUnreadTest {
+        @AfterEach
+        void resetReadingLogs() {
+            books.get(HOCUS_POCUS).setReadingLogs(new HashSet<>());
+            books.get(HEARTS_IN_ATLANTIS).setReadingLogs(new HashSet<>());
+        }
+
+        /**
+         * Test method for {@link com.bujo.bookshelf.book.services.BookServiceImpl#findUnread(Long)}.
+         */
+        @Test
+        @DisplayName("Should find unread books")
+        void testShouldFindBooks() {
+            given(appUserService.findById(appUser.getAppUserId())).willReturn(Optional.of(appUser));
+            given(bookRepository.findByUser(appUser)).willReturn(new HashSet<>(books.values()));
+
+            assertEquals(3, service.findUnread(appUser.getAppUserId()).size());
+        }
+
+        /**
+         * Test method for {@link com.bujo.bookshelf.book.services.BookServiceImpl#findUnread(Long)}.
+         */
+        @Test
+        @DisplayName("Should not find unread when user has no books")
+        void testShouldNotFindNoBooks() {
+            given(appUserService.findById(appUser.getAppUserId())).willReturn(Optional.of(appUser));
+
+            assertEquals(0, service.findUnread(appUser.getAppUserId()).size());
+        }
+
+        /**
+         * Test method for {@link com.bujo.bookshelf.book.services.BookServiceImpl#findUnread(Long)}.
+         */
+        @Test
+        @DisplayName("Should not find when user has only in progress books")
+        void testShouldNotFindAllInProgress(ReadingLog readingLog) {
+            readingLog.setStart(LocalDate.of(2022, 12, 22));
+            books.get(HEARTS_IN_ATLANTIS).setReadingLogs(Set.of(readingLog));
+            given(appUserService.findById(appUser.getAppUserId())).willReturn(Optional.of(appUser));
+            given(bookRepository.findByUser(appUser)).willReturn(Set.of(books.get(HEARTS_IN_ATLANTIS)));
+
+            assertEquals(0, service.findUnread(appUser.getAppUserId()).size());
+        }
+
+        /**
+         * Test method for {@link com.bujo.bookshelf.book.services.BookServiceImpl#findUnread(Long)}.
+         */
+        @Test
+        @DisplayName("Should not find when user has only finished books")
+        void testShouldNotFindAllFinished(ReadingLog readingLog) {
+            readingLog.setStart(LocalDate.of(2022, 12, 22));
+            readingLog.setFinish(LocalDate.of(2022, 12, 31));
+            books.get(HEARTS_IN_ATLANTIS).setReadingLogs(Set.of(readingLog));
+            given(appUserService.findById(appUser.getAppUserId())).willReturn(Optional.of(appUser));
+            given(bookRepository.findByUser(appUser)).willReturn(Set.of(books.get(HEARTS_IN_ATLANTIS)));
+
+            assertEquals(0, service.findUnread(appUser.getAppUserId()).size());
+        }
+
+        /**
+         * Test method for {@link com.bujo.bookshelf.book.services.BookServiceImpl#findUnread(Long)}.
+         */
+        @Test
+        @DisplayName("Should not find when user has only in progress or finished books")
+        void testShouldNotFindNoUnread(ReadingLog readingLog) {
+            readingLog.setStart(LocalDate.of(2022, 12, 22));
+            books.get(HOCUS_POCUS).setReadingLogs(Set.of(readingLog));
+            ReadingLog secondReadingLog = new ReadingLog();
+            secondReadingLog.setStart(LocalDate.of(2021, 5, 2));
+            secondReadingLog.setFinish(LocalDate.of(2021, 6, 7));
+            books.get(HEARTS_IN_ATLANTIS).setReadingLogs(Set.of(secondReadingLog));
+            given(appUserService.findById(appUser.getAppUserId())).willReturn(Optional.of(appUser));
+            given(bookRepository.findByUser(appUser)).willReturn(Set.of(books.get(HEARTS_IN_ATLANTIS)));
+
+            assertEquals(0, service.findUnread(appUser.getAppUserId()).size());
+        }
+
+        /**
+         * Test method for {@link com.bujo.bookshelf.book.services.BookServiceImpl#findUnread(Long)}.
+         */
+        @Test
+        @DisplayName("Should not find unread when user does not exist")
+        void testShouldNotFindMissingAppUser() {
+            assertNull(service.findUnread(1_000L));
         }
     }
 }

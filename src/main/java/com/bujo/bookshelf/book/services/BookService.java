@@ -37,6 +37,14 @@ public interface BookService {
     Set<BookDTO> findRead(Long appUserId);
 
     /**
+     * Find a user's unread books, any book without a {@link ReadingLog}.
+     *
+     * @param appUserId the ID of the {@link AppUser} to search by
+     * @return the set of {@link BookDTO} that corresponds to unread books
+     */
+    Set<BookDTO> findUnread(Long appUserId);
+
+    /**
      * Find books by {@link AppUser}.
      *
      * @param appUser the {@link AppUser} to search by

@@ -123,6 +123,22 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Set<BookDTO> findUnread(Long appUserId) {
+        AppUser userResult = findAppUserById(appUserId);
+        if (!isPresent(userResult)) {
+            return null;
+        }
+
+        Set<Book> allBooks = findByUser(userResult);
+        Set<Book> unreadBooks = allBooks.stream()
+                .filter(book -> book.getReadingLogs().size() == 0)
+                .collect(Collectors.toSet());
+        return unreadBooks.stream()
+                .map(BookDTO::fromBook)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
     public Set<Book> findByUser(AppUser appUser) {
         if (isPresent(appUser) && isPresent(findAppUserById(appUser.getAppUserId()))) {
             return bookRepository.findByUser(appUser);
