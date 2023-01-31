@@ -93,24 +93,7 @@ and note taking.
   - [Reference](https://stackoverflow.com/questions/20349594/adding-additional-details-to-principal-object-stored-in-spring-security-context)
 
 
-- Create Docker build scripts
-  - two scripts: one for updating, one for running
-    - `scripts/update-api.sh`:
-      - starts MySQL database container `bookshelfserver`
-      - removes current back-end application container `bookshelf-api`
-      - builds new back-end application Docker image using Maven
-      - creates new `bookshelf-api` Docker container
-    - `scripts/run-api.sh`:
-      - starts database container `bookshelfserver`
-      - starts back-end container `bookshelf-api`
-  - created `.gitattributes` file to standardize Bash script endings as `LF` rather
-    than Windows standard `CRLF`
-    - [Documentation](https://docs.github.com/en/get-started/getting-started-with-git/configuring-git-to-handle-line-endings)
-      from GitHub
-    - implementation in `.gitattributes` file:
-      ```
-      *.sh text eol=lf
-      ```
+- Create Docker [build script](./run.sh)
 
 
 - Remove arrow function from delete button to prevent excess re-rendering
@@ -129,13 +112,9 @@ and note taking.
 
 ## Target Process
 
-- List finished books
-- List unfinished books
-- List books in progress
 - Provide reading statistics (yearly and overall)
-  - books read
-  - pages read
-  - by language
+  - total books and pages read
+  - books and pages read by language
 - Add quotes to books
 - Add notes to books
   - optionally tag note with topics

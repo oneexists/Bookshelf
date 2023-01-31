@@ -9,6 +9,7 @@
     and one special character
 - Add, edit and delete books
 - Add, edit and delete a book's reading activity
+- Filter user books by unfinished, in progress, and finished status
 
 ## Non-Functional
 
@@ -17,6 +18,7 @@
 - React front-end interface
 - Bootstrap/CSS module styling
 - Utilize a card layout for books on bookshelf
+- Drop-down menu to display 'bookshelves' based on reading status (all, unread, currently reading, read)
 
 ### User Experience
 
