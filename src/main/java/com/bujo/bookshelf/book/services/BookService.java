@@ -3,6 +3,7 @@ package com.bujo.bookshelf.book.services;
 import com.bujo.bookshelf.appUser.models.AppUser;
 import com.bujo.bookshelf.book.models.Book;
 import com.bujo.bookshelf.book.models.BookDTO;
+import com.bujo.bookshelf.book.models.ReadingLog;
 import com.bujo.bookshelf.response.Result;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,6 +11,13 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface BookService {
+    /**
+     * Find a user's in progress books, any books with a {@link ReadingLog} that has a start date
+     * and no finish date.
+     *
+     * @param appUserId the ID of the {@link AppUser} to search by
+     * @return the set of {@link BookDTO} that corresponds to in progress books
+     */
     Set<BookDTO> findInProgress(Long appUserId);
 
     /**
@@ -19,6 +27,14 @@ public interface BookService {
      * @return the result of the create operation, containing the newly created {@link Book} if successful
      */
     Result<BookDTO> create(BookDTO bookDto);
+
+    /**
+     * Find a user's finished books, any books with a {@link ReadingLog} that has a finish date.
+     *
+     * @param appUserId the ID of the {@link AppUser} to search by
+     * @return the set of {@link BookDTO} that corresponds to finished books
+     */
+    Set<BookDTO> findRead(Long appUserId);
 
     /**
      * Find books by {@link AppUser}.
