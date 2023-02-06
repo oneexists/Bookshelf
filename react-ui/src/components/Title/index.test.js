@@ -7,4 +7,5 @@ test("title displays a heading", () => {
     const heading = screen.getByRole("heading");
 
     expect(heading).toBeInTheDocument();
+    expect(heading).toHaveTextContent("Title Text");
 });
