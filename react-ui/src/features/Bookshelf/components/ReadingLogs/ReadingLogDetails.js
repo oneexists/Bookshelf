@@ -1,7 +1,7 @@
 import { memo, useCallback } from "react";
 import DangerButton from "../../../../components/buttons/DangerButton";
 import { deleteLogById } from "../../../../services/readingLogService";
-import SecondaryNavLinkButton from "../../../../components/buttons/SecondaryNavLinkButton";
+import InfoNavLinkButton from "../../../../components/buttons/InfoNavLinkButton";
 import ButtonBar from "../../../../components/layouts/ButtonBar";
 
 const DeleteButton = memo(({ onClick }) => (
@@ -23,7 +23,7 @@ export default function ReadingLogDetails({ log }) {
                 </div>
                 <div className="col-auto">
                     <ButtonBar>
-                        <SecondaryNavLinkButton url={`logs/edit/${logId}`} text="Edit" marginEnd={2} />
+                        <InfoNavLinkButton url={`logs/edit/${logId}`} text="Edit" marginEnd={2} />
                         <DeleteButton onClick={handleDelete} />
                     </ButtonBar>
                 </div>

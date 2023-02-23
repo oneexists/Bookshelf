@@ -1,15 +1,20 @@
-import { NavLink } from "react-router-dom";
+import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 
 export default function BookDropdown() {
     return (
-        <div className="dropdown">
-            <NavLink to="#" className="nav-link dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">Books</NavLink>
-            <ul classNameq="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <li><a href="/" className="dropdown-item">All</a></li>
-                <li><a href="/books/unread" className="dropdown-item">Unread</a></li>
-                <li><a href="/books/in-progress" className="dropdown-item">In Progress</a></li>
-                <li><a href="/books/finished" className="dropdown-item">Finished</a></li>
-            </ul>
-        </div>
+        <Navbar.Collapse id="navbar-book-dropdown">
+            <Nav>
+                <NavDropdown
+                    id="nav-book-dropdown"
+                    title="Books"
+                    menuVariant="dark"
+                >
+                    <NavDropdown.Item href="/">All</NavDropdown.Item>
+                    <NavDropdown.Item href="/books/unread">Unread</NavDropdown.Item>
+                    <NavDropdown.Item href="/books/in-progress">In Progress</NavDropdown.Item>
+                    <NavDropdown.Item href="/books/finished">Finished</NavDropdown.Item>
+                </NavDropdown>
+            </Nav>
+        </Navbar.Collapse>
     );
 }
