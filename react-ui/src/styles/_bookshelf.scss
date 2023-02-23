@@ -1,0 +1,23 @@
+// Custom Palette START
+$bookshelf-primary: #00B7E0;
+$bookshelf-secondary: #C874D9;
+$bookshelf-success: #64b6acff;
+$bookshelf-info: #A499BE;
+$bookshelf-warning: #F6AE2D;
+$bookshelf-danger: #FF0000;
+$bookshelf-dark: #2A2E45;
+$bookshelf-light: #EDF2F4;
+// Custom Palette END
+
+$theme-colors: (
+    "primary": $bookshelf-primary,
+    "secondary": $bookshelf-secondary,
+    "success": $bookshelf-success,
+    "info": $bookshelf-info,
+    "warning": $bookshelf-warning,
+    "danger": $bookshelf-danger,
+    "light": $bookshelf-light,
+    "dark": $bookshelf-dark
+);
+
+@import "~bootstrap/scss/bootstrap";

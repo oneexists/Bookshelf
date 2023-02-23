@@ -5,7 +5,6 @@ import BookDetails from "../../layouts/BookDetails";
 import BookLogs from "../ReadingLogs";
 import { BOOKS_URL } from "../../../../config/bookshelfApi";
 import PageLayout from "../../../../components/layouts/PageLayout";
-import BookViewButtonBar from "./BookViewButtonBar";
 import BookViewSplitLayout from "./BookViewSplitLayout";
 
 export default function BookView() {
@@ -15,10 +14,12 @@ export default function BookView() {
 
     return book ? (
         <PageLayout pageTitle={title}>
-            <BookViewButtonBar bookId={id} />
+            <div id="book-details" className="m-4 p-2">
+                <BookDetails { ...{author, language, pages} } />
+            </div>
 
             <BookViewSplitLayout 
-                details={<BookDetails { ...{author, language, pages} } />} 
+                bookId={id} 
                 bookLogs={<BookLogs url={book._links.readingLogs.href} />} 
             />
         </PageLayout>

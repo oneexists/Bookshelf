@@ -16,8 +16,8 @@ export default function ReadingLogSplitLayout({ component, pageTitle }) {
             <SplitScreen leftWeight={1} rightWeight={3}>
             <div id="book-details" className="m-4 p-2">
                 <div className="flex-fill">{title}</div>
-                    <BookDetails { ...{author, language, pages} } />
-                </div>
+                <BookDetails { ...{author, language, pages} } />
+            </div>
 
                 {component}
             </SplitScreen>

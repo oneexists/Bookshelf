@@ -1,0 +1,44 @@
+@use 'bookshelf.scss';
+
+// START TYPOGRAPHY
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4,
+h5, .h5,
+h6, .h6 {
+    font-family: 'Roboto', sans-serif;
+    font-style: italic;
+    font-weight: 700;
+}
+
+h1, .h1 {
+    text-align: center;
+}
+
+.display-1, 
+.display-2, 
+.display-3, 
+.display-4, 
+.display-5, 
+.display-6 {
+    font-family: 'Roboto Slab', serif;
+    font-style: italic;
+    font-weight: 500;
+}
+
+body {
+    font-family: 'Amiko', sans-serif;
+    font-weight: 400;
+}
+// END TYPOGRAPHY
+
+main {
+    background-color: bookshelf.$bookshelf-light;
+}
+
+#book-details {
+    background-color: bookshelf.$bookshelf-info;
+    border: 2px solid darkslategray;
+    font-weight: bold;
+}

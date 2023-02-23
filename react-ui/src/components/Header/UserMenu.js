@@ -1,12 +1,14 @@
-import { NavLink } from "react-router-dom";
+import { Nav } from "react-bootstrap";
 import BookDropdown from "./BookDropdown";
 
 export default function UserMenu() {
     return (
         <>
             <BookDropdown />
-            <NavLink to="/quotes" className="nav-link">Quotes</NavLink>
-            <NavLink to="/notes" className="nav-link">Notes</NavLink>
+            <Nav>
+                <Nav.Link to="/quotes">Quotes</Nav.Link>
+                <Nav.Link to="/notes">Notes</Nav.Link>
+            </Nav>
         </>
     );
 }
